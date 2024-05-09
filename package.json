@@ -12,6 +12,7 @@
   "dependencies": {
     "framer-motion": "^11.1.9",
     "jwt-decoder": "^0.0.0",
+    "lucide-react": "^0.378.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",

@@ -29,23 +29,23 @@ h1 {
 }
 
 h2 {
-    font-size: 4rem;
-}
-
-h3 {
     font-size: 5rem;
 }
 
-h4 {
-    font-size: 4.5rem;
-}
-
-h5 {
+h3 {
     font-size: 4rem;
 }
 
-h6 {
+h4 {
     font-size: 3.5rem;
+}
+
+h5 {
+    font-size: 3rem;
+}
+
+h6 {
+    font-size: 2.5rem;
 }
 
 a {
