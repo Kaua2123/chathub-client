@@ -102,6 +102,11 @@ export const InfoCard = styled.div`
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   border-radius: 1.2rem;
   padding: 4rem;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1) translateY(-2%);
+  }
 
   p {
     font-family: 'Montserrat';
