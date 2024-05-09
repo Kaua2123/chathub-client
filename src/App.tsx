@@ -1,8 +1,14 @@
+import { ThemeProvider } from 'styled-components';
+import AppRouter from './router';
+import { GlobalStyle } from './styles/global';
+import { theme } from './styles/theme';
+
 function App() {
   return (
-    <div>
-      <h1 className="bg-green-500">Hello World</h1>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AppRouter />
+      <GlobalStyle />
+    </ThemeProvider>
   );
 }
 
