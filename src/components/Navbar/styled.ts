@@ -3,6 +3,13 @@ import styled from 'styled-components';
 
 export const Div = styled.div`
   margin: 5rem;
+  margin: 2.5rem;
+  padding: 0 4rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;

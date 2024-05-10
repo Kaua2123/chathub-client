@@ -10,10 +10,12 @@ import {
   FlexDiv,
 } from './styled';
 import { MoveRight, Wifi, Users, MessageSquareText } from 'lucide-react';
+import Navbar from '../../components/Navbar/Navbar';
 
 function Home() {
   return (
     <div>
+      <Navbar />
       <MainSection>
         <MainSectionDiv>
           <h1>
@@ -35,7 +37,7 @@ function Home() {
           <GridCards>
             <InfoCard>
               <Wifi color="white" size={40} />
-              <p className="subtitle">Conecte-se com quem importa!</p>
+              <p className="subtitle">Conecte-se com quem importa.</p>
 
               <p className="text">
                 Converse com amigos, familiares, aqueles que importam pra você,

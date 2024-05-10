@@ -5,6 +5,8 @@ function Conversations() {
   return (
     <div>
       <Navbar />
+      <Navbar />
+
       <h1>Conversas</h1>
       <BottomMenu />
     </div>
