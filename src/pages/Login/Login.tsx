@@ -19,7 +19,7 @@ function Login() {
           <img
             src={chathub}
             alt=""
-            style={{ borderRadius: '1rem', height: '5rem' }}
+            style={{ borderRadius: '1.8rem', height: '5rem' }}
           />
         </h3>
         <Container>
@@ -27,7 +27,7 @@ function Login() {
             <h4>Seja bem vindo de volta!</h4>
 
             <p>
-              Não possui uma conta??{' '}
+              Não possui uma conta?
               <Link className="bold" to={'/register'}>
                 <b> Cadastre-se </b>
               </Link>

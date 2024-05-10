@@ -19,7 +19,7 @@ function Register() {
           <img
             src={chathub}
             alt=""
-            style={{ borderRadius: '1rem', height: '5rem' }}
+            style={{ borderRadius: '1.8rem', height: '5rem' }}
           />
         </h3>
         <Container>
