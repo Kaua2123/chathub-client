@@ -51,7 +51,7 @@ export const MainSection = styled.section`
 `;
 
 export const Button = styled.button`
-  background-color: ${({ theme }) => theme.colors.lightBlue};
+  background-color: ${({ theme }) => theme.colors.lighterBlue};
   border-radius: 1.7rem;
   color: ${({ theme }) => theme.colors.white};
   padding: 1.5rem 2rem;

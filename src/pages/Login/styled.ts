@@ -42,7 +42,7 @@ export const TextDiv = styled.div`
     text-decoration: none;
     transition: transform 0.3s;
     cursor: pointer;
-    color: ${({ theme }) => theme.colors.lightBlue};
+    color: ${({ theme }) => theme.colors.lighterBlue};
 
     &:hover {
       color: ${({ theme }) => theme.colors.darkBlue};
@@ -74,7 +74,7 @@ export const Button = styled.button`
   width: 100%;
   margin-top: 2rem;
 
-  background-color: ${({ theme }) => theme.colors.lightBlue};
+  background-color: ${({ theme }) => theme.colors.lighterBlue};
   border-radius: 1.7rem;
   color: ${({ theme }) => theme.colors.white};
   padding: 1.5rem 2rem;

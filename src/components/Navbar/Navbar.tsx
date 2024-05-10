@@ -8,7 +8,7 @@ function Navbar() {
     <div>
       <Div>
         <div>
-          <a href="#">
+          <a href="/">
             <img
               src={chathub}
               alt=""

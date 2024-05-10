@@ -46,7 +46,7 @@ export const BellIcon = styled(Bell)`
   cursor: pointer;
 
   &:hover {
-    stroke: ${({ theme }) => theme.colors.lightBlue};
+    stroke: ${({ theme }) => theme.colors.lighterBlue};
     transform: translateY(-10%);
   }
 `;
@@ -66,7 +66,7 @@ export const UserAvatar = styled.div`
 
     & svg {
       // stroke para alterar a cor das linhas do ícone
-      stroke: ${({ theme }) => theme.colors.lightBlue};
+      stroke: ${({ theme }) => theme.colors.lighterBlue};
     }
   }
 `;
