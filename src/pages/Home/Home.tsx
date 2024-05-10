@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   Button,
   MainSectionDiv,
@@ -19,10 +20,12 @@ function Home() {
             Converse com amigos, <br /> onde quer que esteja!
           </h1>
           <p>Simplicidade pra dar ênfase ao que realmente importa.</p>
-          <Button>
-            Começar
-            <MoveRight />
-          </Button>
+          <Link to={'/register'}>
+            <Button>
+              Começar
+              <MoveRight />
+            </Button>
+          </Link>
         </MainSectionDiv>
       </MainSection>
 
@@ -64,10 +67,12 @@ function Home() {
 
           <FlexDiv>
             <h3>O que está esperando? Comece agora!</h3>
-            <Button>
-              Começar
-              <MoveRight />
-            </Button>
+            <Link to={'/register'}>
+              <Button>
+                Começar
+                <MoveRight />
+              </Button>
+            </Link>
           </FlexDiv>
         </SecondarySectionDiv>
       </SecondarySection>
