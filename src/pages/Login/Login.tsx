@@ -10,7 +10,7 @@ import {
 import chathub from '../../assets/chathub.png';
 import { Link } from 'react-router-dom';
 
-function Register() {
+function Login() {
   return (
     <div>
       <Section>
@@ -24,23 +24,18 @@ function Register() {
         </h3>
         <Container>
           <TextDiv>
-            <h4>Criar a sua conta no chathub</h4>
-            <p>Forneça seus dados. Prepararemos tudo pra você.</p>
+            <h4>Seja bem vindo de volta!</h4>
 
             <p>
-              Já é cadastrado?{' '}
-              <Link className="bold" to={'/login'}>
-                <b> Entrar </b>
+              Não possui uma conta??{' '}
+              <Link className="bold" to={'/register'}>
+                <b> Cadastre-se </b>
               </Link>
             </p>
           </TextDiv>
 
           <FormDiv>
             <Form action="" method="post">
-              <label htmlFor="Nome completo">Nome Completo</label>
-              <Input type="text" />
-              <label htmlFor="Como quer ser chamado">Apelido</label>
-              <Input type="text" />
               <label htmlFor="Email">Email</label>
               <Input type="email" />
               <label htmlFor="Senha">Senha</label>
@@ -54,4 +49,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;

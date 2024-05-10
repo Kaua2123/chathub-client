@@ -8,7 +8,7 @@ export const Img = styled.image`
 export const Container = styled.div`
   padding: 4rem;
   border-radius: 1.2rem;
-  min-width: 50rem;
+  min-width: 60rem;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
 `;
 
@@ -18,7 +18,7 @@ export const Section = styled.section`
   display: flex;
   flex-flow: column wrap;
   align-items: center;
-  padding-top: 2rem;
+  padding-top: 6rem;
 
   h3 {
     display: flex;
