@@ -12,6 +12,7 @@ function Navbar() {
             <img
               src={chathub}
               alt=""
+              className="logo"
               style={{
                 borderRadius: '1.8rem',
                 height: '5rem',
