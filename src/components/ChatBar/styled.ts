@@ -28,7 +28,7 @@ export const EllipsisVerticalIcon = styled(EllipsisVertical)`
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-4%);
+    transform: translateY(-10%);
     color: ${({ theme }) => theme.colors.lighterBlue};
   }
 `;
@@ -37,7 +37,7 @@ export const ArrowLeftIcon = styled(ArrowLeft)`
   cursor: pointer;
 
   &:hover {
-    transform: translateX(-8%);
+    transform: translateX(-10%);
     color: ${({ theme }) => theme.colors.lighterBlue};
   }
 `;

@@ -9,7 +9,7 @@ import {
 } from './styled';
 import { useNavigate, useParams } from 'react-router-dom';
 
-function ConversationBar() {
+function ChatBar() {
   const { id } = useParams();
   const navigate = useNavigate();
   return (
@@ -34,4 +34,4 @@ function ConversationBar() {
   );
 }
 
-export default ConversationBar;
+export default ChatBar;

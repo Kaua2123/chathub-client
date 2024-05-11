@@ -4,7 +4,7 @@ import Home from './pages/Home/Home';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Conversations from './pages/Conversations/Conversations';
-import Conversation from './pages/Conversation/Conversation';
+import Chat from './pages/Chat/Chat';
 
 function AppRouter() {
   return (
@@ -14,7 +14,7 @@ function AppRouter() {
         <Route element={<Register />} path="/register" />
         <Route element={<Login />} path="/login" />
         <Route element={<Conversations />} path="/conversations" />
-        <Route element={<Conversation />} path="/conversation/:id" />
+        <Route element={<Chat />} path="/chat/:id" />
       </Routes>
     </BrowserRouter>
   );

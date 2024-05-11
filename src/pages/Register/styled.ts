@@ -101,12 +101,14 @@ export const Input = styled.input`
   margin-bottom: 1.3rem;
   border: 2px solid gray;
   border-radius: 0.9rem;
-  font-size: 1.4rem;
-  font-family: 'Raleway';
   transition: transform 0.3s;
   outline: none;
+  background-color: ${({ theme }) => theme.colors.mediumBlue};
+  color: ${({ theme }) => theme.colors.darkGray};
+  font-family: 'Raleway';
+  font-size: 1.8rem;
 
   &:focus {
-    border: 2px solid ${({ theme }) => theme.colors.darkBlue};
+    border: 2px solid ${({ theme }) => theme.colors.lighterBlue};
   }
 `;

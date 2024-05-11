@@ -20,7 +20,7 @@ function ConversationCard({ id }: ConversationCardProps) {
     <div>
       <Container
         onClick={() => {
-          navigate(`/conversation/${id}`);
+          navigate(`/chat/${id}`);
         }}
       >
         <DivUser>
