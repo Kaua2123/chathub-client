@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
 import Navbar from '../../components/Navbar/Navbar';
-import { Div, DivConversations } from './styled';
+import { CirclePlusIcon, Div, DivConversations, FixedButton } from './styled';
+import ModalCreatingGroup from '../../components/ModalCreatingGroup/ModalCreatingGroup';
 
 function Conversations() {
+  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
+
   return (
     <div>
       <Navbar />
+
+      {isCreatingGroup && (
+        <ModalCreatingGroup setIsCreatingGroup={setIsCreatingGroup} />
+      )}
 
       <Div>
         <p>Conversas</p>
@@ -17,6 +25,10 @@ function Conversations() {
           })}
         </DivConversations>
       </Div>
+      <FixedButton onClick={() => setIsCreatingGroup(true)}>
+        <CirclePlusIcon />
+      </FixedButton>
+
       <BottomMenu />
     </div>
   );

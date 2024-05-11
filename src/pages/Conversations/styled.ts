@@ -1,6 +1,8 @@
+import { CirclePlus } from 'lucide-react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
+  position: relative;
   color: white;
   max-width: 120rem;
   margin: 0 auto;
@@ -33,3 +35,27 @@ export const DivConversations = styled.div`
     border-radius: 1.7rem;
   }
 `;
+
+export const FixedButton = styled.button`
+  position: fixed;
+  right: 0;
+  margin-right: 5rem;
+  border: 1px solid white;
+  background-color: ${({ theme }) => theme.colors.white};
+  padding: 1rem;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+  &:hover {
+    transform: translateY(-5%);
+
+    & svg {
+      // stroke para alterar a cor das linhas do ícone
+      stroke: ${({ theme }) => theme.colors.lighterBlue};
+    }
+  }
+`;
+
+export const CirclePlusIcon = styled(CirclePlus)``;
