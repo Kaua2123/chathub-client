@@ -12,7 +12,7 @@ function Conversations() {
         <p>Conversas</p>
 
         <DivConversations>
-          {Array.from({ length: 3 }).map((_, i) => {
+          {Array.from({ length: 22 }).map((_, i) => {
             return <ConversationCard key={i}></ConversationCard>;
           })}
         </DivConversations>
