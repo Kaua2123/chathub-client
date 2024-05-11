@@ -8,18 +8,16 @@ function Navbar() {
     <div>
       <Div>
         <div>
-          <a href="/">
-            <img
-              src={chathub}
-              alt=""
-              className="logo"
-              style={{
-                borderRadius: '1.8rem',
-                height: '5rem',
-                cursor: 'pointer',
-              }}
-            />
-          </a>
+          <img
+            src={chathub}
+            alt=""
+            className="logo"
+            style={{
+              borderRadius: '1.8rem',
+              height: '5rem',
+              cursor: 'pointer',
+            }}
+          />
         </div>
         <UserDiv>
           <BellIcon color="white" />
