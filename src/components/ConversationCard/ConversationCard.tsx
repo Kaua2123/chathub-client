@@ -7,11 +7,22 @@ import {
   EllipsisVerticalIcon,
   UserNameAndMessage,
 } from './styled';
+import { useNavigate } from 'react-router-dom';
 
-function ConversationCard() {
+export type ConversationCardProps = {
+  id: number;
+};
+
+function ConversationCard({ id }: ConversationCardProps) {
+  const navigate = useNavigate();
+
   return (
     <div>
-      <Container>
+      <Container
+        onClick={() => {
+          navigate(`/conversation/${id}`);
+        }}
+      >
         <DivUser>
           <UserAvatar>
             <User color="black" />

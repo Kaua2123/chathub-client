@@ -13,7 +13,7 @@ function Conversations() {
 
         <DivConversations>
           {Array.from({ length: 22 }).map((_, i) => {
-            return <ConversationCard key={i}></ConversationCard>;
+            return <ConversationCard id={i} key={i}></ConversationCard>;
           })}
         </DivConversations>
       </Div>
