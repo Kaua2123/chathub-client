@@ -4,7 +4,8 @@ import styled from 'styled-components';
 export const Div = styled.div`
   margin: 2.5rem;
   padding: 0 4rem;
-
+  z-index: 2;
+  position: relative;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;

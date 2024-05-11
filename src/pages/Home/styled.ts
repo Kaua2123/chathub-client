@@ -4,7 +4,7 @@ import background from '../../assets/cellphone.jpg';
 export const MainSectionDiv = styled.div`
   max-width: 120rem;
   margin: 0 auto;
-  height: 90%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,7 +39,7 @@ export const MainSection = styled.section`
     display: block;
     position: absolute;
     left: 0;
-    top: 0;
+    top: -25px;
     width: 100%;
     height: 100%;
     z-index: 1;

@@ -15,8 +15,8 @@ import Navbar from '../../components/Navbar/Navbar';
 function Home() {
   return (
     <div>
-      <Navbar />
       <MainSection>
+        <Navbar />
         <MainSectionDiv>
           <h1>
             Converse com amigos, <br /> onde quer que esteja!
