@@ -1,10 +1,4 @@
-import {
-  Container,
-  Div,
-  Input,
-  SendHorizontalIcon,
-  SendMessage,
-} from './styled';
+import { Button, Container, Div, Input, SendHorizontalIcon } from './styled';
 
 function ChatBottomInputMessage() {
   return (
@@ -12,9 +6,10 @@ function ChatBottomInputMessage() {
       <Container>
         <Div>
           <Input type="text" placeholder="Envie algo" />
-          <SendMessage>
+
+          <Button>
             <SendHorizontalIcon color="black" />
-          </SendMessage>
+          </Button>
         </Div>
       </Container>
     </div>

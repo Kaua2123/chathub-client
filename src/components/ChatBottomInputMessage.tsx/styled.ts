@@ -13,7 +13,13 @@ export const Container = styled.div`
   width: 100%;
 `;
 
-export const SendMessage = styled.div`
+export const Div = styled.div`
+  display: flex;
+  padding-left: 1.5rem;
+  gap: 2rem;
+`;
+
+export const Button = styled.button`
   border: 1px solid white;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1rem;
@@ -31,12 +37,9 @@ export const SendMessage = styled.div`
       stroke: ${({ theme }) => theme.colors.lighterBlue};
     }
   }
-`;
 
-export const Div = styled.div`
-  display: flex;
-  padding-left: 1.5rem;
-  gap: 2rem;
+  border: none;
+  cursor: pointer;
 `;
 
 export const Input = styled.input`
