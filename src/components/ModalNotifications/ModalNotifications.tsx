@@ -39,7 +39,7 @@ function ModalNotifications({
             {Array.from({ length: 3 }).map((_, i) => {
               return (
                 <Notification key={i}>
-                  ${i} Você recebeu um pedido de amizade de neymar
+                  ${i} Você recebeu um pedido de amizade de username201
                 </Notification>
               );
             })}
