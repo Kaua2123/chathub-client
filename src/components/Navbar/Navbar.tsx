@@ -2,10 +2,17 @@ import { BellIcon, Div, UserAvatar, UserDiv } from './styled';
 
 import chathub from '../../assets/chathub.png';
 import { User } from 'lucide-react';
+import { useState } from 'react';
+import ModalNotifications from '../ModalNotifications/ModalNotifications';
 
 function Navbar() {
+  const [isSeeingNotification, setIsSeeingNotification] = useState(false);
+
   return (
     <div>
+      {isSeeingNotification && (
+        <ModalNotifications setIsSeeingNotification={setIsSeeingNotification} />
+      )}
       <Div>
         <div>
           <img
@@ -20,7 +27,10 @@ function Navbar() {
           />
         </div>
         <UserDiv>
-          <BellIcon color="white" />
+          <BellIcon
+            color="white"
+            onClick={() => setIsSeeingNotification(true)}
+          />
           <UserAvatar>
             <User color="black" />
           </UserAvatar>

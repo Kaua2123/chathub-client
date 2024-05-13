@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { CirclePlusIcon, Div, DivConversations, FixedButton } from './styled';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
 import Navbar from '../../components/Navbar/Navbar';
-import { CirclePlusIcon, Div, DivConversations, FixedButton } from './styled';
 import ModalCreatingGroup from '../../components/ModalCreatingGroup/ModalCreatingGroup';
 
 function Conversations() {
