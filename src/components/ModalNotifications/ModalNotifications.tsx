@@ -25,7 +25,7 @@ function ModalNotifications({
           <Div>
             <BellIcon size={50} />
             <DeleteButton>
-              <TrashIcon size={40} />
+              <TrashIcon size={30} />
             </DeleteButton>
             <CloseButton>
               <CircleXIcon

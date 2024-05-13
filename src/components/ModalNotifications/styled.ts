@@ -29,9 +29,21 @@ export const Div = styled.div`
 `;
 
 export const DivNotifications = styled.div`
-  display: flex;
-  flex-flow: column wrap;
-  gap: 2rem;
+  height: 24rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 2.4rem;
+
+  &::-webkit-scrollbar {
+    width: 1.5rem;
+    border: 1px solid ${({ theme }) => theme.colors.mediumBlue};
+    border-radius: 1.4rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.7rem;
+  }
 `;
 
 export const Notification = styled.div`
@@ -44,6 +56,7 @@ export const Notification = styled.div`
   flex-flow: row wrap;
   cursor: pointer;
   transition: transform 0.3s;
+  margin-bottom: 2.4rem;
 `;
 
 export const CloseButton = styled.button`
@@ -98,6 +111,6 @@ export const BellIcon = styled(Bell)`
   position: absolute;
   top: 0;
   left: 0;
-  margin: 3rem;
+  margin: 2.5rem;
 `;
 export const TrashIcon = styled(Trash)``;
