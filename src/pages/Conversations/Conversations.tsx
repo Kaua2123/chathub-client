@@ -9,7 +9,6 @@ import {
   SortableContext,
   arrayMove,
   horizontalListSortingStrategy,
-  verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
 function Conversations() {

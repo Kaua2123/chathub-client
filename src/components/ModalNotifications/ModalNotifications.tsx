@@ -1,3 +1,4 @@
+import NotificationCard from '../NotificationCard/NotificationCard';
 import {
   CircleXIcon,
   CloseButton,
@@ -5,7 +6,6 @@ import {
   Modal,
   BellIcon,
   Div,
-  Notification,
   TrashIcon,
   DeleteButton,
   DivNotifications,
@@ -37,11 +37,7 @@ function ModalNotifications({
           </Div>
           <DivNotifications>
             {Array.from({ length: 3 }).map((_, i) => {
-              return (
-                <Notification key={i}>
-                  ${i} Você recebeu um pedido de amizade de username201
-                </Notification>
-              );
+              return <NotificationCard key={i} />;
             })}
           </DivNotifications>
         </Container>

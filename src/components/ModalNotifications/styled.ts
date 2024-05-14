@@ -46,19 +46,6 @@ export const DivNotifications = styled.div`
   }
 `;
 
-export const Notification = styled.div`
-  background-color: white;
-  font-family: 'Raleway';
-  padding: 2.5rem;
-  border-radius: 1.7rem;
-  width: 38rem;
-  display: flex;
-  flex-flow: row wrap;
-  cursor: pointer;
-  transition: transform 0.3s;
-  margin-bottom: 2.4rem;
-`;
-
 export const CloseButton = styled.button`
   position: absolute;
   right: 0;
