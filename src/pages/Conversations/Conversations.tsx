@@ -17,6 +17,10 @@ function Conversations() {
   const [conversations, setConversations] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ]);
+  const orderedConversationsString = localStorage.getItem('conversations');
+  const orderedConversationsArray: number[] | null = orderedConversationsString
+    ? JSON.parse(orderedConversationsString)
+    : null;
 
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
@@ -28,6 +32,10 @@ function Conversations() {
         const oldIndex = conversations.indexOf(active.id as number);
         const newIndex = conversations.indexOf(over.id as number);
 
+        localStorage.setItem(
+          'conversations',
+          JSON.stringify(arrayMove(conversations, oldIndex, newIndex)),
+        );
         return arrayMove(conversations, oldIndex, newIndex);
       });
     }
@@ -53,9 +61,15 @@ function Conversations() {
               items={conversations}
               strategy={horizontalListSortingStrategy}
             >
-              {conversations.map((id) => (
-                <ConversationCard key={id} id={id} />
-              ))}
+              {!orderedConversationsArray &&
+                conversations.map((id) => (
+                  <ConversationCard key={id} id={id} />
+                ))}
+
+              {orderedConversationsArray &&
+                orderedConversationsArray.map((id) => (
+                  <ConversationCard key={id} id={id} />
+                ))}
             </SortableContext>
           </DndContext>
         </DivConversations>
