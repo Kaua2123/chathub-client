@@ -51,9 +51,7 @@ function Conversations() {
           >
             <SortableContext
               items={conversations}
-              strategy={
-                horizontalListSortingStrategy || verticalListSortingStrategy
-              }
+              strategy={horizontalListSortingStrategy}
             >
               {conversations.map((id) => (
                 <ConversationCard key={id} id={id} />
