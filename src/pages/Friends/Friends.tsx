@@ -1,7 +1,8 @@
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import FriendCard from '../../components/FriendCard/FriendCard';
+import FriendRequestCard from '../../components/FriendRequestCard/FriendRequestCard';
 import Navbar from '../../components/Navbar/Navbar';
-import { DivFriends, Div } from './styled';
+import { DivFriends, Div, DivFriendsRequests } from './styled';
 
 function Friends() {
   return (
@@ -19,6 +20,11 @@ function Friends() {
 
       <Div>
         <p className="title">Pedidos de amizade</p>
+        <DivFriendsRequests>
+          {Array.from({ length: 2 }).map((_, i) => (
+            <FriendRequestCard key={i} />
+          ))}
+        </DivFriendsRequests>
       </Div>
       <BottomMenu />
     </div>
