@@ -1,6 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
-import { Div } from './styled';
+import { DeleteButton, Div } from './styled';
 import { CSS } from '@dnd-kit/utilities';
+import { Trash } from 'lucide-react';
 
 export type NotificationCardProps = {
   id: number;
@@ -17,7 +18,10 @@ function NotificationCard({ id }: NotificationCardProps) {
 
   return (
     <Div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      Você recebeu um pedido de amizade de username201
+      <p>Você recebeu um pedido de amizade de username201</p>
+      <DeleteButton>
+        <Trash />
+      </DeleteButton>
     </Div>
   );
 }

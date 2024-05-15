@@ -11,16 +11,16 @@ function BottomMenu() {
   return (
     <div>
       <Div>
-        <Link to={'#'}>
+        <Link to={'/conversations'}>
           <MessageSquareTextIcon color="white" />
         </Link>
-        <Link to={'#'}>
+        <Link to={'/friends'}>
           <UsersIcon color="white" />
         </Link>
-        <Link to={'#'}>
+        <Link to={'/blockedUsers'}>
           <UserRoundXIcon color="white" />
         </Link>
-        <Link to={'#'}>
+        <Link to={'/config'}>
           <SettingsIcon color="white" />
         </Link>
       </Div>

@@ -32,7 +32,7 @@ export const DivNotifications = styled.div`
   height: 24rem;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding: 2.4rem;
+  padding: 1.4rem;
 
   &::-webkit-scrollbar {
     width: 1.5rem;
@@ -62,29 +62,6 @@ export const CloseButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.white};
-    & svg {
-      stroke: black;
-    }
-  }
-`;
-
-export const DeleteButton = styled.button`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  margin: 2.5rem;
-  border: 1px solid white;
-  background-color: ${({ theme }) => theme.colors.darkGray};
-  padding: 1rem;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  transition: transform 0.3s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.white};
-    transform: scale(1.2);
     & svg {
       stroke: black;
     }
