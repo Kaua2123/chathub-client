@@ -5,6 +5,7 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Conversations from './pages/Conversations/Conversations';
 import Chat from './pages/Chat/Chat';
+import Friends from './pages/Friends/Friends';
 
 function AppRouter() {
   return (
@@ -15,6 +16,7 @@ function AppRouter() {
         <Route element={<Login />} path="/login" />
         <Route element={<Conversations />} path="/conversations" />
         <Route element={<Chat />} path="/chat/:id" />
+        <Route element={<Friends />} path="/friends" />
       </Routes>
     </BrowserRouter>
   );

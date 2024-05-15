@@ -16,7 +16,6 @@ export const Div = styled.div`
 export const DivConversations = styled.div`
   display: flex;
   flex-flow: row wrap;
-  margin: 0 auto;
   justify-content: center;
   align-items: center;
   gap: 3rem;
