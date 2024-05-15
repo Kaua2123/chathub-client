@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Div = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 7rem;
 `;
 
 export const DivIsOnline = styled.div`

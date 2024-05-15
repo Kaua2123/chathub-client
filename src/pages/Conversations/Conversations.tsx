@@ -76,7 +76,6 @@ function Conversations() {
       <FixedButton onClick={() => setIsCreatingGroup(true)}>
         <CirclePlusIcon />
       </FixedButton>
-
       <BottomMenu />
     </div>
   );

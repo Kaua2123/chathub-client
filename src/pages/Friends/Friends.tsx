@@ -11,7 +11,9 @@ function Friends() {
       <Div>
         <p className="title">Amigos</p>
         <DivFriends>
-          <FriendCard />
+          {Array.from({ length: 14 }).map((_, i) => (
+            <FriendCard key={i} />
+          ))}
         </DivFriends>
       </Div>
 
