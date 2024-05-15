@@ -4,6 +4,7 @@ export const Div = styled.div`
   max-width: 120rem;
   margin: 0 auto;
   color: white;
+  min-height: 80vh;
 
   .title {
     font-size: 4rem;

@@ -39,7 +39,7 @@ export const Div = styled.div`
   padding: 2rem;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
-  position: absolute;
+  position: fixed; /* Alterado para fixed */
   bottom: 0;
   background-color: ${({ theme }) => theme.colors.darkBlue};
   border: 1px solid ${({ theme }) => theme.colors.lightBlue};

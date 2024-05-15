@@ -17,6 +17,9 @@ function Friends() {
         </DivFriends>
       </Div>
 
+      <Div>
+        <p className="title">Pedidos de amizade</p>
+      </Div>
       <BottomMenu />
     </div>
   );
