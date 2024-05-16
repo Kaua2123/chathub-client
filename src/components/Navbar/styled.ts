@@ -10,14 +10,6 @@ export const Div = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
-
-  .logo {
-    transition: transform 0.3s;
-
-    &:hover {
-      transform: translateY(-10%);
-    }
-  }
 `;
 
 export const UserDiv = styled.div`

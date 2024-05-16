@@ -23,7 +23,6 @@ function Navbar() {
             style={{
               borderRadius: '1.8rem',
               height: '5rem',
-              cursor: 'pointer',
             }}
           />
         </div>
