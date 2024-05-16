@@ -1,5 +1,5 @@
 import ChatBar from '../../components/ChatBar/ChatBar';
-import ChatBottomInputMessage from '../../components/ChatBottomInputMessage.tsx/ChatBottomInputMessage';
+import ChatBottomInputMessage from '../../components/ChatBottomInputMessage/ChatBottomInputMessage';
 
 function Chat() {
   //   const { id } = useParams();
