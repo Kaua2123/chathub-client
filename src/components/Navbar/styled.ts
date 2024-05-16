@@ -55,21 +55,22 @@ export const BellIcon = styled(Bell)`
 `;
 
 export const UserAvatar = styled.div`
-  border: 1px solid white;
-  background-color: ${({ theme }) => theme.colors.white};
-  padding: 1rem;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  transition: transform 0.3s;
-  cursor: pointer;
+  .profile-link {
+    border: 1px solid white;
+    background-color: ${({ theme }) => theme.colors.white};
+    padding: 1rem;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+    &:hover {
+      transform: translateY(-10%);
 
-  &:hover {
-    transform: translateY(-10%);
-
-    & svg {
-      // stroke para alterar a cor das linhas do ícone
-      stroke: ${({ theme }) => theme.colors.lighterBlue};
+      & svg {
+        // stroke para alterar a cor das linhas do ícone
+        stroke: ${({ theme }) => theme.colors.lighterBlue};
+      }
     }
   }
 `;

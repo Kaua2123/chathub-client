@@ -7,6 +7,7 @@ import Conversations from './pages/Conversations/Conversations';
 import Chat from './pages/Chat/Chat';
 import Friends from './pages/Friends/Friends';
 import BlockedUsers from './pages/BlockedUsers/BlockedUsers';
+import Profile from './pages/Profile/Profile';
 
 function AppRouter() {
   return (
@@ -19,6 +20,7 @@ function AppRouter() {
         <Route element={<Chat />} path="/chat/:id" />
         <Route element={<Friends />} path="/friends" />
         <Route element={<BlockedUsers />} path="/blockedUsers" />
+        <Route element={<Profile />} path="/profile" />
       </Routes>
     </BrowserRouter>
   );

@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import {
   Div,
   MessageSquareTextIcon,
-  SettingsIcon,
   UserRoundXIcon,
   UsersIcon,
 } from './styled';
@@ -19,9 +18,6 @@ function BottomMenu() {
         </Link>
         <Link to={'/blockedUsers'}>
           <UserRoundXIcon color="white" />
-        </Link>
-        <Link to={'/config'}>
-          <SettingsIcon color="white" />
         </Link>
       </Div>
     </div>

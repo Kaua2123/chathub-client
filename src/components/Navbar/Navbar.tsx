@@ -4,6 +4,7 @@ import chathub from '../../assets/chathub.png';
 import { User } from 'lucide-react';
 import { useState } from 'react';
 import ModalNotifications from '../ModalNotifications/ModalNotifications';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
@@ -32,7 +33,9 @@ function Navbar() {
             onClick={() => setIsSeeingNotification(true)}
           />
           <UserAvatar>
-            <User color="black" />
+            <Link className="profile-link" to={'/profile'}>
+              <User color="black" />
+            </Link>
           </UserAvatar>
           {/* <BellRing /> -> quando tiver notificações */}
         </UserDiv>
