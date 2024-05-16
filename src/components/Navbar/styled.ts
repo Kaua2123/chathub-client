@@ -10,6 +10,13 @@ export const Div = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    .logo {
+      display: none;
+    }
+    left: 5rem;
+  }
 `;
 
 export const UserDiv = styled.div`
