@@ -1,4 +1,4 @@
-import { BellIcon, Div, UserAvatar, UserDiv } from './styled';
+import { BellIcon, Button, Div, UserAvatar, UserDiv } from './styled';
 
 import chathub from '../../assets/chathub.png';
 import { User } from 'lucide-react';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
+  const [isLoggedIn] = useState(true); // SIMULAR QUE ESTÁ LOGADO ( POR ENQUANTO )
 
   return (
     <div>
@@ -27,16 +28,29 @@ function Navbar() {
           />
         </div>
         <UserDiv>
-          <BellIcon
-            color="white"
-            onClick={() => setIsSeeingNotification(true)}
-          />
-          <UserAvatar>
-            <Link className="profile-link" to={'/profile'}>
-              <User color="black" />
-            </Link>
-          </UserAvatar>
-          {/* <BellRing /> -> quando tiver notificações */}
+          {isLoggedIn ? (
+            <>
+              <BellIcon
+                color="white"
+                onClick={() => setIsSeeingNotification(true)}
+              />
+              <UserAvatar>
+                <Link className="profile-link" to={'/profile'}>
+                  <User color="black" />
+                </Link>
+              </UserAvatar>
+              {/* <BellRing /> -> quando tiver notificações */}
+            </>
+          ) : (
+            <>
+              <Link to={'/register'}>
+                <Button>Cadastrar-se</Button>
+              </Link>
+              <Link to={'/login'}>
+                <Button>Entrar</Button>
+              </Link>
+            </>
+          )}
         </UserDiv>
       </Div>
     </div>

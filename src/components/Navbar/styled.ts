@@ -66,3 +66,21 @@ export const UserAvatar = styled.div`
     }
   }
 `;
+
+export const Button = styled.button`
+  font-family: Raleway;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: inherit;
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: translateY(-10%);
+    color: ${({ theme }) => theme.colors.lighterBlue};
+  }
+`;
