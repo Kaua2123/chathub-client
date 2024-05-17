@@ -1,4 +1,12 @@
-import { BellIcon, Button, Div, UserAvatar, UserDiv } from './styled';
+import {
+  BellIcon,
+  Button,
+  CircleIcon,
+  Div,
+  DivNotification,
+  UserAvatar,
+  UserDiv,
+} from './styled';
 
 import chathub from '../../assets/chathub.png';
 import { User } from 'lucide-react';
@@ -9,11 +17,15 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
   const [isLoggedIn] = useState(true); // SIMULAR QUE ESTÁ LOGADO ( POR ENQUANTO )
+  const [hasNotifications, setHasNotificatiosns] = useState(false);
 
   return (
     <div>
       {isSeeingNotification && (
-        <ModalNotifications setIsSeeingNotification={setIsSeeingNotification} />
+        <ModalNotifications
+          setHasNotifications={setHasNotificatiosns}
+          setIsSeeingNotification={setIsSeeingNotification}
+        />
       )}
       <Div>
         <div>
@@ -30,10 +42,16 @@ function Navbar() {
         <UserDiv>
           {isLoggedIn ? (
             <>
-              <BellIcon
-                color="white"
-                onClick={() => setIsSeeingNotification(true)}
-              />
+              <DivNotification>
+                <BellIcon
+                  color="white"
+                  onClick={() => setIsSeeingNotification(true)}
+                />
+                {hasNotifications && (
+                  <CircleIcon color="inherit" size={15} fill="#4299E1" />
+                )}
+              </DivNotification>
+
               <UserAvatar>
                 <Link className="profile-link" to={'/profile'}>
                   <User color="black" />

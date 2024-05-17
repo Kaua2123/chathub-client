@@ -13,12 +13,16 @@ import { useState } from 'react';
 
 export type ModalNotificationsProps = {
   setIsSeeingNotification: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasNotifications: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ModalNotifications({
   setIsSeeingNotification,
+  setHasNotifications,
 }: ModalNotificationsProps) {
   const [notifications] = useState([1, 2, 3, 4]);
+
+  notifications ? setHasNotifications(true) : setHasNotifications(false);
 
   return (
     <div>
@@ -37,7 +41,7 @@ function ModalNotifications({
           </Div>
           <DivNotifications>
             {notifications.map((_, i) => {
-              return <NotificationCard key={i} id={i} />;
+              return <NotificationCard key={i} />;
             })}
           </DivNotifications>
         </Container>

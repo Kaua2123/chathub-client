@@ -1,4 +1,4 @@
-import { Bell } from 'lucide-react';
+import { Bell, Circle } from 'lucide-react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
@@ -34,22 +34,16 @@ export const UserDiv = styled.div`
   }
 `;
 
+export const DivNotification = styled.div`
+  position: relative;
+  padding: 0.2rem;
+`;
+
 export const A = styled.a`
   transition: transform 0.3s;
 
   &:hover {
     transform: scale(2);
-  }
-`;
-
-export const BellIcon = styled(Bell)`
-  // para mudar a cor das linhas do icone
-  transition: transform 0.3s;
-  cursor: pointer;
-
-  &:hover {
-    stroke: ${({ theme }) => theme.colors.lighterBlue};
-    transform: translateY(-10%);
   }
 `;
 
@@ -90,4 +84,24 @@ export const Button = styled.button`
     transform: translateY(-10%);
     color: ${({ theme }) => theme.colors.lighterBlue};
   }
+`;
+
+export const BellIcon = styled(Bell)`
+  // para mudar a cor das linhas do icone
+  transition: transform 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    stroke: ${({ theme }) => theme.colors.lighterBlue};
+    transform: translateY(-10%);
+  }
+`;
+
+export const CircleIcon = styled(Circle)`
+  transition: transform 0.3s;
+  position: absolute;
+  bottom: 0;
+  left: 1.7rem;
+  right: 0;
+  top: 1.7rem;
 `;
