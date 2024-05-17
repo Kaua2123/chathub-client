@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { CirclePlusIcon, Div, DivConversations, FixedButton } from './styled';
+import {
+  CirclePlusIcon,
+  Div,
+  DivConversations,
+  FixedButton,
+  OrderConversationsButton,
+} from './styled';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
 import Navbar from '../../components/Navbar/Navbar';
@@ -20,6 +26,7 @@ function Conversations() {
   const orderedConversationsArray: number[] | null = orderedConversationsString
     ? JSON.parse(orderedConversationsString)
     : null;
+  const [isDragging, setIsDragging] = useState(false);
 
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
@@ -62,12 +69,12 @@ function Conversations() {
             >
               {!orderedConversationsArray &&
                 conversations.map((id) => (
-                  <ConversationCard key={id} id={id} />
+                  <ConversationCard isDragging={isDragging} key={id} id={id} />
                 ))}
 
               {orderedConversationsArray &&
                 orderedConversationsArray.map((id) => (
-                  <ConversationCard key={id} id={id} />
+                  <ConversationCard isDragging={isDragging} key={id} id={id} />
                 ))}
             </SortableContext>
           </DndContext>
@@ -76,6 +83,11 @@ function Conversations() {
       <FixedButton onClick={() => setIsCreatingGroup(true)}>
         <CirclePlusIcon />
       </FixedButton>
+      <OrderConversationsButton onClick={() => setIsDragging(!isDragging)}>
+        {isDragging && <p>Ordenando...</p>}
+        {!isDragging && <p>Ordenar conversas</p>}
+      </OrderConversationsButton>
+
       <BottomMenu />
     </div>
   );
