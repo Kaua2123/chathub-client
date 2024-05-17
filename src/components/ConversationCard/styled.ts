@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { EllipsisVertical } from 'lucide-react';
+import { Trash } from 'lucide-react';
 
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.mediumBlue};
@@ -53,10 +53,10 @@ export const UserNameAndMessage = styled.div`
 
 export const DivConfig = styled.div``;
 
-export const EllipsisVerticalIcon = styled(EllipsisVertical)`
+export const TrashIcon = styled(Trash)`
   transition: transform 0.3s;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.lighterBlue};
+    color: #c67c7c;
   }
 `;

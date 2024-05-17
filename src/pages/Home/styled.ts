@@ -22,6 +22,19 @@ export const MainSectionDiv = styled.div`
     font-family: 'Montserrat';
     margin-bottom: 3rem;
   }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-flow: column;
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    p {
+      font-size: 1.8rem;
+    }
+  }
 `;
 
 export const MainSection = styled.section`

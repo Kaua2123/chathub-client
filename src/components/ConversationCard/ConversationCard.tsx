@@ -1,12 +1,6 @@
 import { User } from 'lucide-react';
-import { UserAvatar } from './styled';
-import {
-  Container,
-  DivConfig,
-  DivUser,
-  EllipsisVerticalIcon,
-  UserNameAndMessage,
-} from './styled';
+import { TrashIcon, UserAvatar } from './styled';
+import { Container, DivConfig, DivUser, UserNameAndMessage } from './styled';
 import { useNavigate } from 'react-router-dom';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -43,7 +37,7 @@ function ConversationCard({ id }: ConversationCardProps) {
           </UserNameAndMessage>
         </DivUser>
         <DivConfig>
-          <EllipsisVerticalIcon />
+          <TrashIcon />
         </DivConfig>
       </Container>
     </div>
