@@ -8,22 +8,32 @@ import {
   UserDiv,
 } from './styled';
 
-import chathub from '../../assets/chathub.png';
 import { User } from 'lucide-react';
-import { useState } from 'react';
-import ModalNotifications from '../ModalNotifications/ModalNotifications';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import ModalNotifications from '../ModalNotifications/ModalNotifications';
+import chathub from '../../assets/chathub.png';
 
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
   const [isLoggedIn] = useState(true); // SIMULAR QUE ESTÁ LOGADO ( POR ENQUANTO )
-  const [hasNotifications, setHasNotificatiosns] = useState(false);
+  const [notifications] = useState([1, 2, 3, 4]);
+  const [hasNotifications, setHasNotifications] = useState(false);
+
+  useEffect(() => {
+    function checkNotifications() {
+      if (notifications.length > 0) setHasNotifications(true);
+    }
+
+    checkNotifications();
+  });
 
   return (
     <div>
       {isSeeingNotification && (
         <ModalNotifications
-          setHasNotifications={setHasNotificatiosns}
+          notifications={notifications}
           setIsSeeingNotification={setIsSeeingNotification}
         />
       )}

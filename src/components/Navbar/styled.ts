@@ -36,7 +36,8 @@ export const UserDiv = styled.div`
 
 export const DivNotification = styled.div`
   position: relative;
-  padding: 0.2rem;
+  display: flex;
+  align-items: center;
 `;
 
 export const A = styled.a`

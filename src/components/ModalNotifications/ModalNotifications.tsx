@@ -9,21 +9,15 @@ import {
   DivNotifications,
 } from './styled';
 
-import { useState } from 'react';
-
 export type ModalNotificationsProps = {
   setIsSeeingNotification: React.Dispatch<React.SetStateAction<boolean>>;
-  setHasNotifications: React.Dispatch<React.SetStateAction<boolean>>;
+  notifications: number[];
 };
 
 function ModalNotifications({
   setIsSeeingNotification,
-  setHasNotifications,
+  notifications,
 }: ModalNotificationsProps) {
-  const [notifications] = useState([1, 2, 3, 4]);
-
-  notifications ? setHasNotifications(true) : setHasNotifications(false);
-
   return (
     <div>
       <Modal>
