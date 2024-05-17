@@ -1,4 +1,4 @@
-import { Circle, EllipsisVertical, User } from 'lucide-react';
+import { Circle, User } from 'lucide-react';
 import {
   Button,
   Div,
@@ -33,9 +33,7 @@ function BlockedUserCard() {
           </UserData>
         </DivUser>
         <DivOptions>
-          <Button>
-            <EllipsisVertical size={32} />
-          </Button>
+          <Button>Desbloquear</Button>
         </DivOptions>
       </Div>
     </div>

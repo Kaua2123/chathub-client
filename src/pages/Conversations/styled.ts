@@ -68,15 +68,10 @@ export const OrderConversationsButton = styled.button`
   font-size: 1.7rem;
   display: flex;
   align-items: center;
-  transition: transform 0.3s;
+  transition: 0.1s;
   cursor: pointer;
   &:hover {
     opacity: 0.9;
-
-    & svg {
-      // stroke para alterar a cor das linhas do ícone
-      stroke: ${({ theme }) => theme.colors.lighterBlue};
-    }
   }
 `;
 

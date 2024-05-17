@@ -43,4 +43,18 @@ export const DivOptions = styled.div`
 
 export const Button = styled.div`
   cursor: pointer;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.white};
+  padding: 1rem;
+  border-radius: 1.7rem;
+  font-family: Raleway;
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  transition: 0.1s;
+  color: black;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
