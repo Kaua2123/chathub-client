@@ -7,6 +7,7 @@ export interface ITheme {
     darkGray: string;
     lightGray: string;
     white: string;
+    red: string;
   };
 }
 
@@ -19,5 +20,6 @@ export const theme: ITheme = {
     darkGray: '#CCCCCC',
     lightGray: 'F5F5F5',
     white: '#fff',
+    red: '#F16363',
   },
 };

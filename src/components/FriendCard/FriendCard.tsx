@@ -5,18 +5,21 @@ import {
   DivIsOnline,
   DivOptions,
   DivUser,
-  EllipsisVerticalIcon,
   MessageSquareTextIcon,
   UserAvatar,
   UserData,
+  XIcon,
 } from './styled';
 import { useState } from 'react';
+import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 
 function FriendCard() {
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div>
+      {isDeleting && <ModalDeleting setIsDeleting={setIsDeleting} />}
       <Div>
         <DivUser>
           <UserAvatar>
@@ -39,7 +42,7 @@ function FriendCard() {
             <MessageSquareTextIcon size={32} />
           </Button>
           <Button>
-            <EllipsisVerticalIcon size={32} />
+            <XIcon size={32} onClick={() => setIsDeleting(true)} />
           </Button>
         </DivOptions>
       </Div>

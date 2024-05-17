@@ -8,7 +8,6 @@ function Friends() {
   return (
     <div>
       <Navbar />
-
       <Div>
         <p className="title">Amigos</p>
         <DivFriends>

@@ -1,4 +1,4 @@
-import { EllipsisVertical, MessageSquareText } from 'lucide-react';
+import { EllipsisVertical, MessageSquareText, X } from 'lucide-react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
@@ -54,11 +54,11 @@ export const MessageSquareTextIcon = styled(MessageSquareText)`
     stroke: ${({ theme }) => theme.colors.lighterBlue};
   }
 `;
-export const EllipsisVerticalIcon = styled(EllipsisVertical)`
+export const XIcon = styled(X)`
   &:hover {
     transition: transform 0.3s;
 
     transform: translateY(-10%);
-    stroke: ${({ theme }) => theme.colors.lighterBlue};
+    stroke: #c67c7c;
   }
 `;
