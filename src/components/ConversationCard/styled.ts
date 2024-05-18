@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { Hand, Trash } from 'lucide-react';
+import { Hand } from 'lucide-react';
 
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.mediumBlue};

@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-import { MessageSquareText, Users, UserRoundX, Settings } from 'lucide-react';
+import {
+  MessageSquareText,
+  Users,
+  UserRoundX,
+  Settings,
+  Circle,
+} from 'lucide-react';
 
 export const MessageSquareTextIcon = styled(MessageSquareText)`
   transition: transform 0.3s;
@@ -48,4 +54,17 @@ export const Div = styled.div`
   flex-flow: row wrap;
   justify-content: center;
   gap: 4rem;
+`;
+
+export const DivRoute = styled.div`
+  text-decoration: none;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+`;
+
+export const CircleIcon = styled(Circle)`
+  transition: transform 0.3s;
 `;
