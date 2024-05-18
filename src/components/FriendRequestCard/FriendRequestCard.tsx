@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 
 function FriendRequestCard() {
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline] = useState(false);
 
   return (
     <div>
@@ -36,10 +36,10 @@ function FriendRequestCard() {
         </DivUser>
         <DivOptions>
           <Button>
-            <CircleCheckIcon size={32} />
+            <CircleCheckIcon size={28} />
           </Button>
           <Button>
-            <CircleXIcon size={32} />
+            <CircleXIcon size={28} />
           </Button>
         </DivOptions>
       </Div>

@@ -8,18 +8,15 @@ import {
   MessageSquareTextIcon,
   UserAvatar,
   UserData,
-  XIcon,
+  UserRoundPlusIcon,
 } from './styled';
 import { useState } from 'react';
-import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 
-function FriendCard() {
+function UserCard() {
   const [isOnline] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div>
-      {isDeleting && <ModalDeleting setIsDeleting={setIsDeleting} />}
       <Div>
         <DivUser>
           <UserAvatar>
@@ -42,7 +39,7 @@ function FriendCard() {
             <MessageSquareTextIcon size={28} />
           </Button>
           <Button>
-            <XIcon size={28} onClick={() => setIsDeleting(true)} />
+            <UserRoundPlusIcon size={28} />
           </Button>
         </DivOptions>
       </Div>
@@ -50,4 +47,4 @@ function FriendCard() {
   );
 }
 
-export default FriendCard;
+export default UserCard;

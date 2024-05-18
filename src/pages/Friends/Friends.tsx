@@ -2,6 +2,8 @@ import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import FriendCard from '../../components/FriendCard/FriendCard';
 import FriendRequestCard from '../../components/FriendRequestCard/FriendRequestCard';
 import Navbar from '../../components/Navbar/Navbar';
+import UserCard from '../../components/UserCard/UserCard';
+import { DivResult } from '../../components/UserCard/styled';
 import {
   DivFriends,
   Div,
@@ -45,7 +47,10 @@ function Friends() {
             </Button>
           </div>
         </DivSearchUsers>
-        <p className="result">Resultados para username: </p>
+        <DivResult>
+          <p className="result">Resultados para username: </p>
+          <UserCard />
+        </DivResult>
       </Div>
       <BottomMenu />
     </div>
