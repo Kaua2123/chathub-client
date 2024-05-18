@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
@@ -9,6 +10,12 @@ export const Div = styled.div`
   .title {
     font-size: 4rem;
     font-family: 'Montserrat';
+  }
+
+  .result {
+    font-family: Raleway;
+    color: ${({ theme }) => theme.colors.darkGray};
+    margin-top: 2rem;
   }
 `;
 
@@ -60,4 +67,40 @@ export const DivFriendsRequests = styled.div`
     background-color: ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1.7rem;
   }
+`;
+
+export const DivSearchUsers = styled.div`
+  position: relative;
+  input {
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.mediumBlue};
+    color: ${({ theme }) => theme.colors.darkGray};
+    font-family: 'Raleway';
+    font-size: 1.8rem;
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+    transition: transform 0.3s;
+    border-radius: 0.9rem;
+    padding-left: 20rem;
+    padding: 2rem;
+    margin-top: 5rem;
+
+    &:focus {
+      border: 1px solid ${({ theme }) => theme.colors.lighterBlue};
+    }
+  }
+`;
+
+export const SearchIcon = styled(Search)``;
+
+export const Button = styled.button`
+  position: absolute;
+  border-radius: 1.7rem;
+  padding: 1rem;
+  cursor: pointer;
+  border: none;
+  margin-right: 2rem;
+  right: 0;
+  top: 0;
+  margin-top: 6rem;
 `;

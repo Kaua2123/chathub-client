@@ -2,7 +2,14 @@ import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import FriendCard from '../../components/FriendCard/FriendCard';
 import FriendRequestCard from '../../components/FriendRequestCard/FriendRequestCard';
 import Navbar from '../../components/Navbar/Navbar';
-import { DivFriends, Div, DivFriendsRequests } from './styled';
+import {
+  DivFriends,
+  Div,
+  DivFriendsRequests,
+  DivSearchUsers,
+  Button,
+  SearchIcon,
+} from './styled';
 
 function Friends() {
   return (
@@ -24,6 +31,21 @@ function Friends() {
             <FriendRequestCard key={i} />
           ))}
         </DivFriendsRequests>
+      </Div>
+
+      <Div>
+        <p className="title">Buscar usuários</p>
+        <DivSearchUsers>
+          <div className="input-div">
+            <input type="text" placeholder="Nome do usuário" />
+          </div>
+          <div className="btn-search-div">
+            <Button>
+              <SearchIcon />
+            </Button>
+          </div>
+        </DivSearchUsers>
+        <p className="result">Resultados para username: </p>
       </Div>
       <BottomMenu />
     </div>
