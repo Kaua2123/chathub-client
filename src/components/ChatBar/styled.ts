@@ -1,4 +1,4 @@
-import { ArrowLeft, EllipsisVertical } from 'lucide-react';
+import { ArrowLeft, EllipsisVertical, Trash } from 'lucide-react';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -51,4 +51,16 @@ export const DivUser = styled.div`
 export const DivConfig = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const TrashIcon = styled(Trash)`
+  transition: transform 0.3s;
+  z-index: 2;
+  cursor: pointer;
+
+  &:hover {
+    color: #c67c7c;
+
+    transform: translateY(-10%);
+  }
 `;

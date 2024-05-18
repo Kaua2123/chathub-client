@@ -86,12 +86,3 @@ const waving = keyframes` // frames para mexer o icone de mãozinha
 export const WavingHand = styled(Hand)`
   animation: ${waving} 1s infinite;
 `;
-
-export const TrashIcon = styled(Trash)`
-  transition: transform 0.3s;
-  z-index: 2;
-
-  &:hover {
-    color: #c67c7c;
-  }
-`;
