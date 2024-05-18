@@ -52,12 +52,22 @@ export const UserNameAndMessage = styled.div`
   }
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 export const DivOrdering = styled.div`
   display: flex;
   flex-flow: column wrap;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  animation: ${fadeIn} 0.6s;
   p {
     font-size: 1.5rem;
   }
