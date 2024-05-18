@@ -21,6 +21,12 @@ export const DivProfile = styled.div`
   margin-top: 2rem;
   width: 100%;
   min-height: 60vh;
+
+  .image-avatar {
+    width: 30rem;
+    height: 32rem;
+    border-radius: 1.7rem;
+  }
 `;
 
 export const DivButtons = styled.div`
@@ -32,6 +38,7 @@ export const DivButtons = styled.div`
 export const DivUserAvatar = styled.div`
   border-radius: 30%;
   display: flex;
+  flex-flow: column wrap;
   align-items: center;
   width: 50%;
   justify-content: center;

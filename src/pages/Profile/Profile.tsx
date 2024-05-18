@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { Camera, User } from 'lucide-react';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import Navbar from '../../components/Navbar/Navbar';
 import {
@@ -17,6 +17,14 @@ import { useState } from 'react';
 
 function Profile() {
   const [isUpdating, setIsUpdating] = useState(false);
+  const [imgURL, setImgURL] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const img = e.target.files;
+
+    const imageURL = img ? URL.createObjectURL(img[0]) : '';
+    setImgURL(imageURL);
+  };
 
   return (
     <div>
@@ -25,9 +33,26 @@ function Profile() {
         <p>Perfil</p>
         <DivProfile>
           <DivUserAvatar>
-            <UserAvatar>
-              <User color="black" size={140} />
-            </UserAvatar>
+            {imgURL ? (
+              <img className="image-avatar" src={imgURL}></img>
+            ) : (
+              <UserAvatar>
+                <User color="black" size={140} />
+              </UserAvatar>
+            )}
+
+            <Button style={{ marginTop: '2rem' }}>
+              <label style={{ cursor: 'pointer' }} htmlFor="img-input">
+                <input
+                  onChange={(e) => handleChange(e)}
+                  style={{ display: 'none' }}
+                  id="img-input"
+                  type="file"
+                />
+                Alterar foto
+              </label>
+              <Camera />
+            </Button>
           </DivUserAvatar>
           <DivUserInfo>
             {isUpdating ? (
