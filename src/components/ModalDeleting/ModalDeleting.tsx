@@ -24,13 +24,13 @@ function ModalDeleting({ setIsDeleting }: ModalDeletingProps) {
             />
           </CloseButton>
           <Div>
-            <h6 style={{ marginBottom: '2rem' }}>
-              Tem certeza de que quer remover esse usuário de sua lista de
-              amigos?
-            </h6>
+            <h6 style={{ marginBottom: '2rem' }}>Tem certeza disso?</h6>
           </Div>
           <Div>
-            <Button className="cancel-delete-friend-btn">
+            <Button
+              onClick={() => setIsDeleting(false)}
+              className="cancel-delete-friend-btn"
+            >
               Não, me enganei
             </Button>
             <Button className="delete-friend-btn">Sim, tenho certeza</Button>

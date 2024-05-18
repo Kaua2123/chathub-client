@@ -1,6 +1,6 @@
 import { User } from 'lucide-react';
-import { TrashIcon, UserAvatar } from './styled';
-import { Container, DivConfig, DivUser, UserNameAndMessage } from './styled';
+import { DivOrdering, UserAvatar, WavingHand } from './styled';
+import { Container, DivUser, UserNameAndMessage } from './styled';
 import { useNavigate } from 'react-router-dom';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -25,11 +25,7 @@ function ConversationCard({ id, isDragging }: ConversationCardProps) {
     <>
       {isDragging ? (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-          <Container
-            onClick={() => {
-              navigate(`/chat/${id}`);
-            }}
-          >
+          <Container>
             <DivUser>
               <UserAvatar>
                 <User color="black" />
@@ -39,9 +35,10 @@ function ConversationCard({ id, isDragging }: ConversationCardProps) {
                 <p className="user-message">Mensagem do usuário...</p>
               </UserNameAndMessage>
             </DivUser>
-            <DivConfig>
-              <TrashIcon />
-            </DivConfig>
+            <DivOrdering>
+              <p>Arraste-me...</p>
+              <WavingHand color="white" />
+            </DivOrdering>
           </Container>
         </div>
       ) : (
@@ -60,9 +57,6 @@ function ConversationCard({ id, isDragging }: ConversationCardProps) {
                 <p className="user-message">Mensagem do usuário...</p>
               </UserNameAndMessage>
             </DivUser>
-            <DivConfig>
-              <TrashIcon />
-            </DivConfig>
           </Container>
         </div>
       )}
