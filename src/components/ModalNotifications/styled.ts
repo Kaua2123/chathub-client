@@ -1,5 +1,5 @@
 import { X, Bell, Trash } from 'lucide-react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Modal = styled.div`
   position: fixed;
@@ -14,11 +14,23 @@ export const Modal = styled.div`
   align-items: center;
 `;
 
+const opening = keyframes`
+  0% {
+    transform: scale(60%);
+  }
+  100% {
+    transform: scale(100%);
+  }
+
+`;
+
 export const Container = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   padding: 14rem;
   border-radius: 2rem;
+  transition: transform 0.3s;
+  animation: ${opening} 0.3s;
 `;
 
 export const Div = styled.div`
