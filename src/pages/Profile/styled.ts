@@ -8,6 +8,12 @@ export const Div = styled.div`
   max-width: 120rem;
   margin: 0 auto;
   color: white;
+  @media (max-width: 768px) {
+    margin: 2rem;
+    p {
+      font-size: 3rem;
+    }
+  }
 `;
 
 export const DivProfile = styled.div`
@@ -26,6 +32,12 @@ export const DivProfile = styled.div`
     width: 30rem;
     height: 32rem;
     border-radius: 1.7rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -53,7 +65,25 @@ export const DivUserData = styled.div`
 export const UserAvatar = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   padding: 8rem;
-  border-radius: 30%;
+  border-radius: 100%;
+
+  position: relative;
+
+  .img-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    .img-button {
+      margin: 0;
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+  }
 `;
 
 export const DivUserInfo = styled.div`

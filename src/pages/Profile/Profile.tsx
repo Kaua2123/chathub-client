@@ -37,22 +37,20 @@ function Profile() {
               <img className="image-avatar" src={imgURL}></img>
             ) : (
               <UserAvatar>
-                <User color="black" size={140} />
+                <User color="black" size={90} />
+                <Button className="img-button" style={{ marginTop: '2rem' }}>
+                  <label style={{ cursor: 'pointer' }} htmlFor="img-input">
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      style={{ display: 'none' }}
+                      id="img-input"
+                      type="file"
+                    />
+                    <Camera />
+                  </label>
+                </Button>
               </UserAvatar>
             )}
-
-            <Button style={{ marginTop: '2rem' }}>
-              <label style={{ cursor: 'pointer' }} htmlFor="img-input">
-                <input
-                  onChange={(e) => handleChange(e)}
-                  style={{ display: 'none' }}
-                  id="img-input"
-                  type="file"
-                />
-                Alterar foto
-              </label>
-              <Camera />
-            </Button>
           </DivUserAvatar>
           <DivUserInfo>
             {isUpdating ? (
