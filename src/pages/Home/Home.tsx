@@ -8,6 +8,8 @@ import {
   InfoCard,
   GridCards,
   FlexDiv,
+  DivText,
+  DivButton,
 } from './styled';
 import { MoveRight, Wifi, Users, MessageSquareText } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
@@ -18,16 +20,21 @@ function Home() {
       <MainSection>
         <Navbar />
         <MainSectionDiv>
-          <h1>
-            Converse com amigos, <br /> onde quer que esteja!
-          </h1>
-          <p>Simplicidade pra dar ênfase ao que realmente importa.</p>
-          <Link to={'/register'}>
-            <Button>
-              Começar
-              <MoveRight />
-            </Button>
-          </Link>
+          <DivText>
+            <h1>
+              Converse com amigos, <br /> onde quer que esteja!
+            </h1>
+            <p>Simplicidade pra dar ênfase ao que realmente importa.</p>
+          </DivText>
+
+          <DivButton>
+            <Link to={'/register'}>
+              <Button>
+                Começar
+                <MoveRight />
+              </Button>
+            </Link>
+          </DivButton>
         </MainSectionDiv>
       </MainSection>
 

@@ -6,7 +6,7 @@ export const MainSectionDiv = styled.div`
   margin: 0 auto;
   height: 80%;
   display: flex;
-  flex-direction: column;
+  flex-flow: column wrap;
   justify-content: center;
   align-items: center;
 
@@ -24,18 +24,24 @@ export const MainSectionDiv = styled.div`
   }
 
   @media (max-width: 768px) {
-    display: flex;
-    flex-flow: column;
-
     h1 {
       font-size: 3rem;
     }
 
     p {
-      font-size: 1.8rem;
+      font-size: 1.9rem;
+      width: 90%;
     }
   }
 `;
+
+export const DivText = styled.div`
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+`;
+export const DivButton = styled.div``;
 
 export const MainSection = styled.section`
   height: 100vh;
