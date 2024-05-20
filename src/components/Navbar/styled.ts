@@ -15,7 +15,8 @@ export const Div = styled.div`
     .logo {
       display: none;
     }
-    left: 5rem;
+    justify-content: flex-end;
+    padding: 0;
   }
 `;
 
