@@ -16,6 +16,9 @@ export const Div = styled.div`
     font-family: Raleway;
     color: ${({ theme }) => theme.colors.darkGray};
     margin-top: 2rem;
+    @media (max-width: 768px) {
+      margin: 2rem;
+    }
   }
 
   @media (max-width: 768px) {
@@ -32,7 +35,6 @@ export const DivFriends = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 3.4rem;
-  margin: 2rem;
   padding: 4rem;
   border-radius: 1.7rem;
 
@@ -50,6 +52,10 @@ export const DivFriends = styled.div`
     background-color: ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1.7rem;
   }
+
+  @media (max-width: 768px) {
+    margin: 2rem;
+  }
 `;
 
 export const DivFriendsRequests = styled.div`
@@ -57,7 +63,6 @@ export const DivFriendsRequests = styled.div`
   height: 55vh;
   overflow-y: auto;
   overflow-x: hidden;
-  margin: 2rem;
   margin-top: 3.4rem;
   padding: 4rem;
   border-radius: 1.7rem;
@@ -76,10 +81,15 @@ export const DivFriendsRequests = styled.div`
     background-color: ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1.7rem;
   }
+
+  @media (max-width: 768px) {
+    margin: 2rem;
+  }
 `;
 
 export const DivSearchUsers = styled.div`
   position: relative;
+
   input {
     width: 100%;
     background-color: ${({ theme }) => theme.colors.mediumBlue};
@@ -97,6 +107,10 @@ export const DivSearchUsers = styled.div`
     &:focus {
       border: 1px solid ${({ theme }) => theme.colors.lighterBlue};
     }
+  }
+
+  @media (max-width: 768px) {
+    margin: 2rem;
   }
 `;
 
