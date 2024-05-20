@@ -17,6 +17,13 @@ export const Div = styled.div`
     color: ${({ theme }) => theme.colors.darkGray};
     margin-top: 2rem;
   }
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 3rem;
+      margin: 2rem;
+    }
+  }
 `;
 
 export const DivFriends = styled.div`
@@ -25,6 +32,7 @@ export const DivFriends = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 3.4rem;
+  margin: 2rem;
   padding: 4rem;
   border-radius: 1.7rem;
 
