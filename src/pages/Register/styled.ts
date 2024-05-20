@@ -8,12 +8,12 @@ export const Img = styled.image`
 export const Container = styled.div`
   padding: 4rem;
   border-radius: 1.2rem;
-  min-width: 50rem;
-  background-color: ${({ theme }) => theme.colors.mediumBlue};
+
+  @media (max-width: 768px) {
+  }
 `;
 
 export const Section = styled.section`
-  max-width: 120rem;
   margin: 0 auto;
   display: flex;
   flex-flow: column wrap;
@@ -26,6 +26,12 @@ export const Section = styled.section`
     align-items: center;
     margin-bottom: 3rem;
     gap: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    h3 {
+      font-size: 3rem;
+    }
   }
 `;
 
@@ -47,6 +53,14 @@ export const TextDiv = styled.div`
     &:hover {
       color: ${({ theme }) => theme.colors.darkBlue};
     }
+  }
+
+  @media (max-width: 768px) {
+    h4 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    align-items: start;
   }
 `;
 

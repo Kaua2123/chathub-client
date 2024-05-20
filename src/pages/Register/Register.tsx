@@ -24,8 +24,7 @@ function Register() {
         </h3>
         <Container>
           <TextDiv>
-            <h4>Criar a sua conta no chathub</h4>
-            <p>Forneça seus dados. Prepararemos tudo pra você.</p>
+            <h4>Criar conta no Chathub</h4>
 
             <p>
               Já é cadastrado?{' '}

@@ -12,10 +12,6 @@ export const Div = styled.div`
   align-items: center;
 
   @media (max-width: 768px) {
-    .logo {
-      display: none;
-    }
-    justify-content: flex-end;
     padding: 0;
   }
 `;
