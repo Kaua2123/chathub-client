@@ -14,6 +14,16 @@ export const Div = styled.div`
     font-family: Raleway;
     color: ${({ theme }) => theme.colors.darkGray};
   }
+
+  @media (max-width: 768px) {
+    margin: 2rem;
+    .title {
+      font-size: 3rem;
+    }
+    .subtitle {
+      display: none;
+    }
+  }
 `;
 
 export const DivBlockedUsers = styled.div`

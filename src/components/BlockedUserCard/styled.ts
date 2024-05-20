@@ -5,6 +5,13 @@ export const Div = styled.div`
   justify-content: space-between;
   margin-bottom: 7rem;
   font-family: Raleway;
+
+  @media (max-width: 768px) {
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+  }
 `;
 
 export const DivIsOnline = styled.div`

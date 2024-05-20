@@ -11,7 +11,6 @@ export const Div = styled.div`
     justify-content: center;
     align-items: center;
     gap: 3.5rem;
-    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1.7rem;
   }
 `;
