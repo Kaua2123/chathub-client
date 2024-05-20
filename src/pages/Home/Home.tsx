@@ -10,6 +10,7 @@ import {
   FlexDiv,
   DivText,
   DivButton,
+  FlexDivCard,
 } from './styled';
 import { MoveRight, Wifi, Users, MessageSquareText } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
@@ -63,7 +64,7 @@ function Home() {
           </GridCards>
 
           <InfoCard style={{ marginTop: '4rem', marginBottom: '4rem' }}>
-            <FlexDiv>
+            <FlexDivCard>
               <MessageSquareText color="white" size={40} />
               <p className="subtitle">Mensagens rápidas e seguras.</p>
 
@@ -71,7 +72,7 @@ function Home() {
                 Envie mensagens instantâneas e salve aquelas que são importantes
                 para você.
               </p>
-            </FlexDiv>
+            </FlexDivCard>
           </InfoCard>
 
           <FlexDiv>

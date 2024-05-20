@@ -115,6 +115,12 @@ export const SecondarySectionDiv = styled.div`
     font-weight: 600;
     margin-bottom: 4rem;
   }
+
+  @media (max-width: 768px) {
+    h3 {
+      font-size: 3rem;
+    }
+  }
 `;
 
 export const InfoCard = styled.div`
@@ -147,6 +153,21 @@ export const GridCards = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const FlexDivCard = styled.div`
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    align-items: start;
+  }
 `;
 
 export const FlexDiv = styled.div`
@@ -154,4 +175,11 @@ export const FlexDiv = styled.div`
   flex-flow: column wrap;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    h3 {
+      font-size: 3rem;
+    }
+  }
 `;
