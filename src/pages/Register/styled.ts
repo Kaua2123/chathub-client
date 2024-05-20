@@ -21,10 +21,10 @@ export const Section = styled.section`
   padding-top: 2rem;
 
   h3 {
+    margin-top: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 3rem;
     gap: 4rem;
   }
 

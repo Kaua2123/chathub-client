@@ -8,23 +8,30 @@ export const Img = styled.image`
 export const Container = styled.div`
   padding: 4rem;
   border-radius: 1.2rem;
-  min-width: 60rem;
+
+  @media (max-width: 768px) {
+  }
 `;
 
 export const Section = styled.section`
-  max-width: 120rem;
   margin: 0 auto;
   display: flex;
   flex-flow: column wrap;
   align-items: center;
-  padding-top: 6rem;
+  padding-top: 2rem;
 
   h3 {
+    margin-top: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 3rem;
     gap: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    h3 {
+      font-size: 3rem;
+    }
   }
 `;
 
@@ -46,6 +53,14 @@ export const TextDiv = styled.div`
     &:hover {
       color: ${({ theme }) => theme.colors.darkBlue};
     }
+  }
+
+  @media (max-width: 768px) {
+    h4 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    align-items: start;
   }
 `;
 
@@ -98,15 +113,14 @@ export const Input = styled.input`
   padding: 1.2rem;
   width: 100%;
   margin-bottom: 1.3rem;
+  border: 2px solid gray;
+  border-radius: 0.9rem;
+  transition: transform 0.3s;
+  outline: none;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   color: ${({ theme }) => theme.colors.darkGray};
   font-family: 'Raleway';
   font-size: 1.8rem;
-  border: 2px solid gray;
-  border-radius: 0.9rem;
-  font-family: 'Raleway';
-  transition: transform 0.3s;
-  outline: none;
 
   &:focus {
     border: 2px solid ${({ theme }) => theme.colors.lighterBlue};
