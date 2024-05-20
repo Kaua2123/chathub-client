@@ -5,6 +5,15 @@ export const Div = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 7rem;
+
+  @media (max-width: 768px) {
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3.5rem;
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.7rem;
+  }
 `;
 
 export const DivIsOnline = styled.div`

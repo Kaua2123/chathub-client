@@ -57,6 +57,7 @@ export const DivFriendsRequests = styled.div`
   height: 55vh;
   overflow-y: auto;
   overflow-x: hidden;
+  margin: 2rem;
   margin-top: 3.4rem;
   padding: 4rem;
   border-radius: 1.7rem;
