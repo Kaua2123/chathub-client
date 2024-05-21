@@ -76,11 +76,11 @@ export const Button = styled.button`
   padding: 1.5rem 2rem;
   z-index: 2;
   width: 18rem;
+  font-size: 1.7rem;
 
   position: relative;
   border: none;
   font-family: 'Raleway';
-  font-size: 2rem;
   display: flex;
   flex-direction: row;
   align-items: center;

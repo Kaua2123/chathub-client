@@ -85,6 +85,8 @@ export const UserAvatar = styled.div`
     bottom: 0;
     right: 0;
     margin: 2rem;
+    padding: 0.8rem;
+    width: 4rem;
   }
 
   @media (max-width: 768px) {
@@ -125,7 +127,7 @@ export const Button = styled.button`
   border: none;
   font-family: 'Raleway';
   width: 16rem;
-  font-size: 2rem;
+  font-size: 1.7rem;
   display: flex;
   flex-direction: row;
   align-items: center;
