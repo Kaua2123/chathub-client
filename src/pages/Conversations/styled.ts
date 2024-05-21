@@ -1,5 +1,5 @@
-import { CirclePlus } from 'lucide-react';
-import styled from 'styled-components';
+import { CirclePlus, Grab } from 'lucide-react';
+import styled, { keyframes } from 'styled-components';
 
 export const Div = styled.div`
   position: relative;
@@ -8,8 +8,20 @@ export const Div = styled.div`
   margin: 0 auto;
 
   p {
-    font-size: 4rem;
+    font-size: 1.5rem;
     font-family: 'Montserrat';
+  }
+
+  .title {
+    font-size: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    min-height: 60vh;
+    margin: 2rem;
+    .title {
+      font-size: 3rem;
+    }
   }
 `;
 
@@ -55,6 +67,12 @@ export const FixedButton = styled.button`
       stroke: ${({ theme }) => theme.colors.lighterBlue};
     }
   }
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 100px;
+    right: 0;
+  }
 `;
 
 export const OrderConversationsButton = styled.button`
@@ -74,6 +92,36 @@ export const OrderConversationsButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 100px;
+    left: 0;
+  }
 `;
 
 export const CirclePlusIcon = styled(CirclePlus)``;
+
+const waving = keyframes`
+  0% { transform: rotate(0deg); }
+  5% { transform: rotate(3deg); }
+  10% { transform: rotate(7deg); }
+  15% { transform: rotate(10deg); }
+  20% { transform: rotate(13deg); }
+  25% { transform: rotate(15deg); }
+  30% { transform: rotate(13deg); }
+  35% { transform: rotate(10deg); }
+  40% { transform: rotate(7deg); }
+  45% { transform: rotate(3deg); }
+  50% { transform: rotate(0deg); }
+  55% { transform: rotate(-3deg); }
+  60% { transform: rotate(-7deg); }
+  65% { transform: rotate(-10deg); }
+  70% { transform: rotate(-13deg); }
+  75% { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+`;
+
+export const WavingGrabHand = styled(Grab)`
+  animation: ${waving} 1s infinite;
+`;

@@ -5,6 +5,7 @@ import {
   DivConversations,
   FixedButton,
   OrderConversationsButton,
+  WavingGrabHand,
 } from './styled';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
@@ -16,6 +17,7 @@ import {
   arrayMove,
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { Hand } from 'lucide-react';
 
 function Conversations() {
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
@@ -56,7 +58,7 @@ function Conversations() {
       )}
 
       <Div>
-        <p>Conversas</p>
+        <p className="title">Conversas</p>
 
         <DivConversations>
           <DndContext
@@ -84,8 +86,8 @@ function Conversations() {
         <CirclePlusIcon />
       </FixedButton>
       <OrderConversationsButton onClick={() => setIsDragging(!isDragging)}>
-        {isDragging && <p>Ordenando...</p>}
-        {!isDragging && <p>Ordenar conversas</p>}
+        {isDragging && <WavingGrabHand />}
+        {!isDragging && <Hand />}
       </OrderConversationsButton>
 
       <BottomMenu />

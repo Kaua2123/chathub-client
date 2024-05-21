@@ -1,5 +1,5 @@
 import { User } from 'lucide-react';
-import { DivOrdering, UserAvatar, WavingHand } from './styled';
+import { DivOrdering, UserAvatar, WavingGrabHand } from './styled';
 import { Container, DivUser, UserNameAndMessage } from './styled';
 import { useNavigate } from 'react-router-dom';
 import { useSortable } from '@dnd-kit/sortable';
@@ -37,7 +37,7 @@ function ConversationCard({ id, isDragging }: ConversationCardProps) {
             </DivUser>
             <DivOrdering>
               <p>Arraste-me...</p>
-              <WavingHand color="white" />
+              <WavingGrabHand color="white" />
             </DivOrdering>
           </Container>
         </div>

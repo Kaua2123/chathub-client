@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { Hand } from 'lucide-react';
+import { Grab } from 'lucide-react';
 
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.mediumBlue};
@@ -19,6 +19,11 @@ export const Container = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.lighterBlue};
 
     transform: translateY(-4%);
+  }
+
+  @media (max-width: 768px) {
+    width: auto;
+    min-width: 20rem;
   }
 `;
 
@@ -93,6 +98,6 @@ const waving = keyframes` // frames para mexer o icone de mãozinha
   100% { transform: rotate(0deg); }
 `;
 
-export const WavingHand = styled(Hand)`
+export const WavingGrabHand = styled(Grab)`
   animation: ${waving} 1s infinite;
 `;
