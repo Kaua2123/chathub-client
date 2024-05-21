@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CirclePlusIcon,
   Div,
@@ -16,6 +16,7 @@ import {
   SortableContext,
   arrayMove,
   horizontalListSortingStrategy,
+  verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Hand } from 'lucide-react';
 
@@ -29,6 +30,15 @@ function Conversations() {
     ? JSON.parse(orderedConversationsString)
     : null;
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function checkResolution() {
+      if (window.screen.width < 768) setIsMobile(true);
+    }
+
+    checkResolution();
+  });
 
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
@@ -49,6 +59,8 @@ function Conversations() {
     }
   }
 
+  console.log(isMobile);
+
   return (
     <div>
       <Navbar />
@@ -67,7 +79,11 @@ function Conversations() {
           >
             <SortableContext
               items={conversations}
-              strategy={horizontalListSortingStrategy}
+              strategy={
+                isMobile
+                  ? verticalListSortingStrategy
+                  : horizontalListSortingStrategy
+              }
             >
               {!orderedConversationsArray &&
                 conversations.map((id) => (

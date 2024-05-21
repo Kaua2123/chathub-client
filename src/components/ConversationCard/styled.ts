@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import { Grab } from 'lucide-react';
 
 export const Container = styled.div`
+  touch-action: none;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   display: flex;
   flex-flow: row wrap;
