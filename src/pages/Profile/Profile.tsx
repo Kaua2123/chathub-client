@@ -65,7 +65,12 @@ function Profile() {
 
                 <DivButtons>
                   <Button>Alterar</Button>
-                  <Button onClick={() => setIsUpdating(false)}>Cancelar</Button>
+                  <Button
+                    className="cancel-btn"
+                    onClick={() => setIsUpdating(false)}
+                  >
+                    Cancelar
+                  </Button>
                 </DivButtons>
               </Form>
             ) : (

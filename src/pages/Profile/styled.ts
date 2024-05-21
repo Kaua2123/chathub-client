@@ -38,6 +38,8 @@ export const DivProfile = styled.div`
     flex-flow: column wrap;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    min-height: 112vh;
   }
 `;
 
@@ -45,6 +47,15 @@ export const DivButtons = styled.div`
   display: flex;
   flex-flow: row wrap;
   gap: 3rem;
+
+  .cancel-btn {
+    background-color: white;
+    color: black;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `;
 
 export const DivUserAvatar = styled.div`
@@ -113,6 +124,7 @@ export const Button = styled.button`
   padding: 1.5rem 2rem;
   border: none;
   font-family: 'Raleway';
+  width: 16rem;
   font-size: 2rem;
   display: flex;
   flex-direction: row;
