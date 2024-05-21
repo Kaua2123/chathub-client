@@ -52,7 +52,7 @@ function Profile() {
               </UserAvatar>
             )}
           </DivUserAvatar>
-          <DivUserInfo>
+          <DivUserInfo $isUpdating={isUpdating}>
             {isUpdating ? (
               <Form>
                 <label>Apelido</label>

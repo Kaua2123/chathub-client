@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Div = styled.div`
   p {
@@ -99,7 +99,17 @@ export const UserAvatar = styled.div`
   }
 `;
 
-export const DivUserInfo = styled.div`
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+export const DivUserInfo = styled.div<{ $isUpdating?: boolean }>`
   width: 50%;
   p {
     font-size: 2.2rem;
@@ -109,6 +119,8 @@ export const DivUserInfo = styled.div`
     color: ${({ theme }) => theme.colors.darkGray};
     font-size: 1.9rem;
   }
+
+  animation: ${(props) => (props.$isUpdating ? fadeIn : '')} 0.4s;
 `;
 
 export const Form = styled.form`
