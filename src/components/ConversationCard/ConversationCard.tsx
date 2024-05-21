@@ -25,7 +25,7 @@ function ConversationCard({ id, isDragging }: ConversationCardProps) {
     <>
       {isDragging ? (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-          <Container>
+          <Container $isDragging={isDragging}>
             <DivUser>
               <UserAvatar>
                 <User color="black" />
@@ -44,6 +44,7 @@ function ConversationCard({ id, isDragging }: ConversationCardProps) {
       ) : (
         <div>
           <Container
+            $isDragging={isDragging}
             onClick={() => {
               navigate(`/chat/${id}`);
             }}

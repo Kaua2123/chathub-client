@@ -1,8 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { Grab } from 'lucide-react';
 
-export const Container = styled.div`
-  touch-action: none;
+export const Container = styled.div<{ $isDragging: boolean }>`
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   display: flex;
   flex-flow: row wrap;
@@ -25,6 +24,7 @@ export const Container = styled.div`
   @media (max-width: 768px) {
     width: auto;
     min-width: 20rem;
+    touch-action: ${(props) => (props.$isDragging ? 'none' : 'auto')};
   }
 `;
 
@@ -76,6 +76,11 @@ export const DivOrdering = styled.div`
   animation: ${fadeIn} 0.6s;
   p {
     font-size: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 1rem;
   }
 `;
 
