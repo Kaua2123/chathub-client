@@ -9,6 +9,12 @@ export const Div = styled.div`
   margin-bottom: 2rem;
   display: flex;
   flex-flow: row wrap;
+
+  @media (max-width: 768px) {
+    width: auto;
+    min-width: 16rem;
+    justify-content: center;
+  }
 `;
 
 export const DeleteButton = styled.button`

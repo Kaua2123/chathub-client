@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 
 export const Modal = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   bottom: 0;
   left: 0;
@@ -26,11 +26,17 @@ const opening = keyframes`
 
 export const Container = styled.div`
   position: relative;
+  z-index: 1;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   padding: 14rem;
   border-radius: 2rem;
   transition: transform 0.3s;
   animation: ${opening} 0.3s;
+
+  @media (max-width: 768px) {
+    padding: 8rem;
+    width: 35rem;
+  }
 `;
 
 export const Div = styled.div`
