@@ -1,4 +1,6 @@
+import { Camera } from 'lucide-react';
 import {
+  AbsoluteDiv,
   Button,
   CircleXIcon,
   CloseButton,
@@ -29,8 +31,12 @@ function ModalCreatingGroup({ setIsCreatingGroup }: ModalCreatingGrouoProps) {
           </CloseButton>
           <Div>
             <GroupImage>
-              <ImageIcon size={100} color="white" />
-              <Button>Adicionar imagem</Button>
+              <AbsoluteDiv>
+                <ImageIcon size={100} color="white" />
+                <Button className="btn-absolute">
+                  <Camera />
+                </Button>
+              </AbsoluteDiv>
             </GroupImage>
             <GroupData>
               <label htmlFor="">Nome do grupo</label>

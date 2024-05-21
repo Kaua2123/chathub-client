@@ -59,7 +59,6 @@ export const FixedButton = styled.button`
 
 export const OrderConversationsButton = styled.button`
   position: fixed;
-  width: 18rem;
   margin-left: 5rem;
   border: 1px solid white;
   background-color: ${({ theme }) => theme.colors.white};

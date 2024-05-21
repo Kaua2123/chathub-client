@@ -32,6 +32,12 @@ export const Container = styled.div`
   border-radius: 2rem;
   transition: transform 0.3s;
   animation: ${opening} 0.3s;
+
+  @media (max-width: 768px) {
+    padding: 8rem;
+    width: 35rem;
+    height: 70vh;
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -70,7 +76,6 @@ export const Div = styled.div`
 `;
 
 export const Button = styled.button`
-  width: 18rem;
   background-color: ${({ theme }) => theme.colors.lighterBlue};
   border-radius: 1.7rem;
   color: ${({ theme }) => theme.colors.white};
@@ -116,6 +121,21 @@ export const GroupImage = styled.div`
   justify-content: center;
   align-items: center;
   gap: 3rem;
+  position: relative;
+`;
+
+export const AbsoluteDiv = styled.div`
+  .btn-absolute {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 5rem;
+    padding: 0.8rem;
+
+    @media (max-width: 768px) {
+      margin-right: 3rem;
+    }
+  }
 `;
 
 export const GroupData = styled.div`
@@ -131,4 +151,7 @@ export const GroupData = styled.div`
 `;
 
 export const CircleXIcon = styled(X)``;
-export const ImageIcon = styled(Image)``;
+export const ImageIcon = styled(Image)`
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 1.8rem;
+`;
