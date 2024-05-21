@@ -32,6 +32,11 @@ export const Container = styled.div`
   border-radius: 2rem;
   transition: transform 0.3s;
   animation: ${opening} 0.3s;
+
+  @media (max-width: 768px) {
+    padding: 8rem;
+    width: 35rem;
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -62,12 +67,14 @@ export const Div = styled.div`
   gap: 2rem;
 
   .delete-friend-btn {
+    width: 18rem;
     color: white;
     background-color: ${({ theme }) => theme.colors.red};
   }
 
   .cancel-delete-friend-btn {
     color: black;
+    width: 18rem;
     background-color: ${({ theme }) => theme.colors.white};
   }
 `;

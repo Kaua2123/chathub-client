@@ -40,7 +40,7 @@ function Login() {
               <Input type="email" />
               <label htmlFor="Senha">Senha</label>
               <Input type="password" />
-              <Button type="submit">Criar conta</Button>
+              <Button type="submit">Entrar</Button>
             </Form>
           </FormDiv>
         </Container>

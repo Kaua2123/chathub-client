@@ -50,6 +50,7 @@ export const DivOptions = styled.div`
 
 export const Button = styled.div`
   cursor: pointer;
+  width: 18rem;
   border: none;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1rem;
@@ -58,6 +59,7 @@ export const Button = styled.div`
   font-size: 1.7rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: 0.1s;
   color: black;
 

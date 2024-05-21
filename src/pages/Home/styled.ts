@@ -75,6 +75,8 @@ export const Button = styled.button`
   color: ${({ theme }) => theme.colors.white};
   padding: 1.5rem 2rem;
   z-index: 2;
+  width: 18rem;
+
   position: relative;
   border: none;
   font-family: 'Raleway';

@@ -59,6 +59,7 @@ export const FixedButton = styled.button`
 
 export const OrderConversationsButton = styled.button`
   position: fixed;
+  width: 18rem;
   margin-left: 5rem;
   border: 1px solid white;
   background-color: ${({ theme }) => theme.colors.white};
@@ -68,6 +69,7 @@ export const OrderConversationsButton = styled.button`
   font-size: 1.7rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: 0.1s;
   cursor: pointer;
   &:hover {

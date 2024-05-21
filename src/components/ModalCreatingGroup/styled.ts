@@ -70,6 +70,7 @@ export const Div = styled.div`
 `;
 
 export const Button = styled.button`
+  width: 18rem;
   background-color: ${({ theme }) => theme.colors.lighterBlue};
   border-radius: 1.7rem;
   color: ${({ theme }) => theme.colors.white};
