@@ -95,6 +95,7 @@ export const UserAvatar = styled.div`
       margin: 0;
       width: 0.5rem;
       height: 0.5rem;
+      padding: 2rem;
     }
   }
 `;
