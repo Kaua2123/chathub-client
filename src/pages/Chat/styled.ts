@@ -66,6 +66,8 @@ export const Input = styled.input`
 
 export const SendHorizontalIcon = styled(SendHorizontal)``;
 
+export const DivMessages = styled.div``;
+
 export const TopContainer = styled.div`
   color: ${({ theme }) => theme.colors.white};
   padding: 2rem;
