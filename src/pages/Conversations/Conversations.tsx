@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   CirclePlusIcon,
   Div,
+  DivButtons,
   DivConversations,
   FixedButton,
   OrderConversationsButton,
@@ -59,8 +60,6 @@ function Conversations() {
     }
   }
 
-  console.log(isMobile);
-
   return (
     <div>
       <Navbar />
@@ -98,13 +97,15 @@ function Conversations() {
           </DndContext>
         </DivConversations>
       </Div>
-      <FixedButton onClick={() => setIsCreatingGroup(true)}>
-        <CirclePlusIcon />
-      </FixedButton>
-      <OrderConversationsButton onClick={() => setIsDragging(!isDragging)}>
-        {isDragging && <WavingGrabHand />}
-        {!isDragging && <Hand />}
-      </OrderConversationsButton>
+      <DivButtons>
+        <FixedButton onClick={() => setIsCreatingGroup(true)}>
+          <CirclePlusIcon />
+        </FixedButton>
+        <OrderConversationsButton onClick={() => setIsDragging(!isDragging)}>
+          {isDragging && <WavingGrabHand />}
+          {!isDragging && <Hand />}
+        </OrderConversationsButton>
+      </DivButtons>
 
       <BottomMenu />
     </div>

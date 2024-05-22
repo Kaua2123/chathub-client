@@ -47,6 +47,14 @@ export const DivConversations = styled.div`
   }
 `;
 
+export const DivButtons = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  background-color: inherit;
+  align-items: center;
+`;
+
 export const FixedButton = styled.button`
   position: fixed;
   right: 0;
@@ -77,20 +85,25 @@ export const FixedButton = styled.button`
 
 export const OrderConversationsButton = styled.button`
   position: fixed;
+  left: 0;
   margin-left: 5rem;
   border: 1px solid white;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1rem;
-  border-radius: 1.7rem;
+  border-radius: 100%;
   font-family: Raleway;
-  font-size: 1.7rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: 0.1s;
+  transition: transform 0.3s;
   cursor: pointer;
+
   &:hover {
-    opacity: 0.9;
+    transform: translateY(-5%);
+
+    & svg {
+      // stroke para alterar a cor das linhas do ícone
+      stroke: ${({ theme }) => theme.colors.lighterBlue};
+    }
   }
 
   @media (max-width: 768px) {
