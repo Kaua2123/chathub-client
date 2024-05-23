@@ -9,9 +9,10 @@ import {
 
 export type MessageProps = {
   isSender: boolean;
+  children: string;
 };
 
-function Message({ isSender }: MessageProps) {
+function Message({ isSender, children }: MessageProps) {
   return (
     <div>
       <DivMessage $isSender={isSender}>
@@ -20,9 +21,7 @@ function Message({ isSender }: MessageProps) {
         </UserAvatar>
         <Container $isSender={isSender}>
           <Div>
-            <MessageContent $isSender={isSender}>
-              mensagem fictícia teste
-            </MessageContent>
+            <MessageContent $isSender={isSender}>{children}</MessageContent>
           </Div>
         </Container>
       </DivMessage>

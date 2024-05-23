@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import {
   ArrowLeftIcon,
   Button,
@@ -25,14 +25,13 @@ function Chat() {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [msg, setMsg] = useState('');
-  const [isSender /*setIsSender*/] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]); // any temporario
+  const [isSender, setIsSender] = useState(false);
 
   useEffect(() => {
     socketInstance.on('msg', (msg, socket) => {
-      const messages = document.querySelector('.messages');
-      const item = document.createElement('li');
-      item.textContent = `${socket} digitou: ${msg} `;
-      messages ? messages.appendChild(item) : '';
+      console.log('msg enviada por:', socket);
+      setMessages([...messages, msg]);
       window.scrollTo(0, document.body.scrollHeight);
     });
 
@@ -42,7 +41,13 @@ function Chat() {
   });
 
   const handleSubmit = () => {
-    socketInstance.emit('msg', msg, id);
+    socketInstance.emit('msg', msg, id); // envia a msg. emite a chamada
+  };
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
   };
 
   return (
@@ -66,13 +71,17 @@ function Chat() {
       </TopContainer>
 
       <DivMessages>
-        <Message isSender={isSender} />
-        <Message isSender={isSender} />
-        <Message isSender={!isSender} />
-        <ul
+        {/* mapear com base no array de mensagens e ir adicionando componentes */}
+        {messages.map((message, index) => (
+          <Message key={index} isSender={isSender}>
+            {message}
+          </Message>
+        ))}
+
+        {/* <ul
           className="messages"
           style={{ color: 'white', fontFamily: 'Raleway', fontSize: '2rem' }}
-        ></ul>
+        ></ul> */}
       </DivMessages>
 
       <Container>
@@ -82,9 +91,14 @@ function Chat() {
             onChange={(e) => setMsg(e.target.value)}
             type="text"
             placeholder="Envie algo"
+            onKeyDown={(e) => handleKeyPress(e)}
           />
 
-          <Button onClick={handleSubmit}>
+          <Button
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
             <SendHorizontalIcon color="black" />
           </Button>
         </Div>
