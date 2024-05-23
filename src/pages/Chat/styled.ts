@@ -7,7 +7,8 @@ import {
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  position: absolute;
+  position: fixed;
+  z-index: 2;
   bottom: 0;
   color: ${({ theme }) => theme.colors.white};
   padding: 2rem;
@@ -16,6 +17,7 @@ export const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.lightBlue};
   font-family: 'Raleway';
   width: 100%;
+  background-color: ${({ theme }) => theme.colors.darkBlue};
 `;
 
 export const Div = styled.div`

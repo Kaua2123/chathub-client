@@ -17,6 +17,7 @@ import { socket } from '../../socket';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import { User } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Message from '../../components/Message/Message';
 
 function Chat() {
   const { id } = useParams();
@@ -24,6 +25,7 @@ function Chat() {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [msg, setMsg] = useState('');
+  const [isSender /*setIsSender*/] = useState(false);
 
   useEffect(() => {
     socketInstance.on('msg', (msg, socket) => {
@@ -64,6 +66,9 @@ function Chat() {
       </TopContainer>
 
       <DivMessages>
+        <Message isSender={isSender} />
+        <Message isSender={isSender} />
+        <Message isSender={!isSender} />
         <ul
           className="messages"
           style={{ color: 'white', fontFamily: 'Raleway', fontSize: '2rem' }}
