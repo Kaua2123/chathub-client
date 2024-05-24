@@ -22,7 +22,7 @@ function App() {
             color: '#CCCCCC',
             border: 'none',
           },
-          duration: 2300,
+          duration: 2700,
         }}
       />
     </ThemeProvider>

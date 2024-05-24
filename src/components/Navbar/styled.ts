@@ -46,6 +46,7 @@ export const A = styled.a`
 `;
 
 export const UserAvatar = styled.div`
+  position: relative;
   .profile-link {
     border: 1px solid white;
     background-color: ${({ theme }) => theme.colors.white};

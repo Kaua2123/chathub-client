@@ -14,9 +14,11 @@ import { Link } from 'react-router-dom';
 
 import ModalNotifications from '../ModalNotifications/ModalNotifications';
 import chathub from '../../assets/chathub.png';
+import MenuDropdown from '../MenuDropdown/MenuDropdown';
 
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notifications] = useState([1, 2, 3, 4]);
   const [hasNotifications, setHasNotifications] = useState(false);
   const token = localStorage.getItem('token');
@@ -62,11 +64,13 @@ function Navbar() {
                 )}
               </DivNotification>
 
-              <UserAvatar>
-                <Link className="profile-link" to={'/profile'}>
+              <UserAvatar onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <div className="profile-link">
                   <User color="black" />
-                </Link>
+                </div>
+                {isMenuOpen && <MenuDropdown />}
               </UserAvatar>
+
               {/* <BellRing /> -> quando tiver notificações */}
             </>
           ) : (
