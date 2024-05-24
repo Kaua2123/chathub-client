@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
 import {
   Button,
   Container,
@@ -8,9 +11,39 @@ import {
   TextDiv,
 } from './styled';
 import chathub from '../../assets/chathub.png';
-import { Link } from 'react-router-dom';
+import axios from '../../services/axios';
+import { toast } from 'sonner';
 
 function Register() {
+  const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleRegister = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+
+    try {
+      if (!fullName || !username || !email || !password) {
+        return toast.error('Preencha todos os campos para continuar.');
+      }
+
+      await axios.post('/user/create', {
+        name: fullName,
+        username,
+        email,
+        password,
+      });
+
+      return toast.success('Você foi cadastrado.');
+    } catch (error) {
+      toast.error('Ocorreu um erro na hora do cadastro.');
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Section>
@@ -35,16 +68,28 @@ function Register() {
           </TextDiv>
 
           <FormDiv>
-            <Form action="" method="post">
+            <Form action="">
               <label htmlFor="Nome completo">Nome Completo</label>
-              <Input type="text" />
+              <Input
+                type="text"
+                onChange={(e) => setFullName(e.target.value)}
+              />
+
               <label htmlFor="Como quer ser chamado">Apelido</label>
-              <Input type="text" />
+              <Input
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+
               <label htmlFor="Email">Email</label>
-              <Input type="email" />
+              <Input type="email" onChange={(e) => setEmail(e.target.value)} />
+
               <label htmlFor="Senha">Senha</label>
-              <Input type="password" />
-              <Button type="submit">Criar conta</Button>
+              <Input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button onClick={(e) => handleRegister(e)}>Criar conta</Button>
             </Form>
           </FormDiv>
         </Container>

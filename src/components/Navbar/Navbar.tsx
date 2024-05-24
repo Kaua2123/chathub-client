@@ -17,7 +17,7 @@ import chathub from '../../assets/chathub.png';
 
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
-  const [isLoggedIn] = useState(true); // SIMULAR QUE ESTÁ LOGADO ( POR ENQUANTO )
+  const [isLoggedIn] = useState(false); // SIMULAR QUE ESTÁ LOGADO ( POR ENQUANTO )
   const [notifications] = useState([1, 2, 3, 4]);
   const [hasNotifications, setHasNotifications] = useState(false);
 
