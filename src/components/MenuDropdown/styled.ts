@@ -1,6 +1,18 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const openingMenu = keyframes`
+  0% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 export const Div = styled.div`
+  animation: ${openingMenu} 0.3s;
   position: absolute;
   right: 1%;
   margin-top: 1rem;

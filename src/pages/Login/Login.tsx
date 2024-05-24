@@ -38,7 +38,7 @@ function Login() {
       toast.success('Você entrou na conta.');
       navigate('/conversations');
     } catch (error) {
-      toast.error('Ocorreu um erro na hora da autenticação.');
+      // if (typeof error !== unknown) toast.error(error.response.data.message);
       console.log(error);
     }
   };
