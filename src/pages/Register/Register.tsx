@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import {
@@ -19,6 +19,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleRegister = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -37,7 +38,14 @@ function Register() {
         password,
       });
 
-      return toast.success('Você foi cadastrado.');
+      const response = await axios.post('/user/auth', {
+        email,
+        password,
+      });
+
+      localStorage.setItem('token', response.data.token);
+      toast.success('Você foi cadastrado.');
+      navigate('/conversations');
     } catch (error) {
       toast.error('Ocorreu um erro na hora do cadastro.');
       console.log(error);

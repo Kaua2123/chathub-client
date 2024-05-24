@@ -17,9 +17,9 @@ import chathub from '../../assets/chathub.png';
 
 function Navbar() {
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
-  const [isLoggedIn] = useState(false); // SIMULAR QUE ESTÁ LOGADO ( POR ENQUANTO )
   const [notifications] = useState([1, 2, 3, 4]);
   const [hasNotifications, setHasNotifications] = useState(false);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     function checkNotifications() {
@@ -50,7 +50,7 @@ function Navbar() {
           />
         </div>
         <UserDiv>
-          {isLoggedIn ? (
+          {token ? (
             <>
               <DivNotification>
                 <BellIcon

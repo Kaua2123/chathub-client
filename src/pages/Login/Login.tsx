@@ -8,9 +8,46 @@ import {
   TextDiv,
 } from './styled';
 import chathub from '../../assets/chathub.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import axios from '../../services/axios';
+import { useState } from 'react';
 
 function Login() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    try {
+      if (!email || !password) {
+        return toast.error('Preencha todos os campos para continuar.');
+      }
+
+      await axios.post('/user/create', {
+        email,
+        password,
+      });
+
+      const response = await axios.post('/user/auth', {
+        email,
+        password,
+      });
+
+      localStorage.setItem('token', response.data.token);
+
+      toast.success('Você foi cadastrado.');
+      navigate('/conversations');
+    } catch (error) {
+      toast.error('Ocorreu um erro na hora do cadastro.');
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Section>
