@@ -25,12 +25,13 @@ function Chat() {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [msg, setMsg] = useState('');
-  const [messages, setMessages] = useState<any[]>([]); // any temporario
+  const [messages, setMessages] = useState<string[]>([]);
   const [isSender, setIsSender] = useState(false);
 
   useEffect(() => {
     socketInstance.on('msg', (msg, socket) => {
-      console.log('msg enviada por:', socket);
+      socket == socketInstance.id ? setIsSender(true) : setIsSender(false);
+
       setMessages([...messages, msg]);
       window.scrollTo(0, document.body.scrollHeight);
     });
@@ -41,7 +42,8 @@ function Chat() {
   });
 
   const handleSubmit = () => {
-    socketInstance.emit('msg', msg, id); // envia a msg. emite a chamada
+    socketInstance.emit('msg', msg /*id*/); // envia a mensagem. emite a chamada ao canal msg
+    setIsSender(true);
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -71,17 +73,11 @@ function Chat() {
       </TopContainer>
 
       <DivMessages>
-        {/* mapear com base no array de mensagens e ir adicionando componentes */}
         {messages.map((message, index) => (
           <Message key={index} isSender={isSender}>
             {message}
           </Message>
         ))}
-
-        {/* <ul
-          className="messages"
-          style={{ color: 'white', fontFamily: 'Raleway', fontSize: '2rem' }}
-        ></ul> */}
       </DivMessages>
 
       <Container>
