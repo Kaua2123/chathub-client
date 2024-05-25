@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import axios from '../../services/axios';
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 
 function Login() {
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ function Login() {
       toast.success('Você entrou na conta.');
       navigate('/conversations');
     } catch (error) {
-      // if (typeof error !== unknown) toast.error(error.response.data.message);
       console.log(error);
+      toast.error((error as AxiosError).message);
     }
   };
 

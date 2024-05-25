@@ -15,7 +15,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@types/node": "^20.12.12",
     "framer-motion": "^11.1.9",
-    "jwt-decoder": "^0.0.0",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.378.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
