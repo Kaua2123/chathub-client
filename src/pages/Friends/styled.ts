@@ -127,3 +127,34 @@ export const Button = styled.button`
   top: 0;
   margin-top: 6rem;
 `;
+export const Input = styled.input``;
+
+export const DivResult = styled.div`
+  background-color: ${({ theme }) => theme.colors.lightBlue};
+  height: 55vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 3.4rem;
+  margin-bottom: 13rem;
+  padding: 4rem;
+  border-radius: 1.7rem;
+
+  p {
+    font-family: Raleway;
+  }
+
+  &::-webkit-scrollbar {
+    width: 1.5rem;
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.4rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.7rem;
+  }
+
+  @media (max-width: 768px) {
+    margin: 2rem;
+  }
+`;

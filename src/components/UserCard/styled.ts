@@ -7,7 +7,6 @@ export const Div = styled.div`
   margin-bottom: 7rem;
   font-family: Raleway;
   border: 1px solid ${({ theme }) => theme.colors.mediumBlue};
-  padding: 3rem;
 
   @media (max-width: 768px) {
     flex-flow: column wrap;
@@ -50,12 +49,6 @@ export const DivOptions = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
-`;
-
-export const DivResult = styled.div`
-  display: flex;
-  flex-flow: column wrap;
-  gap: 3rem;
 `;
 
 export const Button = styled.div`

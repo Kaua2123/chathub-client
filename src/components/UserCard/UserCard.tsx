@@ -10,11 +10,13 @@ import {
   UserData,
   UserRoundPlusIcon,
 } from './styled';
-import { useState } from 'react';
+import { IUser } from '../../interfaces/IUser';
 
-function UserCard() {
-  const [isOnline] = useState(false);
+export type UserCardProps = {
+  user: IUser;
+};
 
+function UserCard({ user }: UserCardProps) {
   return (
     <div>
       <Div>
@@ -23,14 +25,16 @@ function UserCard() {
             <User color="black" />
           </UserAvatar>
           <UserData>
-            <p className="username">Username</p>
+            <p className="username">{user.username}</p>
             <DivIsOnline>
               <Circle
                 size={16}
                 color="inherit"
-                fill={isOnline ? 'green' : 'gray'}
+                fill={user.is_online ? 'green' : 'gray'}
               />
-              <p className="is-online">{isOnline ? 'Online' : 'Offline'}</p>
+              <p className="is-online">
+                {user.is_online ? 'Online' : 'Offline'}
+              </p>
             </DivIsOnline>
           </UserData>
         </DivUser>
