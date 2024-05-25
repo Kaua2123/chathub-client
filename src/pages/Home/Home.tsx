@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   MainSectionDiv,
@@ -14,8 +14,16 @@ import {
 } from './styled';
 import { MoveRight, Wifi, Users, MessageSquareText } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
+import { useEffect } from 'react';
 
 function Home() {
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) navigate('/conversations');
+  }, [token, navigate]);
+
   return (
     <div>
       <MainSection>

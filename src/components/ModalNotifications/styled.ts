@@ -26,7 +26,7 @@ const opening = keyframes`
 
 export const Container = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 2;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   padding: 14rem;
   border-radius: 2rem;
