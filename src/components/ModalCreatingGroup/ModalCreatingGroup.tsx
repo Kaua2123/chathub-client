@@ -18,9 +18,17 @@ export type ModalCreatingGrouoProps = {
 };
 
 function ModalCreatingGroup({ setIsCreatingGroup }: ModalCreatingGrouoProps) {
+  const handleOutsideClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    if ((e.target as HTMLDivElement).id === 'modal') {
+      setIsCreatingGroup(false);
+    }
+  };
+
   return (
     <div>
-      <Modal>
+      <Modal id="modal" onClick={handleOutsideClick}>
         <Container>
           <CloseButton>
             <CircleXIcon

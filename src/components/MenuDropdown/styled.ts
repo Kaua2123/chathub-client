@@ -11,11 +11,23 @@ const openingMenu = keyframes`
   }
 `;
 
+export const Menu = styled.div`
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+`;
+
 export const Div = styled.div`
+  background-color: green;
   animation: ${openingMenu} 0.3s;
   position: absolute;
   right: 1%;
-  margin-top: 1rem;
+  margin-top: 8rem;
+  margin-right: 2.3rem;
   display: flex;
   flex-flow: column wrap;
   gap: 0.5rem;

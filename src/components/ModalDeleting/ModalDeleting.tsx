@@ -12,9 +12,17 @@ export type ModalDeletingProps = {
 };
 
 function ModalDeleting({ setIsDeleting }: ModalDeletingProps) {
+  const handleOutsideClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    if ((e.target as HTMLDivElement).id === 'modal') {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div>
-      <Modal>
+      <Modal id="modal" onClick={handleOutsideClick}>
         <Container>
           <CloseButton>
             <CircleXIcon

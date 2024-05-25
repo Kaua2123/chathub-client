@@ -68,7 +68,7 @@ function Navbar() {
                 <div className="profile-link">
                   <User color="black" />
                 </div>
-                {isMenuOpen && <MenuDropdown />}
+                {isMenuOpen && <MenuDropdown setIsMenuOpen={setIsMenuOpen} />}
               </UserAvatar>
 
               {/* <BellRing /> -> quando tiver notificações */}

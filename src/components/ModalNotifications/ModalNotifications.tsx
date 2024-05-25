@@ -18,9 +18,17 @@ function ModalNotifications({
   setIsSeeingNotification,
   notifications,
 }: ModalNotificationsProps) {
+  const handleOutsideClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    if ((e.target as HTMLDivElement).id === 'modal') {
+      setIsSeeingNotification(false);
+    }
+  };
+
   return (
     <div>
-      <Modal>
+      <Modal id="modal" onClick={(e) => handleOutsideClick(e)}>
         <Container>
           <Div>
             <BellIcon size={50} />
