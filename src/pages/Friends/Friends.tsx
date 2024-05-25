@@ -44,7 +44,7 @@ function Friends() {
   };
 
   const handleSearchUsers = () => {
-    setIsFiltering(true);
+    username ? setIsFiltering(true) : setIsFiltering(false);
     const filtered = users.filter((user) => user.username.includes(username));
     setFilteredUsers(filtered);
   };

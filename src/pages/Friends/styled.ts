@@ -126,6 +126,16 @@ export const Button = styled.button`
   right: 0;
   top: 0;
   margin-top: 6rem;
+  opacity: 0.9;
+
+  &:hover {
+    opacity: 1;
+
+    & svg {
+      // stroke para alterar a cor das linhas do ícone
+      stroke: ${({ theme }) => theme.colors.lighterBlue};
+    }
+  }
 `;
 export const Input = styled.input``;
 
