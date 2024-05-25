@@ -139,9 +139,9 @@ export const Button = styled.button`
 `;
 export const Input = styled.input``;
 
-export const DivResult = styled.div`
+export const DivResult = styled.div<{ $hasUsers?: boolean }>`
   background-color: ${({ theme }) => theme.colors.lightBlue};
-  height: 55vh;
+  height: ${(props) => (props.$hasUsers ? '55vh' : 'auto')};
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 3.4rem;

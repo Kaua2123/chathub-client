@@ -16,9 +16,12 @@ import {
 } from './styled';
 import axios from '../../services/axios';
 import { IUser } from '../../interfaces/IUser';
+import sadChat from '../../assets/sadChat.png';
 
 function Friends() {
   const [users, setUsers] = useState<IUser[]>([]);
+  const [hasUsers, setHasUsers] = useState(false);
+  const [query, setQuery] = useState('');
   const [username, setUsername] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [isFiltering, setIsFiltering] = useState(false);
@@ -35,17 +38,20 @@ function Friends() {
     };
 
     getUsers();
-  }, []);
+
+    if (users.length > 0) setHasUsers(true);
+  }, [users.length]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleSearchUsers();
+      handleSearchUsers(username);
     }
   };
 
-  const handleSearchUsers = () => {
-    username ? setIsFiltering(true) : setIsFiltering(false);
-    const filtered = users.filter((user) => user.username.includes(username));
+  const handleSearchUsers = (query: string) => {
+    setQuery(username);
+    query ? setIsFiltering(true) : setIsFiltering(false);
+    const filtered = users.filter((user) => user.username.includes(query));
     setFilteredUsers(filtered);
   };
 
@@ -82,22 +88,42 @@ function Friends() {
             />
           </div>
           <div className="btn-search-div">
-            <Button onClick={handleSearchUsers}>
+            <Button onClick={() => handleSearchUsers(username)}>
               <SearchIcon />
             </Button>
           </div>
         </DivSearchUsers>
         {isFiltering ? (
-          <p className="result">Resultados para {username} </p>
+          <p className="result">Resultados para {query} </p>
         ) : (
           <p className="result">Busque aqui um usuário </p>
         )}
-        <DivResult>
-          {isFiltering
-            ? filteredUsers.map((user, index) => (
-                <UserCard user={user} key={index} />
-              ))
-            : users.map((user, index) => <UserCard user={user} key={index} />)}
+        <DivResult $hasUsers={hasUsers}>
+          {users.length > 0 ? (
+            isFiltering ? (
+              filteredUsers.length > 0 ? (
+                filteredUsers.map((user, index) => (
+                  <UserCard user={user} key={index} />
+                ))
+              ) : (
+                <h3>Nenhum resultado encontrado para: {query}</h3>
+              )
+            ) : (
+              users.map((user, index) => <UserCard user={user} key={index} />)
+            )
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                flexFlow: 'column wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <img src={sadChat} alt="" />
+              <h3>Não achamos usuários por aqui...</h3>
+            </div>
+          )}
         </DivResult>
       </Div>
       <BottomMenu />
