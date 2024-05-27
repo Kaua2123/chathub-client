@@ -9,9 +9,13 @@ import {
 
 export type ModalDeletingProps = {
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClickDelete: () => Promise<void>;
 };
 
-function ModalDeleting({ setIsDeleting }: ModalDeletingProps) {
+function ModalDeleting({
+  setIsDeleting,
+  handleClickDelete,
+}: ModalDeletingProps) {
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
@@ -41,7 +45,9 @@ function ModalDeleting({ setIsDeleting }: ModalDeletingProps) {
             >
               Não, me enganei
             </Button>
-            <Button className="delete-friend-btn">Sim, tenho certeza</Button>
+            <Button className="delete-friend-btn" onClick={handleClickDelete}>
+              Sim, tenho certeza
+            </Button>
           </Div>
         </Container>
       </Modal>
