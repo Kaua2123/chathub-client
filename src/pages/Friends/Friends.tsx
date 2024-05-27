@@ -14,21 +14,30 @@ import {
   Input,
   DivResult,
 } from './styled';
-import axios from '../../services/axios';
-import { IUser } from '../../interfaces/IUser';
-import { IFriendRequest } from '../../interfaces/IFriendRequest';
-import { IToken } from '../../interfaces/IToken';
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'sonner';
+
+import axios from '../../services/axios';
+
+import { IFriend } from '../../interfaces/IFriend';
+import { IFriendRequest } from '../../interfaces/IFriendRequest';
+import { IUser } from '../../interfaces/IUser';
+import { IToken } from '../../interfaces/IToken';
 
 function Friends() {
   const [users, setUsers] = useState<IUser[]>([]);
+  const [friendRequests, setFriendRequests] = useState<IFriendRequest[]>([]);
+  const [friends, setFriends] = useState<IFriend[]>([]);
+
   const [hasUsers, setHasUsers] = useState(false);
+  const [hasFriendsRequests, setHasFriendsRequests] = useState(false);
+  const [hasFriends, setHasFriends] = useState(false);
+
   const [query, setQuery] = useState('');
   const [username, setUsername] = useState('');
+
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [isFiltering, setIsFiltering] = useState(false);
-  const [friendRequests, setFriendRequests] = useState<IFriendRequest[]>([]);
-  const [hasFriendsRequests, setHasFriendsRequests] = useState(false);
 
   const token = localStorage.getItem('token');
   const decodedToken: IToken = jwtDecode(token as string);
@@ -40,7 +49,7 @@ function Friends() {
 
         setUsers(response.data);
       } catch (error) {
-        console.log(error);
+        toast.error('Ocorreu um erro ao buscar usuários.');
       }
     };
 
@@ -50,16 +59,30 @@ function Friends() {
 
         setFriendRequests(response.data);
       } catch (error) {
-        console.log(error);
+        toast.error('Ocorreu um erro ao buscar pedidos de amizade do usuário.');
       }
     };
 
+    const getFriends = async () => {
+      try {
+        const response = await axios.get(
+          `/user/getUserFriends/${decodedToken.id}`,
+        );
+
+        setFriends(response.data);
+      } catch (error) {
+        toast.error('Ocorreu um erro ao buscar amigos do usuário.');
+      }
+    };
+
+    getFriends();
     getFriendRequests();
     getUsers();
 
     if (users.length > 0) setHasUsers(true);
     if (friendRequests.length > 0) setHasFriendsRequests(true);
-  }, [decodedToken.id, friendRequests.length, users.length]);
+    if (friends.length > 0) setHasFriends(true);
+  }, [decodedToken.id, friendRequests.length, users.length, friends.length]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -79,10 +102,23 @@ function Friends() {
       <Navbar />
       <Div>
         <p className="title">Amigos</p>
-        <DivFriends>
-          {Array.from({ length: 14 }).map((_, i) => (
-            <FriendCard key={i} />
-          ))}
+        <DivFriends $hasFriends={hasFriends}>
+          {friends.length > 0 ? (
+            friends.map((friend, index) => (
+              <FriendCard friend={friend} key={index} />
+            ))
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                flexFlow: 'column wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <h5>Parece que você ainda não tem amigos adicionados.</h5>
+            </div>
+          )}
         </DivFriends>
       </Div>
 
@@ -102,7 +138,7 @@ function Friends() {
                 alignItems: 'center',
               }}
             >
-              <h3>Parece que você não recebeu nenhum pedido de amizade.</h3>
+              <h5>Parece que você não recebeu nenhum pedido de amizade.</h5>
             </div>
           )}
         </DivFriendsRequests>
@@ -152,7 +188,7 @@ function Friends() {
                 alignItems: 'center',
               }}
             >
-              <h3>Não achamos usuários por aqui...</h3>
+              <h5>Não achamos usuários por aqui...</h5>
             </div>
           )}
         </DivResult>

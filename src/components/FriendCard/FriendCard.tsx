@@ -11,9 +11,15 @@ import {
   XIcon,
 } from './styled';
 import { useState } from 'react';
-import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 
-function FriendCard() {
+import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
+import { IFriend } from '../../interfaces/IFriend';
+
+export type FriendCardProps = {
+  friend: IFriend;
+};
+
+function FriendCard({ friend }: FriendCardProps) {
   const [isOnline] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -26,7 +32,7 @@ function FriendCard() {
             <User color="black" />
           </UserAvatar>
           <UserData>
-            <p className="username">Username</p>
+            <p className="username">{friend.username}</p>
             <DivIsOnline>
               <Circle
                 size={16}
