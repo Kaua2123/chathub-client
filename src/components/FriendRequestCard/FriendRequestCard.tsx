@@ -56,6 +56,19 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
     }
   };
 
+  const handleClickReject = async () => {
+    try {
+      await axios.delete(
+        `/friendRequest/rejectFriendRequest/${friendRequest.id}`,
+      );
+
+      toast.success(`Pedido de amizade rejeitado. `);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
   return (
     <div>
       <Div>
@@ -79,7 +92,7 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
           <Button onClick={handleClickAccept}>
             <CircleCheckIcon size={28} />
           </Button>
-          <Button>
+          <Button onClick={handleClickReject}>
             <CircleXIcon size={28} />
           </Button>
         </DivOptions>
