@@ -13,6 +13,7 @@ import {
 import chathub from '../../assets/chathub.png';
 import axios from '../../services/axios';
 import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 function Register() {
   const [fullName, setFullName] = useState('');
@@ -47,8 +48,8 @@ function Register() {
       toast.success('Você foi cadastrado.');
       navigate('/conversations');
     } catch (error) {
-      toast.error('Ocorreu um erro na hora do cadastro.');
-      console.log(error);
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
     }
   };
 

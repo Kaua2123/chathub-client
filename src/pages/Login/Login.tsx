@@ -39,8 +39,8 @@ function Login() {
       toast.success('Você entrou na conta.');
       navigate('/conversations');
     } catch (error) {
-      console.log(error);
-      toast.error((error as AxiosError).message);
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
     }
   };
 
