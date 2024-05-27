@@ -58,9 +58,9 @@ export const DivFriends = styled.div`
   }
 `;
 
-export const DivFriendsRequests = styled.div`
+export const DivFriendsRequests = styled.div<{ $hasFriendsRequests?: boolean }>`
   background-color: ${({ theme }) => theme.colors.lightBlue};
-  height: 55vh;
+  height: ${(props) => (props.$hasFriendsRequests ? '55vh' : 'auto')};
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 3.4rem;

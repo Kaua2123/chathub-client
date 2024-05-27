@@ -16,7 +16,9 @@ import {
 } from './styled';
 import axios from '../../services/axios';
 import { IUser } from '../../interfaces/IUser';
-import sadChat from '../../assets/sadChat.png';
+import { IFriendRequest } from '../../interfaces/IFriendRequest';
+import { IToken } from '../../interfaces/IToken';
+import { jwtDecode } from 'jwt-decode';
 
 function Friends() {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -25,6 +27,11 @@ function Friends() {
   const [username, setUsername] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [friendRequests, setFriendRequests] = useState<IFriendRequest[]>([]);
+  const [hasFriendsRequests, setHasFriendsRequests] = useState(false);
+
+  const token = localStorage.getItem('token');
+  const decodedToken: IToken = jwtDecode(token as string);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -37,10 +44,22 @@ function Friends() {
       }
     };
 
+    const getFriendRequests = async () => {
+      try {
+        const response = await axios.get(`/friendRequest/${decodedToken.id}`);
+
+        setFriendRequests(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getFriendRequests();
     getUsers();
 
     if (users.length > 0) setHasUsers(true);
-  }, [users.length]);
+    if (friendRequests.length > 0) setHasFriendsRequests(true);
+  }, [decodedToken.id, friendRequests.length, users.length]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -69,10 +88,23 @@ function Friends() {
 
       <Div>
         <p className="title">Pedidos de amizade</p>
-        <DivFriendsRequests>
-          {Array.from({ length: 2 }).map((_, i) => (
-            <FriendRequestCard key={i} />
-          ))}
+        <DivFriendsRequests $hasFriendsRequests={hasFriendsRequests}>
+          {friendRequests.length > 0 ? (
+            friendRequests.map((friendRequest, index) => (
+              <FriendRequestCard friendRequest={friendRequest} key={index} />
+            ))
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                flexFlow: 'column wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <h3>Parece que você não recebeu nenhum pedido de amizade.</h3>
+            </div>
+          )}
         </DivFriendsRequests>
       </Div>
 
@@ -120,7 +152,6 @@ function Friends() {
                 alignItems: 'center',
               }}
             >
-              <img src={sadChat} alt="" />
               <h3>Não achamos usuários por aqui...</h3>
             </div>
           )}

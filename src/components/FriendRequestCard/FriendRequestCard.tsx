@@ -11,8 +11,13 @@ import {
   UserData,
 } from './styled';
 import { useState } from 'react';
+import { IFriendRequest } from '../../interfaces/IFriendRequest';
 
-function FriendRequestCard() {
+export type FriendRequestCardProps = {
+  friendRequest: IFriendRequest;
+};
+
+function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
   const [isOnline] = useState(false);
 
   return (
