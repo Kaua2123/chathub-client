@@ -16,6 +16,7 @@ import { jwtDecode } from 'jwt-decode';
 import { IToken } from '../../interfaces/IToken';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export type UserCardProps = {
   user: IUser;
@@ -24,6 +25,7 @@ export type UserCardProps = {
 function UserCard({ user }: UserCardProps) {
   const token = localStorage.getItem('token');
   const decodedToken: IToken = jwtDecode(token as string);
+  const navigate = useNavigate();
 
   const sendFriendRequest = async () => {
     try {
@@ -33,6 +35,20 @@ function UserCard({ user }: UserCardProps) {
       });
 
       toast.success(`Você enviou um pedido de amizade à ${user.username}`);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
+  const handleClickConversation = async () => {
+    try {
+      const response = await axios.post(
+        `/conversation/create/${decodedToken.id}/${user.id}`,
+      );
+
+      navigate(`/chat/${response.data.conversation.id}`);
+      toast.success(`Você iniciou uma conversa com ${user.username}`);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -62,7 +78,10 @@ function UserCard({ user }: UserCardProps) {
         </DivUser>
         <DivOptions>
           <Button>
-            <MessageSquareTextIcon size={28} />
+            <MessageSquareTextIcon
+              onClick={handleClickConversation}
+              size={28}
+            />
           </Button>
           <Button onClick={sendFriendRequest}>
             <UserRoundPlusIcon size={28} />

@@ -26,7 +26,6 @@ export type FriendCardProps = {
 };
 
 function FriendCard({ friend }: FriendCardProps) {
-  const [isOnline] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
 
@@ -50,9 +49,7 @@ function FriendCard({ friend }: FriendCardProps) {
         `/conversation/create/${decodedToken.id}/${friend.id}`,
       );
 
-      const conversation = response.data;
-
-      navigate(`/chat/${conversation.id}`);
+      navigate(`/chat/${response.data.conversation.id}`);
       toast.success(`Você iniciou uma conversa com ${friend.username}`);
     } catch (error) {
       if (error instanceof AxiosError)
