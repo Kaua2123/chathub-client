@@ -32,7 +32,7 @@ function UserCard({ user }: UserCardProps) {
         receiverId: user.id,
       });
 
-      toast(`Você enviou um pedido de amizade à ${user.username}`);
+      toast.success(`Você enviou um pedido de amizade à ${user.username}`);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);

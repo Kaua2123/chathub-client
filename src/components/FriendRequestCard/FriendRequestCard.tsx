@@ -10,15 +10,34 @@ import {
   UserAvatar,
   UserData,
 } from './styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IFriendRequest } from '../../interfaces/IFriendRequest';
+import axios from '../../services/axios';
+import { IUser } from '../../interfaces/IUser';
 
 export type FriendRequestCardProps = {
   friendRequest: IFriendRequest;
 };
 
 function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
-  const [isOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await axios.get(`/user/${friendRequest.senderId}`);
+
+        const user: IUser = response.data;
+        setUsername(user.username);
+        setIsOnline(user.is_online);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserData();
+  }, [friendRequest.senderId]);
 
   return (
     <div>
@@ -28,7 +47,7 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
             <User color="black" />
           </UserAvatar>
           <UserData>
-            <p className="username">Username</p>
+            <p className="username">{username}</p>
             <DivIsOnline>
               <Circle
                 size={16}
