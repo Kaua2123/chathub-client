@@ -19,6 +19,7 @@ import { jwtDecode } from 'jwt-decode';
 import { IToken } from '../../interfaces/IToken';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export type FriendCardProps = {
   friend: IFriend;
@@ -27,6 +28,7 @@ export type FriendCardProps = {
 function FriendCard({ friend }: FriendCardProps) {
   const [isOnline] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
   const decodedToken: IToken = jwtDecode(token as string);
@@ -36,6 +38,22 @@ function FriendCard({ friend }: FriendCardProps) {
       await axios.delete(`/user/removeFriends/${decodedToken.id}/${friend.id}`);
 
       toast.success(`Você removeu ${friend.username} da lista de amigos.`);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
+  const handleClickConversation = async () => {
+    try {
+      const response = await axios.post(
+        `/conversation/create/${decodedToken.id}/${friend.id}`,
+      );
+
+      const conversation = response.data;
+
+      navigate(`/chat/${conversation.id}`);
+      toast.success(`Você iniciou uma conversa com ${friend.username}`);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -61,15 +79,20 @@ function FriendCard({ friend }: FriendCardProps) {
               <Circle
                 size={16}
                 color="inherit"
-                fill={isOnline ? 'green' : 'gray'}
+                fill={friend.is_online ? 'green' : 'gray'}
               />
-              <p className="is-online">{isOnline ? 'Online' : 'Offline'}</p>
+              <p className="is-online">
+                {friend.is_online ? 'Online' : 'Offline'}
+              </p>
             </DivIsOnline>
           </UserData>
         </DivUser>
         <DivOptions>
           <Button>
-            <MessageSquareTextIcon size={28} />
+            <MessageSquareTextIcon
+              size={28}
+              onClick={handleClickConversation}
+            />
           </Button>
           <Button>
             <XIcon size={28} onClick={() => setIsDeleting(true)} />
