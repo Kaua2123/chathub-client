@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import { IFriendRequest } from '../../interfaces/IFriendRequest';
 import axios from '../../services/axios';
 import { IUser } from '../../interfaces/IUser';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 export type FriendRequestCardProps = {
   friendRequest: IFriendRequest;
@@ -39,6 +41,21 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
     getUserData();
   }, [friendRequest.senderId]);
 
+  const handleClickAccept = async () => {
+    try {
+      await axios.post(
+        `/friendRequest/acceptFriendRequest/${friendRequest.id}`,
+      );
+
+      toast.success(
+        `Pedido de amizade aceito. Agora você e <b>${username}</b> são amigos.`,
+      );
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
   return (
     <div>
       <Div>
@@ -59,7 +76,7 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
           </UserData>
         </DivUser>
         <DivOptions>
-          <Button>
+          <Button onClick={handleClickAccept}>
             <CircleCheckIcon size={28} />
           </Button>
           <Button>
