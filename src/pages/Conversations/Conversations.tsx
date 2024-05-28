@@ -20,26 +20,43 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Hand } from 'lucide-react';
+import axios from '../../services/axios';
+import { IToken } from '../../interfaces/IToken';
+import { jwtDecode } from 'jwt-decode';
+import { IConversation } from '../../interfaces/IConversation';
 
 function Conversations() {
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
-  const [conversations, setConversations] = useState([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ]);
+
+  const [conversations, setConversations] = useState<IConversation[]>([]);
   const orderedConversationsString = localStorage.getItem('conversations');
-  const orderedConversationsArray: number[] | null = orderedConversationsString
-    ? JSON.parse(orderedConversationsString)
-    : null;
+  const orderedConversationsArray: IConversation[] | null =
+    orderedConversationsString ? JSON.parse(orderedConversationsString) : null;
+
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const token = localStorage.getItem('token');
+  const decodedToken: IToken = jwtDecode(token as string);
+
   useEffect(() => {
-    function checkResolution() {
+    const checkResolution = () => {
       if (window.screen.width < 768) setIsMobile(true);
-    }
+    };
+
+    const getUserConversations = async () => {
+      try {
+        const response = await axios.get(`/conversation/${decodedToken.id}`);
+
+        setConversations(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     checkResolution();
-  });
+    getUserConversations();
+  }, [decodedToken.id]);
 
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
@@ -85,14 +102,36 @@ function Conversations() {
               }
             >
               {!orderedConversationsArray &&
-                conversations.map((id) => (
-                  <ConversationCard isDragging={isDragging} key={id} id={id} />
+                conversations.map((conversation, index) => (
+                  <ConversationCard
+                    isDragging={isDragging}
+                    key={index}
+                    id={conversation.id}
+                    conversation={conversation}
+                    userId={decodedToken.id}
+                  />
                 ))}
 
               {orderedConversationsArray &&
-                orderedConversationsArray.map((id) => (
-                  <ConversationCard isDragging={isDragging} key={id} id={id} />
+                orderedConversationsArray.map((conversation, index) => (
+                  <ConversationCard
+                    isDragging={isDragging}
+                    key={index}
+                    id={conversation.id}
+                    conversation={conversation}
+                    userId={decodedToken.id}
+                  />
                 ))}
+
+              {/* {conversations.map((conversation, index) => (
+                <ConversationCard
+                  isDragging={isDragging}
+                  key={index}
+                  id={index}
+                  conversation={conversation}
+                  userId={decodedToken.id}
+                />
+              ))} */}
             </SortableContext>
           </DndContext>
         </DivConversations>

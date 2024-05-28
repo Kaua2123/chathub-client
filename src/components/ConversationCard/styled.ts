@@ -8,6 +8,7 @@ export const Container = styled.div<{ $isDragging: boolean }>`
   justify-content: space-between;
   align-items: center;
   min-width: 40rem;
+  width: 10rem;
   padding: 2rem;
   border: 1px solid ${({ theme }) => theme.colors.lightBlue};
   border-radius: 1.7rem;

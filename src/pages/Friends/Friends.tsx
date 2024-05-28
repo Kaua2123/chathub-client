@@ -15,7 +15,6 @@ import {
   DivResult,
 } from './styled';
 import { jwtDecode } from 'jwt-decode';
-import { toast } from 'sonner';
 
 import axios from '../../services/axios';
 
@@ -49,7 +48,7 @@ function Friends() {
 
         setUsers(response.data);
       } catch (error) {
-        toast.error('Ocorreu um erro ao buscar usuários.');
+        console.log(error);
       }
     };
 
@@ -59,7 +58,7 @@ function Friends() {
 
         setFriendRequests(response.data);
       } catch (error) {
-        toast.error('Ocorreu um erro ao buscar pedidos de amizade do usuário.');
+        console.log(error);
       }
     };
 
@@ -71,7 +70,7 @@ function Friends() {
 
         setFriends(response.data);
       } catch (error) {
-        toast.error('Ocorreu um erro ao buscar amigos do usuário.');
+        console.log(error);
       }
     };
 
