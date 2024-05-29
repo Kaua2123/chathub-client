@@ -23,7 +23,7 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 function Chat() {
-  const { username } = useParams();
+  const { id, username } = useParams();
   const [socketInstance] = useState(socket);
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -57,8 +57,9 @@ function Chat() {
 
   const handleClickDelete = async () => {
     try {
-      await axios.delete(``);
+      await axios.delete(`/conversation/delete/${id}`);
 
+      navigate('/conversations');
       toast.success(`Você deletou essa conversa.`);
     } catch (error) {
       if (error instanceof AxiosError)
