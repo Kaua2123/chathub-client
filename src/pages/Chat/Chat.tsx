@@ -21,6 +21,9 @@ import Message from '../../components/Message/Message';
 import axios from '../../services/axios';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { IToken } from '../../interfaces/IToken';
+import { jwtDecode } from 'jwt-decode';
+import { IMessage } from '../../interfaces/IMessage';
 
 function Chat() {
   const { id, username } = useParams();
@@ -28,14 +31,25 @@ function Chat() {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [msg, setMsg] = useState('');
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const [isSender, setIsSender] = useState(false);
 
+  const token = localStorage.getItem('token');
+  const decodedToken: IToken = jwtDecode(token as string);
+
   useEffect(() => {
-    socketInstance.on('msg', (msg, socket) => {
+    const getMessagesOfAConversation = async () => {
+      const response = await axios.get(`/messages/getMessages/${id}`);
+      setMessages(response.data);
+    };
+    getMessagesOfAConversation();
+  }, [id]);
+
+  useEffect(() => {
+    socketInstance.on('msg', (objMsg: IMessage, socket) => {
       socket == socketInstance.id ? setIsSender(true) : setIsSender(false);
 
-      setMessages([...messages, msg]);
+      setMessages([...messages, objMsg]);
       window.scrollTo(0, document.body.scrollHeight);
     });
 
@@ -44,9 +58,21 @@ function Chat() {
     };
   });
 
-  const handleSubmit = () => {
-    socketInstance.emit('msg', msg /*id*/); // envia a mensagem. emite a chamada ao canal msg
-    setIsSender(true);
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('/messages/create', {
+        content: msg,
+        ConversationId: id,
+        UserId: decodedToken.id,
+      });
+
+      const objMsg = response.data;
+      socketInstance.emit('msg', objMsg /*id*/); // envia a mensagem. emite a chamada ao canal msg
+      setIsSender(true);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -86,8 +112,10 @@ function Chat() {
           <UserAvatar>
             <User color="black" />
           </UserAvatar>
-          <p>{username}</p>
-          {socketInstance ? <p>isOnline</p> : <p>isOffline</p>}
+          <div style={{ display: 'flex', flexFlow: 'column wrap' }}>
+            <p>{username}</p>
+            {socketInstance ? <p>Online</p> : <p>Offline</p>}
+          </div>
         </DivUser>
         <DivConfig>
           <TrashIcon onClick={() => setIsDeleting(true)} />
@@ -97,7 +125,7 @@ function Chat() {
       <DivMessages>
         {messages.map((message, index) => (
           <Message key={index} isSender={isSender}>
-            {message}
+            {message.content}
           </Message>
         ))}
       </DivMessages>

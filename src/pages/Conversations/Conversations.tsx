@@ -43,7 +43,7 @@ function Conversations() {
 
   useEffect(() => {
     const checkResolution = () => {
-      if (window.screen.width < 768) setIsMobile(true);
+      window.screen.width < 768 ? setIsMobile(true) : setIsMobile(false);
     };
 
     const getUserConversations = async () => {

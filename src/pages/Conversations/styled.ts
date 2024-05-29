@@ -27,7 +27,7 @@ export const Div = styled.div`
 
 export const DivConversations = styled.div<{ $isMobile?: boolean }>`
   display: flex;
-  padding: ${(props) => (props.$isMobile ? '0' : '2rem')};
+  padding: ${(props) => (props.$isMobile ? '0px' : '2rem')};
   flex-flow: ${(props) => (props.$isMobile ? 'row wrap' : 'column')};
   justify-content: ${(props) => (props.$isMobile ? 'center' : 'normal')};
   align-items: ${(props) => (props.$isMobile ? 'center' : 'normal')};
@@ -38,7 +38,7 @@ export const DivConversations = styled.div<{ $isMobile?: boolean }>`
 
   &::-webkit-scrollbar {
     width: 1.5rem;
-    border: 1px solid ${({ theme }) => theme.colors.mediumBlue};
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1.4rem;
   }
 
