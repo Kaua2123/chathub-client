@@ -29,6 +29,7 @@ function Conversations() {
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
   const [conversations, setConversations] = useState<IConversation[]>([]);
+
   const orderedConversationsString = localStorage.getItem('conversations');
   const orderedConversationsArray: IConversation[] | null =
     orderedConversationsString ? JSON.parse(orderedConversationsString) : null;
@@ -58,6 +59,9 @@ function Conversations() {
     getUserConversations();
   }, [decodedToken.id]);
 
+  const getConversationsPosition = (id: number) =>
+    conversations.findIndex((conversation) => conversation.id === id);
+
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
 
@@ -65,8 +69,8 @@ function Conversations() {
 
     if (active.id !== over.id) {
       setConversations((conversations) => {
-        const oldIndex = conversations.indexOf(active.id as number);
-        const newIndex = conversations.indexOf(over.id as number);
+        const oldIndex = getConversationsPosition(active.id as number);
+        const newIndex = getConversationsPosition(over.id as number);
 
         localStorage.setItem(
           'conversations',
@@ -122,12 +126,12 @@ function Conversations() {
                     userId={decodedToken.id}
                   />
                 ))}
-
-              {/* {conversations.map((conversation, index) => (
+              {/* 
+              {conversations.map((conversation, index) => (
                 <ConversationCard
                   isDragging={isDragging}
                   key={index}
-                  id={index}
+                  id={conversation.id}
                   conversation={conversation}
                   userId={decodedToken.id}
                 />

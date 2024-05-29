@@ -39,7 +39,6 @@ function ConversationCard({
         setUsername(conversation.Users[1].username);
       }
     };
-
     checkUserName();
   }, [conversation.Users, userId]);
 
