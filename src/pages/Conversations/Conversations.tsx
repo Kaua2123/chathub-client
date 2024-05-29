@@ -12,17 +12,18 @@ import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
 import Navbar from '../../components/Navbar/Navbar';
 import ModalCreatingGroup from '../../components/ModalCreatingGroup/ModalCreatingGroup';
+
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import {
   SortableContext,
   arrayMove,
-  horizontalListSortingStrategy,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Hand } from 'lucide-react';
+import { jwtDecode } from 'jwt-decode';
+
 import axios from '../../services/axios';
 import { IToken } from '../../interfaces/IToken';
-import { jwtDecode } from 'jwt-decode';
 import { IConversation } from '../../interfaces/IConversation';
 
 function Conversations() {
@@ -92,18 +93,14 @@ function Conversations() {
       <Div>
         <p className="title">Conversas</p>
 
-        <DivConversations>
+        <DivConversations $isMobile={isMobile}>
           <DndContext
             onDragEnd={(e) => handleDragEnd(e)}
             collisionDetection={closestCenter}
           >
             <SortableContext
               items={conversations}
-              strategy={
-                isMobile
-                  ? verticalListSortingStrategy
-                  : horizontalListSortingStrategy
-              }
+              strategy={verticalListSortingStrategy}
             >
               {!orderedConversationsArray &&
                 conversations.map((conversation, index) => (

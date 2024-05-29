@@ -25,11 +25,12 @@ export const Div = styled.div`
   }
 `;
 
-export const DivConversations = styled.div`
+export const DivConversations = styled.div<{ $isMobile?: boolean }>`
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
+  padding: ${(props) => (props.$isMobile ? '0' : '2rem')};
+  flex-flow: ${(props) => (props.$isMobile ? 'row wrap' : 'column')};
+  justify-content: ${(props) => (props.$isMobile ? 'center' : 'normal')};
+  align-items: ${(props) => (props.$isMobile ? 'center' : 'normal')};
   gap: 3rem;
   margin-top: 3.4rem;
   height: 55vh;

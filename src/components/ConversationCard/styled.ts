@@ -2,13 +2,11 @@ import styled, { keyframes } from 'styled-components';
 import { Grab } from 'lucide-react';
 
 export const Container = styled.div<{ $isDragging: boolean }>`
-  background-color: ${({ theme }) => theme.colors.mediumBlue};
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
   min-width: 40rem;
-  width: 10rem;
   padding: 2rem;
   border: 1px solid ${({ theme }) => theme.colors.lightBlue};
   border-radius: 1.7rem;

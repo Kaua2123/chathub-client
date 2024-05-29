@@ -59,6 +59,7 @@ function Chat() {
     try {
       await axios.delete(`/conversation/delete/${id}`);
 
+      localStorage.removeItem('conversations');
       navigate('/conversations');
       toast.success(`Você deletou essa conversa.`);
     } catch (error) {
