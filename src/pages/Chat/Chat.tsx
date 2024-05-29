@@ -18,9 +18,12 @@ import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import { User } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Message from '../../components/Message/Message';
+import axios from '../../services/axios';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 function Chat() {
-  const { id } = useParams();
+  const { username } = useParams();
   const [socketInstance] = useState(socket);
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -52,9 +55,25 @@ function Chat() {
     }
   };
 
+  const handleClickDelete = async () => {
+    try {
+      await axios.delete(``);
+
+      toast.success(`Você deletou essa conversa.`);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
   return (
     <div>
-      {isDeleting && <ModalDeleting setIsDeleting={setIsDeleting} />}
+      {isDeleting && (
+        <ModalDeleting
+          handleClickDelete={handleClickDelete}
+          setIsDeleting={setIsDeleting}
+        />
+      )}
       <TopContainer>
         <DivUser>
           <ArrowLeftIcon
@@ -65,7 +84,8 @@ function Chat() {
           <UserAvatar>
             <User color="black" />
           </UserAvatar>
-          <p>username chat_id: {id}</p>
+          <p>{username}</p>
+          {socketInstance ? <p>isOnline</p> : <p>isOffline</p>}
         </DivUser>
         <DivConfig>
           <TrashIcon onClick={() => setIsDeleting(true)} />

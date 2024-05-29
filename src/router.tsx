@@ -18,7 +18,7 @@ function AppRouter() {
         <Route element={<Register />} path="/register" />
         <Route element={<Login />} path="/login" />
         <Route element={<Conversations />} path="/conversations" />
-        <Route element={<Chat />} path="/chat/:id" />
+        <Route element={<Chat />} path="/chat/:id/:username" />
         <Route element={<Friends />} path="/friends" />
         <Route element={<BlockedUsers />} path="/blockedUsers" />
         <Route element={<Profile />} path="/profile" />

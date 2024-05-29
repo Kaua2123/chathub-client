@@ -67,7 +67,7 @@ function ConversationCard({
           <Container
             $isDragging={isDragging}
             onClick={() => {
-              navigate(`/chat/${id}`);
+              navigate(`/chat/${id}/${username}`);
             }}
           >
             <DivUser>
