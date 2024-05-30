@@ -6,6 +6,8 @@ import {
   MessageContent,
   UserAvatar,
 } from './styled';
+import { useState } from 'react';
+import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
 
 export type MessageProps = {
   isSender?: boolean;
@@ -13,9 +15,16 @@ export type MessageProps = {
 };
 
 function Message({ isSender, children }: MessageProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div>
-      <DivMessage $isSender={isSender}>
+      {isModalOpen && (
+        <ModalMessageOptions setIsModalOpen={setIsModalOpen}>
+          {children}
+        </ModalMessageOptions>
+      )}
+      <DivMessage $isSender={isSender} onClick={() => setIsModalOpen(true)}>
         <UserAvatar>
           <User />
         </UserAvatar>
