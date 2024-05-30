@@ -68,7 +68,23 @@ export const Input = styled.input`
 
 export const SendHorizontalIcon = styled(SendHorizontal)``;
 
-export const DivMessages = styled.div``;
+export const DivMessages = styled.div`
+  gap: 3rem;
+  margin-top: 3.4rem;
+  height: 73vh;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 1.5rem;
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.4rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.mediumBlue};
+    border-radius: 1.7rem;
+  }
+`;
 
 export const TopContainer = styled.div`
   color: ${({ theme }) => theme.colors.white};

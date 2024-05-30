@@ -32,7 +32,6 @@ function Chat() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [isSender, setIsSender] = useState(false);
 
   const token = localStorage.getItem('token');
   const decodedToken: IToken = jwtDecode(token as string);
@@ -46,9 +45,7 @@ function Chat() {
   }, [id]);
 
   useEffect(() => {
-    socketInstance.on('msg', (objMsg: IMessage, socket) => {
-      socket == socketInstance.id ? setIsSender(true) : setIsSender(false);
-
+    socketInstance.on('msg', (objMsg: IMessage) => {
       setMessages([...messages, objMsg]);
       window.scrollTo(0, document.body.scrollHeight);
     });
@@ -68,7 +65,7 @@ function Chat() {
 
       const objMsg = response.data;
       socketInstance.emit('msg', objMsg /*id*/); // envia a mensagem. emite a chamada ao canal msg
-      setIsSender(true);
+      setMessages([...messages, objMsg]);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -124,8 +121,8 @@ function Chat() {
 
       <DivMessages>
         {messages.map((message, index) => (
-          <Message key={index} isSender={isSender}>
-            {message.content}
+          <Message key={index} isSender>
+            {`${socketInstance.id} digitou ${message.content}`}
           </Message>
         ))}
       </DivMessages>
