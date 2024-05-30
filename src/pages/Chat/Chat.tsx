@@ -13,25 +13,26 @@ import {
   TrashIcon,
   UserAvatar,
 } from './styled';
-import { socket } from '../../socket';
-import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import { User } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Message from '../../components/Message/Message';
-import axios from '../../services/axios';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+
 import { IToken } from '../../interfaces/IToken';
 import { jwtDecode } from 'jwt-decode';
 import { IMessage } from '../../interfaces/IMessage';
+import { socket } from '../../socket';
+import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
+import Message from '../../components/Message/Message';
+import axios from '../../services/axios';
 
 function Chat() {
   const { id, username } = useParams();
-  const [socketInstance] = useState(socket);
-  const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [socketInstance] = useState(socket);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
   const decodedToken: IToken = jwtDecode(token as string);
@@ -45,27 +46,31 @@ function Chat() {
   }, [id]);
 
   useEffect(() => {
-    socketInstance.on('msg', (objMsg: IMessage) => {
+    socketInstance.on('receivedMsg', (objMsg: IMessage) => {
       setMessages([...messages, objMsg]);
-      window.scrollTo(0, document.body.scrollHeight);
     });
 
     return () => {
-      socketInstance.off('msg'); // desligando a conexão quando o componente for desmontado
+      socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
     };
   });
 
   const handleSubmit = async () => {
     try {
+      if (!msg) return;
+
       const response = await axios.post('/messages/create', {
         content: msg,
+        is_sender: true,
         ConversationId: id,
         UserId: decodedToken.id,
       });
 
       const objMsg = response.data;
-      socketInstance.emit('msg', objMsg /*id*/); // envia a mensagem. emite a chamada ao canal msg
       setMessages([...messages, objMsg]);
+
+      socketInstance.emit('msg', objMsg);
+      window.scrollTo(0, document.body.scrollHeight);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -121,8 +126,15 @@ function Chat() {
 
       <DivMessages>
         {messages.map((message, index) => (
-          <Message key={index} isSender>
-            {`${socketInstance.id} digitou ${message.content}`}
+          <Message
+            key={index}
+            isSender={
+              decodedToken.id == message.UserId
+                ? message.is_sender
+                : !message.is_sender
+            }
+          >
+            {message.content}
           </Message>
         ))}
       </DivMessages>

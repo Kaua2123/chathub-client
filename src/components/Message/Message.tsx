@@ -8,7 +8,7 @@ import {
 } from './styled';
 
 export type MessageProps = {
-  isSender: boolean;
+  isSender?: boolean;
   children: string;
 };
 
