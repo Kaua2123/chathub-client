@@ -93,37 +93,38 @@ function Conversations() {
       <Div>
         <p className="title">Conversas</p>
 
-        <DivConversations $isMobile={isMobile}>
-          <DndContext
-            onDragEnd={(e) => handleDragEnd(e)}
-            collisionDetection={closestCenter}
-          >
-            <SortableContext
-              items={conversations}
-              strategy={verticalListSortingStrategy}
+        {conversations && conversations.length > 0 ? (
+          <DivConversations $isMobile={isMobile}>
+            <DndContext
+              onDragEnd={(e) => handleDragEnd(e)}
+              collisionDetection={closestCenter}
             >
-              {!orderedConversationsArray &&
-                conversations.map((conversation, index) => (
-                  <ConversationCard
-                    isDragging={isDragging}
-                    key={index}
-                    id={conversation.id}
-                    conversation={conversation}
-                    userId={decodedToken.id}
-                  />
-                ))}
+              <SortableContext
+                items={conversations}
+                strategy={verticalListSortingStrategy}
+              >
+                {!orderedConversationsArray &&
+                  conversations.map((conversation, index) => (
+                    <ConversationCard
+                      isDragging={isDragging}
+                      key={index}
+                      id={conversation.id}
+                      conversation={conversation}
+                      userId={decodedToken.id}
+                    />
+                  ))}
 
-              {orderedConversationsArray &&
-                orderedConversationsArray.map((conversation, index) => (
-                  <ConversationCard
-                    isDragging={isDragging}
-                    key={index}
-                    id={conversation.id}
-                    conversation={conversation}
-                    userId={decodedToken.id}
-                  />
-                ))}
-              {/* 
+                {orderedConversationsArray &&
+                  orderedConversationsArray.map((conversation, index) => (
+                    <ConversationCard
+                      isDragging={isDragging}
+                      key={index}
+                      id={conversation.id}
+                      conversation={conversation}
+                      userId={decodedToken.id}
+                    />
+                  ))}
+                {/* 
               {conversations.map((conversation, index) => (
                 <ConversationCard
                   isDragging={isDragging}
@@ -133,9 +134,22 @@ function Conversations() {
                   userId={decodedToken.id}
                 />
               ))} */}
-            </SortableContext>
-          </DndContext>
-        </DivConversations>
+              </SortableContext>
+            </DndContext>
+          </DivConversations>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              flexFlow: 'row wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '40vh',
+            }}
+          >
+            <h4>Não encontramos conversas por aqui.</h4>
+          </div>
+        )}
       </Div>
       <DivButtons>
         <FixedButton onClick={() => setIsCreatingGroup(true)}>

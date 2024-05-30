@@ -47,7 +47,8 @@ function UserCard({ user }: UserCardProps) {
         `/conversation/create/${decodedToken.id}/${user.id}`,
       );
 
-      navigate(`/chat/${response.data.conversation.id}`);
+      navigate(`/chat/${response.data.conversation.id}/${user.username}`);
+
       toast.success(`Você iniciou uma conversa com ${user.username}`);
     } catch (error) {
       if (error instanceof AxiosError)

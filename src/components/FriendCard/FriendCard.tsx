@@ -49,7 +49,7 @@ function FriendCard({ friend }: FriendCardProps) {
         `/conversation/create/${decodedToken.id}/${friend.id}`,
       );
 
-      navigate(`/chat/${response.data.conversation.id}`);
+      navigate(`/chat/${response.data.conversation.id}/${friend.username}`);
       toast.success(`Você iniciou uma conversa com ${friend.username}`);
     } catch (error) {
       if (error instanceof AxiosError)
