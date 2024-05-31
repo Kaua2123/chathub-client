@@ -124,16 +124,6 @@ function Conversations() {
                       userId={decodedToken.id}
                     />
                   ))}
-                {/* 
-              {conversations.map((conversation, index) => (
-                <ConversationCard
-                  isDragging={isDragging}
-                  key={index}
-                  id={conversation.id}
-                  conversation={conversation}
-                  userId={decodedToken.id}
-                />
-              ))} */}
               </SortableContext>
             </DndContext>
           </DivConversations>
