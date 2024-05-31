@@ -61,7 +61,7 @@ export const CloseButton = styled.button`
   }
 `;
 
-export const Div = styled.div`
+export const Div = styled.div<{ $isUpdating?: boolean }>`
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -83,6 +83,7 @@ export const Div = styled.div`
       transition: transform 0.3s;
       font-family: Raleway;
       font-size: 1.8rem;
+      border: none;
     }
   }
 `;
@@ -98,9 +99,9 @@ export const Button = styled.button`
   font-family: 'Raleway';
   font-size: 1.8rem;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 0.6rem;
   cursor: pointer;
   transition: transform 0.2s;
   color: black;

@@ -9,6 +9,8 @@ import {
   Modal,
 } from './styled';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
+import { Pencil } from 'lucide-react';
 
 export type ModalMessageOptions = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,11 +23,21 @@ function ModalMessageOptions({
   children,
   id,
 }: ModalMessageOptions) {
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     if ((e.target as HTMLDivElement).id === 'modal') {
       setIsModalOpen(false);
+    }
+  };
+
+  const updateMessage = async () => {
+    try {
+      console.log('foi');
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -52,20 +64,45 @@ function ModalMessageOptions({
               color="white"
             />
           </CloseButton>
-          <Div>
+          <Div $isUpdating={isUpdating}>
             <div className="msg-section">
-              <div className="message">{children}</div>
-              <h6 style={{ marginBottom: '5rem' }}>O que quer fazer?</h6>
+              {!isUpdating ? (
+                <>
+                  <div className="message">{children}</div>
+                  <h6 style={{ marginBottom: '5rem' }}>O que quer fazer?</h6>
+                </>
+              ) : (
+                <>
+                  <input value={children} className="message"></input>
+                  <h6
+                    style={{
+                      marginBottom: '5rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4rem',
+                    }}
+                  >
+                    Editando...
+                    <Pencil size={20} />
+                  </h6>
+                </>
+              )}
             </div>
           </Div>
           <Div>
             <Button
-              onClick={deleteMessage}
+              onClick={!isUpdating ? deleteMessage : () => setIsUpdating(false)}
               className="cancel-delete-friend-btn"
             >
-              Excluir
+              {isUpdating && <p>Cancelar</p>}
+              {!isUpdating && <p>Excluir</p>}
             </Button>
-            <Button className="delete-friend-btn">Editar</Button>
+            <Button
+              className="delete-friend-btn"
+              onClick={!isUpdating ? () => setIsUpdating(true) : updateMessage}
+            >
+              Editar
+            </Button>
           </Div>
         </Container>
       </Modal>
