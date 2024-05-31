@@ -74,6 +74,7 @@ export const Div = styled.div`
     gap: 3rem;
 
     .message {
+      box-shadow: 2px 2px 20px 4px rgba(0, 0, 0, 0.4);
       background-color: ${({ theme }) => theme.colors.white};
       padding: 2rem;
       border-radius: 0.9rem;
@@ -87,7 +88,7 @@ export const Div = styled.div`
 `;
 
 export const Button = styled.button`
-  background-color: ${({ theme }) => theme.colors.lighterBlue};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 1.7rem;
   color: ${({ theme }) => theme.colors.white};
   padding: 1.5rem 2rem;
@@ -102,10 +103,8 @@ export const Button = styled.button`
   justify-content: center;
   cursor: pointer;
   transition: transform 0.2s;
-
   color: black;
   width: 18rem;
-  background-color: ${({ theme }) => theme.colors.white};
 
   &:hover {
     transform: scale(1.05);

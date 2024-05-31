@@ -12,15 +12,16 @@ import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
 export type MessageProps = {
   isSender?: boolean;
   children: string;
+  id: number;
 };
 
-function Message({ isSender, children }: MessageProps) {
+function Message({ isSender, children, id }: MessageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div>
       {isModalOpen && (
-        <ModalMessageOptions setIsModalOpen={setIsModalOpen}>
+        <ModalMessageOptions id={id} setIsModalOpen={setIsModalOpen}>
           {children}
         </ModalMessageOptions>
       )}

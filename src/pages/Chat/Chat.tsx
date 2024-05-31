@@ -127,6 +127,7 @@ function Chat() {
       <DivMessages>
         {messages.map((message, index) => (
           <Message
+            id={message.id}
             key={index}
             isSender={
               decodedToken.id == message.UserId

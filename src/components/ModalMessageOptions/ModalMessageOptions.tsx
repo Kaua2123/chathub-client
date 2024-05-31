@@ -1,3 +1,5 @@
+import { toast } from 'sonner';
+import axios from '../../services/axios';
 import {
   Button,
   CircleXIcon,
@@ -6,21 +8,36 @@ import {
   Div,
   Modal,
 } from './styled';
+import { AxiosError } from 'axios';
 
 export type ModalMessageOptions = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: string;
+  id: number;
 };
 
 function ModalMessageOptions({
   setIsModalOpen,
   children,
+  id,
 }: ModalMessageOptions) {
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     if ((e.target as HTMLDivElement).id === 'modal') {
       setIsModalOpen(false);
+    }
+  };
+
+  const deleteMessage = async () => {
+    try {
+      await axios.delete(`/messages/delete/${id}`);
+
+      setIsModalOpen(false);
+      toast.success('Mensagem deletada com sucesso.');
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
     }
   };
 
@@ -43,7 +60,7 @@ function ModalMessageOptions({
           </Div>
           <Div>
             <Button
-              onClick={() => setIsModalOpen(false)}
+              onClick={deleteMessage}
               className="cancel-delete-friend-btn"
             >
               Excluir
