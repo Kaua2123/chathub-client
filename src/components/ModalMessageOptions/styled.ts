@@ -1,4 +1,4 @@
-import { Image, X } from 'lucide-react';
+import { Image, Pencil, X } from 'lucide-react';
 import styled, { keyframes } from 'styled-components';
 
 export const Modal = styled.div`
@@ -150,5 +150,36 @@ export const GroupData = styled.div`
   align-items: flex-start;
 `;
 
+export const H6 = styled.h6`
+  margin-bottom: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+`;
+
 export const CircleXIcon = styled(X)``;
 export const ImageIcon = styled(Image)``;
+
+const waving = keyframes`
+  0% { transform: rotate(0deg); }
+  5% { transform: rotate(3deg); }
+  10% { transform: rotate(7deg); }
+  15% { transform: rotate(10deg); }
+  20% { transform: rotate(13deg); }
+  25% { transform: rotate(15deg); }
+  30% { transform: rotate(13deg); }
+  35% { transform: rotate(10deg); }
+  40% { transform: rotate(7deg); }
+  45% { transform: rotate(3deg); }
+  50% { transform: rotate(0deg); }
+  55% { transform: rotate(-3deg); }
+  60% { transform: rotate(-7deg); }
+  65% { transform: rotate(-10deg); }
+  70% { transform: rotate(-13deg); }
+  75% { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+`;
+
+export const WavingPencilIcon = styled(Pencil)`
+  animation: ${waving} 1s infinite;
+`;

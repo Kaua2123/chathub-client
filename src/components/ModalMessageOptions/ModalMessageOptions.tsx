@@ -6,11 +6,12 @@ import {
   CloseButton,
   Container,
   Div,
+  H6,
   Modal,
+  WavingPencilIcon,
 } from './styled';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
 
 export type ModalMessageOptions = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,17 +75,10 @@ function ModalMessageOptions({
               ) : (
                 <>
                   <input value={children} className="message"></input>
-                  <h6
-                    style={{
-                      marginBottom: '5rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4rem',
-                    }}
-                  >
+                  <H6>
                     Editando...
-                    <Pencil size={20} />
-                  </h6>
+                    <WavingPencilIcon size={20} />
+                  </H6>
                 </>
               )}
             </div>
