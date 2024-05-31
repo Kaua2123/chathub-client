@@ -7,6 +7,7 @@ import {
   Container,
   Div,
   H6,
+  Input,
   Modal,
   WavingPencilIcon,
 } from './styled';
@@ -49,6 +50,12 @@ function ModalMessageOptions({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      updateMessage();
+    }
+  };
+
   const deleteMessage = async () => {
     try {
       await axios.delete(`/messages/delete/${id}`);
@@ -81,11 +88,12 @@ function ModalMessageOptions({
                 </>
               ) : (
                 <>
-                  <input
+                  <Input
                     onChange={(e) => setContent(e.target.value)}
                     defaultValue={children}
                     className="message"
-                  ></input>
+                    onKeyDown={(e) => handleKeyDown(e)}
+                  ></Input>
                   <H6>
                     Editando...
                     <WavingPencilIcon size={20} />
