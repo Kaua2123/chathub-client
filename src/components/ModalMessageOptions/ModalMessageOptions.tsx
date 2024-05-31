@@ -25,6 +25,7 @@ function ModalMessageOptions({
   id,
 }: ModalMessageOptions) {
   const [isUpdating, setIsUpdating] = useState(false);
+  const [content, setContent] = useState('');
 
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -36,9 +37,15 @@ function ModalMessageOptions({
 
   const updateMessage = async () => {
     try {
-      console.log('foi');
+      await axios.put(`/messages/update/${id}`, {
+        content,
+        is_updated: true,
+      });
+
+      toast.success('Mensagem atualizada com sucesso.');
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
     }
   };
 
@@ -74,7 +81,11 @@ function ModalMessageOptions({
                 </>
               ) : (
                 <>
-                  <input value={children} className="message"></input>
+                  <input
+                    onChange={(e) => setContent(e.target.value)}
+                    defaultValue={children}
+                    className="message"
+                  ></input>
                   <H6>
                     Editando...
                     <WavingPencilIcon size={20} />

@@ -129,6 +129,7 @@ function Chat() {
           <Message
             id={message.id}
             key={index}
+            isUpdated={message.is_updated}
             isSender={
               decodedToken.id == message.UserId
                 ? message.is_sender

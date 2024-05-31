@@ -4,6 +4,7 @@ import {
   Div,
   DivMessage,
   MessageContent,
+  UpdatedMessage,
   UserAvatar,
 } from './styled';
 import { useState } from 'react';
@@ -11,11 +12,12 @@ import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
 
 export type MessageProps = {
   isSender?: boolean;
+  isUpdated: boolean;
   children: string;
   id: number;
 };
 
-function Message({ isSender, children, id }: MessageProps) {
+function Message({ isSender, children, id, isUpdated }: MessageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -33,6 +35,11 @@ function Message({ isSender, children, id }: MessageProps) {
           <Div>
             <MessageContent $isSender={isSender}>{children}</MessageContent>
           </Div>
+          {isUpdated && (
+            <UpdatedMessage>
+              <p>Editado</p>
+            </UpdatedMessage>
+          )}
         </Container>
       </DivMessage>
     </div>
