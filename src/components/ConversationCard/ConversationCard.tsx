@@ -11,7 +11,7 @@ export type ConversationCardProps = {
   id: number;
   isDragging: boolean;
   conversation: IConversation;
-  userId: number;
+  userId: number | undefined;
 };
 
 function ConversationCard({

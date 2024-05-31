@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import {
   CirclePlusIcon,
@@ -20,11 +21,11 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Hand } from 'lucide-react';
-import { jwtDecode } from 'jwt-decode';
 
 import axios from '../../services/axios';
-import { IToken } from '../../interfaces/IToken';
 import { IConversation } from '../../interfaces/IConversation';
+import { tokenDecoder } from '../../utils/tokenDecoder';
+import { useNavigate } from 'react-router-dom';
 
 function Conversations() {
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
@@ -37,18 +38,21 @@ function Conversations() {
 
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
-  const decodedToken: IToken = jwtDecode(token as string);
+  const decodedToken = tokenDecoder(token);
 
   useEffect(() => {
+    if (!decodedToken) return navigate('/');
+
     const checkResolution = () => {
       window.screen.width < 768 ? setIsMobile(true) : setIsMobile(false);
     };
 
     const getUserConversations = async () => {
       try {
-        const response = await axios.get(`/conversation/${decodedToken.id}`);
+        const response = await axios.get(`/conversation/${decodedToken?.id}`);
 
         setConversations(response.data);
       } catch (error) {
@@ -58,7 +62,7 @@ function Conversations() {
 
     checkResolution();
     getUserConversations();
-  }, [decodedToken.id]);
+  }, [decodedToken?.id]);
 
   const getConversationsPosition = (id: number) =>
     conversations.findIndex((conversation) => conversation.id === id);
@@ -110,7 +114,7 @@ function Conversations() {
                       key={index}
                       id={conversation.id}
                       conversation={conversation}
-                      userId={decodedToken.id}
+                      userId={decodedToken?.id}
                     />
                   ))}
 
@@ -121,7 +125,7 @@ function Conversations() {
                       key={index}
                       id={conversation.id}
                       conversation={conversation}
-                      userId={decodedToken.id}
+                      userId={decodedToken?.id}
                     />
                   ))}
               </SortableContext>

@@ -1,5 +1,9 @@
-export interface IToken {
-  iat: number;
-  id: number;
-  username: string;
+import * as jwtDecode from 'jwt-decode';
+
+declare module 'jwt-decode' {
+  export interface IToken extends jwtDecode.JwtPayload {
+    iat?: number;
+    id?: number;
+    username?: string;
+  }
 }

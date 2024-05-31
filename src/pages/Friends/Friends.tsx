@@ -14,14 +14,14 @@ import {
   Input,
   DivResult,
 } from './styled';
-import { jwtDecode } from 'jwt-decode';
 
 import axios from '../../services/axios';
 
 import { IFriend } from '../../interfaces/IFriend';
 import { IFriendRequest } from '../../interfaces/IFriendRequest';
 import { IUser } from '../../interfaces/IUser';
-import { IToken } from '../../interfaces/IToken';
+import { tokenDecoder } from '../../utils/tokenDecoder';
+import { useNavigate } from 'react-router-dom';
 
 function Friends() {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -37,11 +37,14 @@ function Friends() {
 
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [isFiltering, setIsFiltering] = useState(false);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
-  const decodedToken: IToken = jwtDecode(token as string);
+  const decodedToken = tokenDecoder(token);
 
   useEffect(() => {
+    if (!decodedToken) return navigate('/');
+
     const getUsers = async () => {
       try {
         const response = await axios.get('/user');
@@ -54,7 +57,7 @@ function Friends() {
 
     const getFriendRequests = async () => {
       try {
-        const response = await axios.get(`/friendRequest/${decodedToken.id}`);
+        const response = await axios.get(`/friendRequest/${decodedToken?.id}`);
 
         setFriendRequests(response.data);
       } catch (error) {
@@ -65,7 +68,7 @@ function Friends() {
     const getFriends = async () => {
       try {
         const response = await axios.get(
-          `/user/getUserFriends/${decodedToken.id}`,
+          `/user/getUserFriends/${decodedToken?.id}`,
         );
 
         setFriends(response.data);
@@ -81,7 +84,7 @@ function Friends() {
     if (users.length > 0) setHasUsers(true);
     if (friendRequests.length > 0) setHasFriendsRequests(true);
     if (friends.length > 0) setHasFriends(true);
-  }, [decodedToken.id, friendRequests.length, users.length, friends.length]);
+  }, [friendRequests.length, users.length, friends.length]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

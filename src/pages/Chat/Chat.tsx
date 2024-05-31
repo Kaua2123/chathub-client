@@ -18,13 +18,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
-import { IToken } from '../../interfaces/IToken';
-import { jwtDecode } from 'jwt-decode';
 import { IMessage } from '../../interfaces/IMessage';
 import { socket } from '../../socket';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import axios from '../../services/axios';
+import { tokenDecoder } from '../../utils/tokenDecoder';
 
 function Chat() {
   const { id, username } = useParams();
@@ -35,7 +34,7 @@ function Chat() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
-  const decodedToken: IToken = jwtDecode(token as string);
+  const decodedToken = tokenDecoder(token);
 
   useEffect(() => {
     const getMessagesOfAConversation = async () => {
@@ -63,7 +62,7 @@ function Chat() {
         content: msg,
         is_sender: true,
         ConversationId: id,
-        UserId: decodedToken.id,
+        UserId: decodedToken?.id,
       });
 
       const objMsg = response.data;
@@ -131,7 +130,7 @@ function Chat() {
             key={index}
             isUpdated={message.is_updated}
             isSender={
-              decodedToken.id == message.UserId
+              decodedToken?.id == message.UserId
                 ? message.is_sender
                 : !message.is_sender
             }
