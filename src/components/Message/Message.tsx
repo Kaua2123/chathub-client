@@ -20,16 +20,6 @@ export type MessageProps = {
 function Message({ isSender, children, id, isUpdated }: MessageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOutsideClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    if ((e.target as HTMLDivElement).id === 'div-message') {
-      setIsModalOpen(false);
-    } else {
-      setIsModalOpen(true);
-    }
-  };
-
   return (
     <div>
       {isModalOpen && (
@@ -40,7 +30,9 @@ function Message({ isSender, children, id, isUpdated }: MessageProps) {
       <DivMessage
         id="div-message"
         $isSender={isSender}
-        onClick={handleOutsideClick}
+        onClick={
+          isSender ? () => setIsModalOpen(true) : () => setIsModalOpen(false)
+        }
       >
         <UserAvatar>
           <User />

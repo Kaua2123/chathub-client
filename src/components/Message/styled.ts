@@ -40,7 +40,7 @@ export const DivMessage = styled.div<{ $isSender?: boolean }>`
 
 export const UpdatedMessage = styled.div`
   font-family: Raleway;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.darkGray};
   font-size: 1.3rem;
 `;
 
