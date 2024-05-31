@@ -28,6 +28,7 @@ import { tokenDecoder } from '../../utils/tokenDecoder';
 function Chat() {
   const { id, username } = useParams();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUserTyping, setIsUserTyping] = useState(false);
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socketInstance] = useState(socket);
@@ -48,15 +49,24 @@ function Chat() {
     socketInstance.on('receivedMsg', (objMsg: IMessage) => {
       setMessages([...messages, objMsg]);
     });
+    socketInstance.on('userTyping', (isTyping: boolean) => {
+      isTyping ? setIsUserTyping(true) : setIsUserTyping(false);
+    });
 
     return () => {
       socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
+      socketInstance.off('userTyping');
     };
   });
+
+  useEffect(() => {
+    msg.length > 0 ? socket.emit('typing', true) : socket.emit('typing', false);
+  }, [msg]);
 
   const handleSubmit = async () => {
     try {
       if (!msg) return;
+      const input: HTMLInputElement | null = document.querySelector('.input');
 
       const response = await axios.post('/messages/create', {
         content: msg,
@@ -70,6 +80,7 @@ function Chat() {
 
       socketInstance.emit('msg', objMsg);
       window.scrollTo(0, document.body.scrollHeight);
+      input ? (input.value = '') : '';
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -93,6 +104,10 @@ function Chat() {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
     }
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMsg(e.target.value);
   };
 
   return (
@@ -141,10 +156,11 @@ function Chat() {
       </DivMessages>
 
       <Container>
+        {isUserTyping && <h6>{username} está digitando...</h6>}
         <Div>
           <Input
             className="input"
-            onChange={(e) => setMsg(e.target.value)}
+            onChange={handleOnChange}
             type="text"
             placeholder="Envie algo"
             onKeyDown={(e) => handleKeyPress(e)}
