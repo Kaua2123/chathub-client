@@ -29,7 +29,7 @@ function Chat() {
   const { id, username } = useParams();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState<string | boolean>('');
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [socketInstance] = useState(socket);
   const navigate = useNavigate();
@@ -42,6 +42,7 @@ function Chat() {
       const response = await axios.get(`/messages/getMessages/${id}`);
       setMessages(response.data);
     };
+
     getMessagesOfAConversation();
   }, [id]);
 
@@ -49,6 +50,7 @@ function Chat() {
     socketInstance.on('receivedMsg', (objMsg: IMessage) => {
       setMessages([...messages, objMsg]);
     });
+
     socketInstance.on('userTyping', (isTyping: boolean) => {
       isTyping ? setIsUserTyping(true) : setIsUserTyping(false);
     });
@@ -59,7 +61,7 @@ function Chat() {
   });
 
   useEffect(() => {
-    msg.length > 0 ? socket.emit('typing', true) : socket.emit('typing', false);
+    msg ? socket.emit('typing', true) : socket.emit('typing', false);
   }, [msg]);
 
   const handleSubmit = async () => {
@@ -80,7 +82,9 @@ function Chat() {
       setMessages([...messages, objMsg]);
 
       socketInstance.emit('msg', objMsg);
+
       divMessages ? divMessages.scrollTo(0, divMessages.scrollHeight) : '';
+      setMsg(false);
       input ? (input.value = '') : '';
     } catch (error) {
       if (error instanceof AxiosError)
@@ -100,6 +104,7 @@ function Chat() {
 
       localStorage.removeItem('conversations');
       navigate('/conversations');
+
       toast.success(`Você deletou essa conversa.`);
     } catch (error) {
       if (error instanceof AxiosError)
@@ -131,9 +136,10 @@ function Chat() {
           </UserAvatar>
           <div style={{ display: 'flex', flexFlow: 'column wrap' }}>
             <p>{username}</p>
-            {socketInstance ? <p>Online</p> : <p>Offline</p>}
+            {/* {socketInstance ? <p>Online</p> : <p>Offline</p>} */}
           </div>
         </DivUser>
+
         <DivConfig>
           <TrashIcon onClick={() => setIsDeleting(true)} />
         </DivConfig>
@@ -157,7 +163,11 @@ function Chat() {
       </DivMessages>
 
       <Container>
-        {isUserTyping && <h6>{username} está digitando...</h6>}
+        {isUserTyping && (
+          <p className="is-typing">
+            <b>{username}</b> está digitando...
+          </p>
+        )}
         <Div>
           <Input
             className="input"

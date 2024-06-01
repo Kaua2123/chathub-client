@@ -4,7 +4,24 @@ import {
   EllipsisVertical,
   Trash,
 } from 'lucide-react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const typingFade = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  75% {
+    opacity: 0.8;
+  }
+`;
 
 export const Container = styled.div`
   position: fixed;
@@ -18,6 +35,16 @@ export const Container = styled.div`
   font-family: 'Raleway';
   width: 100%;
   background-color: ${({ theme }) => theme.colors.darkBlue};
+
+  .is-typing {
+    z-index: 0;
+    position: absolute;
+    left: 40px;
+    top: -0px;
+    color: ${({ theme }) => theme.colors.darkGray};
+    font-size: 14px;
+    animation: ${typingFade} 3s infinite;
+  }
 `;
 
 export const Div = styled.div`
