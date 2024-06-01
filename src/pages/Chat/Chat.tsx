@@ -55,7 +55,6 @@ function Chat() {
 
     return () => {
       socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
-      socketInstance.off('userTyping');
     };
   });
 
@@ -67,6 +66,8 @@ function Chat() {
     try {
       if (!msg) return;
       const input: HTMLInputElement | null = document.querySelector('.input');
+      const divMessages: HTMLDivElement | null =
+        document.querySelector('.div-messages');
 
       const response = await axios.post('/messages/create', {
         content: msg,
@@ -79,7 +80,7 @@ function Chat() {
       setMessages([...messages, objMsg]);
 
       socketInstance.emit('msg', objMsg);
-      window.scrollTo(0, document.body.scrollHeight);
+      divMessages ? divMessages.scrollTo(0, divMessages.scrollHeight) : '';
       input ? (input.value = '') : '';
     } catch (error) {
       if (error instanceof AxiosError)
@@ -138,7 +139,7 @@ function Chat() {
         </DivConfig>
       </TopContainer>
 
-      <DivMessages>
+      <DivMessages className="div-messages">
         {messages.map((message, index) => (
           <Message
             id={message.id}
