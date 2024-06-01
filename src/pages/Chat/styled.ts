@@ -53,6 +53,12 @@ export const Div = styled.div`
   gap: 2rem;
 `;
 
+export const DivIsOnline = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
 export const Button = styled.button`
   border: 1px solid white;
   background-color: ${({ theme }) => theme.colors.white};

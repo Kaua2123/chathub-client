@@ -13,7 +13,7 @@ import {
   TrashIcon,
   UserAvatar,
 } from './styled';
-import { User } from 'lucide-react';
+import { Circle, User } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
@@ -27,12 +27,14 @@ import { tokenDecoder } from '../../utils/tokenDecoder';
 
 function Chat() {
   const { id, username } = useParams();
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isUserTyping, setIsUserTyping] = useState(false);
-  const [msg, setMsg] = useState<string | boolean>('');
-  const [messages, setMessages] = useState<IMessage[]>([]);
   const [socketInstance] = useState(socket);
   const navigate = useNavigate();
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isUserTyping, setIsUserTyping] = useState(false);
+  const [isUserOnline, setIsUserOnline] = useState(false);
+  const [msg, setMsg] = useState<string | boolean>('');
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   const token = localStorage.getItem('token');
   const decodedToken = tokenDecoder(token);
@@ -55,10 +57,18 @@ function Chat() {
       isTyping ? setIsUserTyping(true) : setIsUserTyping(false);
     });
 
+    socketInstance.on('userOnline', (isOnline: boolean) => {
+      isOnline ? setIsUserOnline(true) : setIsUserOnline(false);
+    });
+
     return () => {
       socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
     };
   });
+
+  useEffect(() => {
+    token ? socket.emit('isOnline', true) : socket.emit('isOnline', false);
+  }, [token]);
 
   useEffect(() => {
     msg ? socket.emit('typing', true) : socket.emit('typing', false);
@@ -112,10 +122,6 @@ function Chat() {
     }
   };
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMsg(e.target.value);
-  };
-
   return (
     <div>
       {isDeleting && (
@@ -136,6 +142,24 @@ function Chat() {
           </UserAvatar>
           <div style={{ display: 'flex', flexFlow: 'column wrap' }}>
             <p>{username}</p>
+            <div
+              style={{
+                display: 'flex',
+                flexFlow: 'row wrap',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+            >
+              <Circle
+                size={16}
+                color="inherit"
+                fill={isUserOnline ? '#629B44' : 'gray'}
+              />
+              <p className="is-online" style={{ fontSize: '1.4rem' }}>
+                {isUserOnline ? 'Online' : 'Offline'}
+              </p>
+            </div>
+
             {/* {socketInstance ? <p>Online</p> : <p>Offline</p>} */}
           </div>
         </DivUser>
@@ -171,7 +195,7 @@ function Chat() {
         <Div>
           <Input
             className="input"
-            onChange={handleOnChange}
+            onChange={(e) => setMsg(e.target.value)}
             type="text"
             placeholder="Envie algo"
             onKeyDown={(e) => handleKeyPress(e)}
