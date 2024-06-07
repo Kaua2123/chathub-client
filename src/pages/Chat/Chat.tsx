@@ -19,11 +19,12 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 import { IMessage } from '../../interfaces/IMessage';
-import { socket } from '../../socket';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import axios from '../../services/axios';
 import { tokenDecoder } from '../../utils/tokenDecoder';
+import { socket } from '../../socket';
+import { IOnlineUsers } from '../../interfaces/IOnlineUsers';
 
 function Chat() {
   const { id, username } = useParams();
@@ -32,21 +33,67 @@ function Chat() {
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
-  const [isUserOnline, setIsUserOnline] = useState(false);
   const [msg, setMsg] = useState<string | boolean>('');
+  const [recipientId, setRecipientId] = useState(0);
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
 
   const token = localStorage.getItem('token');
   const decodedToken = tokenDecoder(token);
+  const isOnline = onlineUsers.some((user) => user.userId === recipientId);
+  console.log(isOnline);
+
+  // const updateStatusFromUser = async (onlineUsers: IOnlineUsers[]) => {
+  //   try {
+  //     if (!decodedToken?.is_online) {
+  //       onlineUsers.forEach((user) => {
+  //         axios.put(`/user/update/${user.userId}`, {
+  //           is_online: true,
+  //         });
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
+    const getRecipientId = async () => {
+      try {
+        const response = await axios.get(
+          `/conversation/show/${decodedToken?.id}/${id}`,
+        );
+
+        response.data[0].Users[0].users_conversations.UserId !==
+        decodedToken?.id
+          ? setRecipientId(response.data[0].Users[0].users_conversations.UserId)
+          : setRecipientId(
+              response.data[0].Users[1].users_conversations.UserId,
+            );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const getMessagesOfAConversation = async () => {
-      const response = await axios.get(`/messages/getMessages/${id}`);
-      setMessages(response.data);
+      try {
+        const response = await axios.get(`/messages/getMessages/${id}`);
+        setMessages(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     getMessagesOfAConversation();
+    getRecipientId();
   }, [id]);
+
+  // const checkIfUserIsOnline = (onlineUsers: IOnlineUsers[]) => {
+  //   console.log(recipientId);
+  //   const isOnline = onlineUsers?.some((user) => user.userId === recipientId);
+  //   console.log(isOnline);
+  //   setIsUserOnline(isOnline);
+  // };
 
   useEffect(() => {
     socketInstance.on('receivedMsg', (objMsg: IMessage) => {
@@ -54,25 +101,30 @@ function Chat() {
     });
 
     socketInstance.on('userTyping', (isTyping: boolean) => {
-      isTyping ? setIsUserTyping(true) : setIsUserTyping(false);
+      setIsUserTyping(isTyping);
     });
 
-    socketInstance.on('userOnline', (isOnline: boolean) => {
-      isOnline ? setIsUserOnline(true) : setIsUserOnline(false);
+    socketInstance.on('onlineUsers', (onlineUsers) => {
+      console.log('onlineUsers: ', onlineUsers);
+      setOnlineUsers(onlineUsers);
+
+      // updateStatusFromUser(onlineUsers);
     });
 
     return () => {
       socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
+      socketInstance.off('userTyping');
+      socketInstance.off('onlineUsers');
     };
-  });
-
-  useEffect(() => {
-    token ? socket.emit('isOnline', true) : socket.emit('isOnline', false);
-  }, [token]);
+  }, [socketInstance]);
 
   useEffect(() => {
     msg ? socket.emit('typing', true) : socket.emit('typing', false);
-  }, [msg]);
+  }, [msg, socket]);
+
+  useEffect(() => {
+    socket.emit('newUser', decodedToken?.id);
+  }, [socketInstance]);
 
   const handleSubmit = async () => {
     try {
@@ -93,9 +145,10 @@ function Chat() {
 
       socketInstance.emit('msg', objMsg);
 
-      divMessages ? divMessages.scrollTo(0, divMessages.scrollHeight) : '';
+      if (divMessages) divMessages.scrollTo(0, divMessages.scrollHeight);
+      if (input) input.value = '';
+
       setMsg(false);
-      input ? (input.value = '') : '';
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -153,14 +206,12 @@ function Chat() {
               <Circle
                 size={16}
                 color="inherit"
-                fill={isUserOnline ? '#629B44' : 'gray'}
+                fill={isOnline ? '#629B44' : 'gray'}
               />
               <p className="is-online" style={{ fontSize: '1.4rem' }}>
-                {isUserOnline ? 'Online' : 'Offline'}
+                {isOnline ? 'Online' : 'Offline'}
               </p>
             </div>
-
-            {/* {socketInstance ? <p>Online</p> : <p>Offline</p>} */}
           </div>
         </DivUser>
 
