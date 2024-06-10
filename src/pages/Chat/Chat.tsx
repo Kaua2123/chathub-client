@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeftIcon,
   Button,
@@ -23,14 +23,14 @@ import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import axios from '../../services/axios';
 import { tokenDecoder } from '../../utils/tokenDecoder';
-import { socket } from '../../socket';
 import { IOnlineUsers } from '../../interfaces/IOnlineUsers';
+import { socket } from '../../socket';
 
 function Chat() {
   const { id, username } = useParams();
-  const [socketInstance] = useState(socket);
   const navigate = useNavigate();
 
+  const [socketInstance] = useState(socket);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [msg, setMsg] = useState<string | boolean>('');
@@ -39,23 +39,39 @@ function Chat() {
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
 
   const token = localStorage.getItem('token');
-  const decodedToken = tokenDecoder(token);
+  const decodedToken = useMemo(() => tokenDecoder(token), []);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
-  console.log(isOnline);
 
-  // const updateStatusFromUser = async (onlineUsers: IOnlineUsers[]) => {
-  //   try {
-  //     if (!decodedToken?.is_online) {
-  //       onlineUsers.forEach((user) => {
-  //         axios.put(`/user/update/${user.userId}`, {
-  //           is_online: true,
-  //         });
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    if (!socketInstance) return;
+
+    socketInstance.on('receivedMsg', (objMsg: IMessage) => {
+      setMessages((prevMessages) => [...prevMessages, objMsg]);
+    });
+
+    socketInstance.on('userTyping', (isTyping: boolean) => {
+      setIsUserTyping(isTyping);
+    });
+
+    socketInstance.emit('newUser', decodedToken?.id);
+    socketInstance.on('onlineUsers', (onlineUsers) => {
+      console.log('onlineUsers ', onlineUsers);
+      setOnlineUsers(onlineUsers);
+    });
+
+    return () => {
+      socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
+      socketInstance.off('userTyping');
+      socketInstance.off('onlineUsers');
+    };
+  }, [socketInstance]);
+
+  useEffect(() => {
+    if (!socketInstance) return;
+    msg
+      ? socketInstance.emit('typing', true)
+      : socketInstance.emit('typing', false);
+  }, [msg]);
 
   useEffect(() => {
     const getRecipientId = async () => {
@@ -88,47 +104,9 @@ function Chat() {
     getRecipientId();
   }, [id]);
 
-  // const checkIfUserIsOnline = (onlineUsers: IOnlineUsers[]) => {
-  //   console.log(recipientId);
-  //   const isOnline = onlineUsers?.some((user) => user.userId === recipientId);
-  //   console.log(isOnline);
-  //   setIsUserOnline(isOnline);
-  // };
-
-  useEffect(() => {
-    socketInstance.on('receivedMsg', (objMsg: IMessage) => {
-      setMessages([...messages, objMsg]);
-    });
-
-    socketInstance.on('userTyping', (isTyping: boolean) => {
-      setIsUserTyping(isTyping);
-    });
-
-    socketInstance.on('onlineUsers', (onlineUsers) => {
-      console.log('onlineUsers: ', onlineUsers);
-      setOnlineUsers(onlineUsers);
-
-      // updateStatusFromUser(onlineUsers);
-    });
-
-    return () => {
-      socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
-      socketInstance.off('userTyping');
-      socketInstance.off('onlineUsers');
-    };
-  }, [socketInstance]);
-
-  useEffect(() => {
-    msg ? socket.emit('typing', true) : socket.emit('typing', false);
-  }, [msg, socket]);
-
-  useEffect(() => {
-    socket.emit('newUser', decodedToken?.id);
-  }, [socketInstance]);
-
   const handleSubmit = async () => {
     try {
-      if (!msg) return;
+      if (!msg || !socketInstance) return;
       const input: HTMLInputElement | null = document.querySelector('.input');
       const divMessages: HTMLDivElement | null =
         document.querySelector('.div-messages');
