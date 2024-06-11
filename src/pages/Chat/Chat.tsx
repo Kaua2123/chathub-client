@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeftIcon,
   Button,
@@ -41,6 +41,7 @@ function Chat() {
   const token = localStorage.getItem('token');
   const decodedToken = useMemo(() => tokenDecoder(token), []);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
+  const divMessages = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!socketInstance) return;
@@ -72,6 +73,12 @@ function Chat() {
       ? socketInstance.emit('typing', true)
       : socketInstance.emit('typing', false);
   }, [msg]);
+
+  useEffect(() => {
+    if (!divMessages.current) return;
+
+    divMessages.current.scrollTo(0, divMessages.current.scrollHeight);
+  }, [messages]);
 
   useEffect(() => {
     const getRecipientId = async () => {
@@ -108,8 +115,6 @@ function Chat() {
     try {
       if (!msg || !socketInstance) return;
       const input: HTMLInputElement | null = document.querySelector('.input');
-      const divMessages: HTMLDivElement | null =
-        document.querySelector('.div-messages');
 
       const response = await axios.post('/messages/create', {
         content: msg,
@@ -123,7 +128,6 @@ function Chat() {
 
       socketInstance.emit('msg', objMsg);
 
-      if (divMessages) divMessages.scrollTo(0, divMessages.scrollHeight);
       if (input) input.value = '';
 
       setMsg(false);
@@ -198,7 +202,7 @@ function Chat() {
         </DivConfig>
       </TopContainer>
 
-      <DivMessages className="div-messages">
+      <DivMessages ref={divMessages}>
         {messages.map((message, index) => (
           <Message
             id={message.id}
