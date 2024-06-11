@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeftIcon,
   Button,
@@ -19,16 +19,17 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 import { IMessage } from '../../interfaces/IMessage';
+import { IOnlineUsers } from '../../interfaces/IOnlineUsers';
+import { socket } from '../../socket';
+import { useAuthContext } from '../../contexts/context';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import axios from '../../services/axios';
-import { tokenDecoder } from '../../utils/tokenDecoder';
-import { IOnlineUsers } from '../../interfaces/IOnlineUsers';
-import { socket } from '../../socket';
 
 function Chat() {
   const { id, username } = useParams();
   const navigate = useNavigate();
+  const decodedToken = useAuthContext();
 
   const [socketInstance] = useState(socket);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -38,8 +39,6 @@ function Chat() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
 
-  const token = localStorage.getItem('token');
-  const decodedToken = useMemo(() => tokenDecoder(token), []);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
 
@@ -54,7 +53,7 @@ function Chat() {
       setIsUserTyping(isTyping);
     });
 
-    socketInstance.emit('newUser', decodedToken?.id);
+    socketInstance.emit('newUser', decodedToken.id);
     socketInstance.on('onlineUsers', (onlineUsers) => {
       console.log('onlineUsers ', onlineUsers);
       setOnlineUsers(onlineUsers);
@@ -84,11 +83,10 @@ function Chat() {
     const getRecipientId = async () => {
       try {
         const response = await axios.get(
-          `/conversation/show/${decodedToken?.id}/${id}`,
+          `/conversation/show/${decodedToken.id}/${id}`,
         );
 
-        response.data[0].Users[0].users_conversations.UserId !==
-        decodedToken?.id
+        response.data[0].Users[0].users_conversations.UserId !== decodedToken.id
           ? setRecipientId(response.data[0].Users[0].users_conversations.UserId)
           : setRecipientId(
               response.data[0].Users[1].users_conversations.UserId,
@@ -120,7 +118,7 @@ function Chat() {
         content: msg,
         is_sender: true,
         ConversationId: id,
-        UserId: decodedToken?.id,
+        UserId: decodedToken.id,
       });
 
       const objMsg = response.data;
