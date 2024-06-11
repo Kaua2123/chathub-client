@@ -20,10 +20,13 @@ import axios from '../../services/axios';
 import { IFriend } from '../../interfaces/IFriend';
 import { IFriendRequest } from '../../interfaces/IFriendRequest';
 import { IUser } from '../../interfaces/IUser';
-import { tokenDecoder } from '../../utils/tokenDecoder';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../contexts/context';
 
 function Friends() {
+  const navigate = useNavigate();
+  const { decodedToken } = useAuthContext();
+
   const [users, setUsers] = useState<IUser[]>([]);
   const [friendRequests, setFriendRequests] = useState<IFriendRequest[]>([]);
   const [friends, setFriends] = useState<IFriend[]>([]);
@@ -37,10 +40,6 @@ function Friends() {
 
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [isFiltering, setIsFiltering] = useState(false);
-  const navigate = useNavigate();
-
-  const token = localStorage.getItem('token');
-  const decodedToken = tokenDecoder(token);
 
   useEffect(() => {
     if (!decodedToken) return navigate('/');
@@ -57,7 +56,7 @@ function Friends() {
 
     const getFriendRequests = async () => {
       try {
-        const response = await axios.get(`/friendRequest/${decodedToken?.id}`);
+        const response = await axios.get(`/friendRequest/${decodedToken.id}`);
 
         setFriendRequests(response.data);
       } catch (error) {
@@ -68,7 +67,7 @@ function Friends() {
     const getFriends = async () => {
       try {
         const response = await axios.get(
-          `/user/getUserFriends/${decodedToken?.id}`,
+          `/user/getUserFriends/${decodedToken.id}`,
         );
 
         setFriends(response.data);

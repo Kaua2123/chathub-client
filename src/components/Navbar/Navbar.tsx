@@ -17,11 +17,12 @@ import chathub from '../../assets/chathub.png';
 import MenuDropdown from '../MenuDropdown/MenuDropdown';
 
 function Navbar() {
+  const token = localStorage.getItem('token');
+
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notifications] = useState([1, 2, 3, 4]);
   const [hasNotifications, setHasNotifications] = useState(false);
-  const token = localStorage.getItem('token');
 
   useEffect(() => {
     function checkNotifications() {

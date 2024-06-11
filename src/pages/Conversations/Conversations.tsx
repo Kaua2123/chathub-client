@@ -24,10 +24,12 @@ import { Hand } from 'lucide-react';
 
 import axios from '../../services/axios';
 import { IConversation } from '../../interfaces/IConversation';
-import { tokenDecoder } from '../../utils/tokenDecoder';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../contexts/context';
 
 function Conversations() {
+  const decodedToken = useAuthContext();
+
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
   const [conversations, setConversations] = useState<IConversation[]>([]);
@@ -40,9 +42,6 @@ function Conversations() {
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token');
-  const decodedToken = tokenDecoder(token);
-
   useEffect(() => {
     if (!decodedToken) return navigate('/');
 
@@ -52,7 +51,7 @@ function Conversations() {
 
     const getUserConversations = async () => {
       try {
-        const response = await axios.get(`/conversation/${decodedToken?.id}`);
+        const response = await axios.get(`/conversation/${decodedToken.id}`);
 
         setConversations(response.data);
       } catch (error) {
@@ -62,7 +61,7 @@ function Conversations() {
 
     checkResolution();
     getUserConversations();
-  }, [decodedToken?.id]);
+  }, [decodedToken.id]);
 
   const getConversationsPosition = (id: number) =>
     conversations.findIndex((conversation) => conversation.id === id);
@@ -114,7 +113,6 @@ function Conversations() {
                       key={index}
                       id={conversation.id}
                       conversation={conversation}
-                      userId={decodedToken?.id}
                     />
                   ))}
 
@@ -125,7 +123,6 @@ function Conversations() {
                       key={index}
                       id={conversation.id}
                       conversation={conversation}
-                      userId={decodedToken?.id}
                     />
                   ))}
               </SortableContext>

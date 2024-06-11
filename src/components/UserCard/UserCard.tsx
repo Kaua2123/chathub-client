@@ -12,20 +12,18 @@ import {
 } from './styled';
 import { IUser } from '../../interfaces/IUser';
 import axios from '../../services/axios';
-import { jwtDecode } from 'jwt-decode';
-import { IToken } from '../../interfaces/IToken';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../contexts/context';
 
 export type UserCardProps = {
   user: IUser;
 };
 
 function UserCard({ user }: UserCardProps) {
-  const token = localStorage.getItem('token');
-  const decodedToken: IToken = jwtDecode(token as string);
   const navigate = useNavigate();
+  const decodedToken = useAuthContext();
 
   const sendFriendRequest = async () => {
     try {

@@ -18,7 +18,7 @@ import axios from '../../services/axios';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { tokenDecoder } from '../../utils/tokenDecoder';
+import { useAuthContext } from '../../contexts/context';
 
 export type FriendCardProps = {
   friend: IFriend;
@@ -27,15 +27,11 @@ export type FriendCardProps = {
 function FriendCard({ friend }: FriendCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
-
-  const token = localStorage.getItem('token');
-  const decodedToken = tokenDecoder(token);
+  const decodedToken = useAuthContext();
 
   const handleClickDelete = async () => {
     try {
-      await axios.delete(
-        `/user/removeFriends/${decodedToken?.id}/${friend.id}`,
-      );
+      await axios.delete(`/user/removeFriends/${decodedToken.id}/${friend.id}`);
 
       toast.success(`Você removeu ${friend.username} da lista de amigos.`);
     } catch (error) {
@@ -47,7 +43,7 @@ function FriendCard({ friend }: FriendCardProps) {
   const handleClickConversation = async () => {
     try {
       const response = await axios.post(
-        `/conversation/create/${decodedToken?.id}/${friend.id}`,
+        `/conversation/create/${decodedToken.id}/${friend.id}`,
       );
 
       navigate(`/chat/${response.data.conversation.id}/${friend.username}`);

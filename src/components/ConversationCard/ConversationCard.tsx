@@ -6,21 +6,24 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { IConversation } from '../../interfaces/IConversation';
 import { useEffect, useState } from 'react';
+import { useAuthContext } from '../../contexts/context';
 
 export type ConversationCardProps = {
   id: number;
   isDragging: boolean;
   conversation: IConversation;
-  userId: number | undefined;
 };
 
 function ConversationCard({
   id,
   isDragging,
   conversation,
-  userId,
 }: ConversationCardProps) {
   const navigate = useNavigate();
+
+  const decodedToken = useAuthContext();
+  const userId = decodedToken.id;
+
   const [username, setUsername] = useState('');
 
   const { attributes, listeners, setNodeRef, transform, transition } =
