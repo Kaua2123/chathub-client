@@ -13,6 +13,7 @@ import {
 } from './styled';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { handleKeyDown } from '../../utils/handleKeyDown';
 
 export type ModalMessageOptions = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,23 +45,24 @@ function ModalMessageOptions({
       });
 
       toast.success('Mensagem atualizada com sucesso.');
+      setIsUpdating(false);
+      setIsModalOpen(false);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      updateMessage();
-    }
-  };
-
   const deleteMessage = async () => {
     try {
-      await axios.delete(`/messages/delete/${id}`);
+      await axios.put(`/messages/update/${id}`, {
+        content: 'Mensagem apagada.',
+        is_updated: false,
+      });
 
       setIsModalOpen(false);
+      // socket.emit('deleteMsg', true);
+
       toast.success('Mensagem deletada com sucesso.');
     } catch (error) {
       if (error instanceof AxiosError)
@@ -92,7 +94,7 @@ function ModalMessageOptions({
                     onChange={(e) => setContent(e.target.value)}
                     defaultValue={children}
                     className="message"
-                    onKeyDown={(e) => handleKeyDown(e)}
+                    onKeyDown={(e) => handleKeyDown(e, updateMessage)}
                   ></Input>
                   <H6>
                     Editando...

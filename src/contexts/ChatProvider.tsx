@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { socket } from '../socket';
 import { IMessage } from '../interfaces/IMessage';
 import { IOnlineUsers } from '../interfaces/IOnlineUsers';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../services/axios';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { ChatContext } from './contexts';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { useSocketContext } from '../hooks/useSocketContext';
 
-export type ChatContextProps = {
+export type ChatProviderProps = {
   children: JSX.Element;
 };
 
@@ -19,20 +19,20 @@ export type ContextData = {
   messages: IMessage[];
   recipientId: number;
   handleSubmit: () => Promise<void>;
+  handleClickDelete: () => Promise<void>;
   setMsg: React.Dispatch<React.SetStateAction<string | boolean>>;
 };
 
-function ChatProvider({ children }: ChatContextProps) {
-  const [socketInstance] = useState(socket);
+function ChatProvider({ children }: ChatProviderProps) {
   const { id } = useParams();
+  const navigate = useNavigate();
   const decodedToken = useAuthContext();
+  const socket = useSocketContext();
 
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [msg, setMsg] = useState<string | boolean>('');
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
-
-  //   const [isDeleting, setIsDeleting] = useState(false);
   const [recipientId, setRecipientId] = useState(0);
 
   useEffect(() => {
@@ -68,39 +68,37 @@ function ChatProvider({ children }: ChatContextProps) {
   }, [id]);
 
   useEffect(() => {
-    if (!socketInstance) return;
+    if (!socket) return;
 
-    socketInstance.on('receivedMsg', (objMsg: IMessage) => {
+    socket.on('receivedMsg', (objMsg: IMessage) => {
       setMessages((prevMessages) => [...prevMessages, objMsg]);
     });
 
-    socketInstance.on('userTyping', (isTyping: boolean) => {
+    socket.on('userTyping', (isTyping: boolean) => {
       setIsUserTyping(isTyping);
     });
 
-    socketInstance.emit('newUser', decodedToken.id);
-    socketInstance.on('onlineUsers', (onlineUsers) => {
+    socket.emit('newUser', decodedToken.id);
+    socket.on('onlineUsers', (onlineUsers) => {
       console.log('onlineUsers ', onlineUsers);
       setOnlineUsers(onlineUsers);
     });
 
     return () => {
-      socketInstance.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
-      socketInstance.off('userTyping');
-      socketInstance.off('onlineUsers');
+      socket.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
+      socket.off('userTyping');
+      socket.off('onlineUsers');
     };
-  }, [socketInstance]);
+  }, [socket]);
 
   useEffect(() => {
-    if (!socketInstance) return;
-    msg
-      ? socketInstance.emit('typing', true)
-      : socketInstance.emit('typing', false);
+    if (!socket) return;
+    msg ? socket.emit('typing', true) : socket.emit('typing', false);
   }, [msg]);
 
   const handleSubmit = async () => {
     try {
-      if (!msg || !socketInstance) return;
+      if (!msg || !socket) return;
       const input: HTMLInputElement | null = document.querySelector('.input');
 
       const response = await axios.post('/messages/create', {
@@ -113,11 +111,25 @@ function ChatProvider({ children }: ChatContextProps) {
       const objMsg = response.data;
       setMessages([...messages, objMsg]);
 
-      socketInstance.emit('msg', objMsg);
+      socket.emit('msg', objMsg);
 
       if (input) input.value = '';
 
       setMsg(false);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
+  const handleClickDelete = async () => {
+    try {
+      await axios.delete(`/conversation/delete/${id}`);
+
+      localStorage.removeItem('conversations');
+      navigate('/conversations');
+
+      toast.success(`Você deletou essa conversa.`);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
@@ -133,6 +145,7 @@ function ChatProvider({ children }: ChatContextProps) {
           messages,
           recipientId,
           handleSubmit,
+          handleClickDelete,
           setMsg,
         }}
       >

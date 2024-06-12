@@ -15,18 +15,15 @@ import {
 } from './styled';
 import { Circle, User } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { useChatContext } from '../../hooks/useChatContext';
+import { handleKeyDown } from '../../utils/handleKeyDown';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
-import axios from '../../services/axios';
-import { useChatContext } from '../../hooks/useChatContext';
-import { handleKeyPress } from '../../utils/handleKeyPress';
 
 function Chat() {
-  const { id, username } = useParams();
+  const { username } = useParams();
   const navigate = useNavigate();
   const decodedToken = useAuthContext();
   const {
@@ -36,6 +33,7 @@ function Chat() {
     isUserTyping,
     handleSubmit,
     setMsg,
+    handleClickDelete,
   } = useChatContext();
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -47,20 +45,6 @@ function Chat() {
 
     divMessages.current.scrollTo(0, divMessages.current.scrollHeight);
   }, [messages]);
-
-  const handleClickDelete = async () => {
-    try {
-      await axios.delete(`/conversation/delete/${id}`);
-
-      localStorage.removeItem('conversations');
-      navigate('/conversations');
-
-      toast.success(`Você deletou essa conversa.`);
-    } catch (error) {
-      if (error instanceof AxiosError)
-        toast.error(error.response?.data.message);
-    }
-  };
 
   return (
     <div>
@@ -136,7 +120,7 @@ function Chat() {
             onChange={(e) => setMsg(e.target.value)}
             type="text"
             placeholder="Envie algo"
-            onKeyDown={(e) => handleKeyPress(e, handleSubmit)}
+            onKeyDown={(e) => handleKeyDown(e, handleSubmit)}
           />
 
           <Button
