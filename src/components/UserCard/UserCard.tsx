@@ -15,7 +15,7 @@ import axios from '../../services/axios';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../contexts/context';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 export type UserCardProps = {
   user: IUser;

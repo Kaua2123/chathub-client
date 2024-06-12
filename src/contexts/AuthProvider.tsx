@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { tokenDecoder } from '../utils/tokenDecoder';
-import { AuthContext } from './context';
+import { AuthContext } from './contexts';
 
-type AuthProviderProps = {
+type AuthContextProps = {
   children: JSX.Element;
 };
 
-function AuthProvider({ children }: AuthProviderProps) {
+function AuthProvider({ children }: AuthContextProps) {
   const token = localStorage.getItem('token');
   const decodedToken = useMemo(
     () => (token ? tokenDecoder(token) : undefined),

@@ -21,11 +21,11 @@ import { IFriend } from '../../interfaces/IFriend';
 import { IFriendRequest } from '../../interfaces/IFriendRequest';
 import { IUser } from '../../interfaces/IUser';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../contexts/context';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 function Friends() {
   const navigate = useNavigate();
-  const { decodedToken } = useAuthContext();
+  const decodedToken = useAuthContext();
 
   const [users, setUsers] = useState<IUser[]>([]);
   const [friendRequests, setFriendRequests] = useState<IFriendRequest[]>([]);

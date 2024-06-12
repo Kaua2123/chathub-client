@@ -6,7 +6,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { IConversation } from '../../interfaces/IConversation';
 import { useEffect, useState } from 'react';
-import { useAuthContext } from '../../contexts/context';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 export type ConversationCardProps = {
   id: number;

@@ -25,7 +25,7 @@ import { Hand } from 'lucide-react';
 import axios from '../../services/axios';
 import { IConversation } from '../../interfaces/IConversation';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../contexts/context';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 function Conversations() {
   const decodedToken = useAuthContext();
