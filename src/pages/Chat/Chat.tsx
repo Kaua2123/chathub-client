@@ -23,6 +23,7 @@ import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import axios from '../../services/axios';
 import { useChatContext } from '../../hooks/useChatContext';
+import { handleKeyPress } from '../../utils/handleKeyPress';
 
 function Chat() {
   const { id, username } = useParams();
@@ -46,12 +47,6 @@ function Chat() {
 
     divMessages.current.scrollTo(0, divMessages.current.scrollHeight);
   }, [messages]);
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
-  };
 
   const handleClickDelete = async () => {
     try {
@@ -141,7 +136,7 @@ function Chat() {
             onChange={(e) => setMsg(e.target.value)}
             type="text"
             placeholder="Envie algo"
-            onKeyDown={(e) => handleKeyPress(e)}
+            onKeyDown={(e) => handleKeyPress(e, handleSubmit)}
           />
 
           <Button
