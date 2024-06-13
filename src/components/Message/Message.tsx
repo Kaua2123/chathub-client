@@ -7,18 +7,33 @@ import {
   UpdatedMessage,
   UserAvatar,
 } from './styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
+import { useSocketContext } from '../../hooks/useSocketContext';
 
 export type MessageProps = {
   isSender?: boolean;
   isUpdated: boolean;
+  isDeleted: boolean;
   children: string;
   id: number;
 };
 
 function Message({ isSender, children, id, isUpdated }: MessageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [messageContent, setMessageContent] = useState('');
+  const socket = useSocketContext();
+
+  useEffect(() => {
+    socket.on('msgDeleted', (data) => {
+      console.log('logando: ', data);
+      if (data === id) {
+        setMessageContent('Mensagem apagada.');
+      } else {
+        setMessageContent(children);
+      }
+    });
+  }, [socket]);
 
   return (
     <div>
@@ -39,7 +54,9 @@ function Message({ isSender, children, id, isUpdated }: MessageProps) {
         </UserAvatar>
         <Container $isSender={isSender}>
           <Div>
-            <MessageContent $isSender={isSender}>{children}</MessageContent>
+            <MessageContent $isSender={isSender}>
+              {messageContent ? messageContent : children}
+            </MessageContent>
           </Div>
           {isUpdated && (
             <UpdatedMessage>

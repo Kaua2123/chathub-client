@@ -4,6 +4,7 @@ export interface IMessage {
   is_saved: number | boolean;
   is_sender: boolean;
   is_updated: boolean;
+  is_deleted: boolean;
   createdAt: string;
   updatedAt: string;
   ConversationId: number;

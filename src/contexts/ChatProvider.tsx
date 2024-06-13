@@ -41,10 +41,11 @@ function ChatProvider({ children }: ChatProviderProps) {
         if (!id) console.log('undefined id - useParams');
 
         const response = await axios.get(
-          `/conversation/show/${decodedToken.id}/${id}`,
+          `/conversation/show/${decodedToken?.id}/${id}`,
         );
 
-        response.data[0].Users[0].users_conversations.UserId !== decodedToken.id
+        response.data[0].Users[0].users_conversations.UserId !==
+        decodedToken?.id
           ? setRecipientId(response.data[0].Users[0].users_conversations.UserId)
           : setRecipientId(
               response.data[0].Users[1].users_conversations.UserId,
@@ -78,7 +79,7 @@ function ChatProvider({ children }: ChatProviderProps) {
       setIsUserTyping(isTyping);
     });
 
-    socket.emit('newUser', decodedToken.id);
+    socket.emit('newUser', decodedToken?.id);
     socket.on('onlineUsers', (onlineUsers) => {
       console.log('onlineUsers ', onlineUsers);
       setOnlineUsers(onlineUsers);
@@ -105,7 +106,7 @@ function ChatProvider({ children }: ChatProviderProps) {
         content: msg,
         is_sender: true,
         ConversationId: id,
-        UserId: decodedToken.id,
+        UserId: decodedToken?.id,
       });
 
       const objMsg = response.data;

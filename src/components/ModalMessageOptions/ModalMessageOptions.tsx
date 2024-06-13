@@ -14,6 +14,7 @@ import {
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { handleKeyDown } from '../../utils/handleKeyDown';
+import { useSocketContext } from '../../hooks/useSocketContext';
 
 export type ModalMessageOptions = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,6 +27,8 @@ function ModalMessageOptions({
   children,
   id,
 }: ModalMessageOptions) {
+  const socket = useSocketContext();
+
   const [isUpdating, setIsUpdating] = useState(false);
   const [content, setContent] = useState('');
 
@@ -55,13 +58,15 @@ function ModalMessageOptions({
 
   const deleteMessage = async () => {
     try {
-      await axios.put(`/messages/update/${id}`, {
-        content: 'Mensagem apagada.',
+      const response = await axios.put(`/messages/update/${id}`, {
+        content: 'Mensagem apagada',
         is_updated: false,
+        is_deleted: true,
       });
 
       setIsModalOpen(false);
-      // socket.emit('deleteMsg', true);
+      const msg = response.data;
+      socket.emit('deletedMsg', msg.id);
 
       toast.success('Mensagem deletada com sucesso.');
     } catch (error) {

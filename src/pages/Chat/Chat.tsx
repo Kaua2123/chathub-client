@@ -97,6 +97,7 @@ function Chat() {
             id={message.id}
             key={index}
             isUpdated={message.is_updated}
+            isDeleted={message.is_deleted}
             isSender={
               decodedToken?.id == message.UserId
                 ? message.is_sender

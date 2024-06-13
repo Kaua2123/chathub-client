@@ -6,7 +6,7 @@ export type SocketProviderProps = {
 };
 
 function SocketProvider({ children }: SocketProviderProps) {
-  const socket = io('http://localhost:3000');
+  const socket = io('http://localhost:3000'); // ta inicializando varias <vezes></vezes>
 
   return (
     <div>
