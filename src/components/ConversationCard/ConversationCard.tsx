@@ -8,6 +8,7 @@ import { IConversation } from '../../interfaces/IConversation';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from '../../services/axios';
+import { IMessage } from '../../interfaces/IMessage';
 
 export type ConversationCardProps = {
   id: number;
@@ -26,7 +27,11 @@ function ConversationCard({
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
-  const [lastMessage, setLastMessage] = useState('');
+  const [lastMessage, setLastMessage] = useState<IMessage>();
+  const lastMessageContent =
+    lastMessage?.UserId === userId
+      ? `Você: ${lastMessage?.content}`
+      : lastMessage?.content;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -54,7 +59,7 @@ function ConversationCard({
           `/messages/getLastMessage/${conversation.id}`,
         );
 
-        if (response) setLastMessage(response.data.content);
+        setLastMessage(response.data);
       } catch (error) {
         console.log('an error ocurred: ', error);
       }
@@ -74,7 +79,7 @@ function ConversationCard({
               <UserNameAndMessage>
                 <p className="username">{username} </p>
                 <p className="user-message">
-                  {lastMessage ? lastMessage : 'Comece a conversar!'}
+                  {lastMessage ? lastMessageContent : 'Comece a conversar!'}
                 </p>
               </UserNameAndMessage>
             </DivUser>
@@ -99,7 +104,7 @@ function ConversationCard({
               <UserNameAndMessage>
                 <p className="username">{username} </p>
                 <p className="user-message">
-                  {lastMessage ? lastMessage : 'Comece a conversar!'}
+                  {lastMessage ? lastMessageContent : 'Comece a conversar!'}
                 </p>
               </UserNameAndMessage>
             </DivUser>
