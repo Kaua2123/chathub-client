@@ -66,9 +66,9 @@ export const DivMessage = styled.div<{ $isSender?: boolean }>`
   }
 `;
 
-export const UpdatedMessage = styled.div`
+export const UpdatedMessage = styled.div<{ $isSender?: boolean }>`
   font-family: Raleway;
-  color: ${({ theme }) => theme.colors.darkGray};
+  color: ${(props) => (props.$isSender ? 'black' : '#CCCCCC')};
   font-size: 1.3rem;
 `;
 

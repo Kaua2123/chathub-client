@@ -73,11 +73,17 @@ function Message({
               $isSender={isSender}
               $isDeleted={isDeleted || isMsgDeleted}
             >
-              {messageContent ? messageContent : children}
+              {isDeleted || isMsgDeleted ? (
+                <b>{messageContent ? messageContent : children}</b>
+              ) : messageContent ? (
+                messageContent
+              ) : (
+                children
+              )}
             </MessageContent>
           </Div>
           {(isUpdated || isMsgUpdated) && (
-            <UpdatedMessage>
+            <UpdatedMessage $isSender={isSender}>
               <p>Editado</p>
             </UpdatedMessage>
           )}
