@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const sendingMessage = keyframes`
+  0% {
+    transform: scale(80%);
+  }
+  100% {
+    transform: scale(100%);
+  }
+`;
 
 export const Container = styled.div<{
   $isSender?: boolean;
@@ -15,6 +24,7 @@ export const Container = styled.div<{
   align-items: center;
   gap: 2rem;
   min-width: 28rem;
+  animation: ${sendingMessage} 0.3s;
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.54);
   -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.54);
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.54);
