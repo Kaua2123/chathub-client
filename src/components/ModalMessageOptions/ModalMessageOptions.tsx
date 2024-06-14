@@ -42,14 +42,17 @@ function ModalMessageOptions({
 
   const updateMessage = async () => {
     try {
-      await axios.put(`/messages/update/${id}`, {
+      const response = await axios.put(`/messages/update/${id}`, {
         content,
         is_updated: true,
       });
 
+      setIsModalOpen(false);
+      const msg = response.data;
+      socket.emit('updatedMsg', msg.id, msg.content);
+
       toast.success('Mensagem atualizada com sucesso.');
       setIsUpdating(false);
-      setIsModalOpen(false);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);

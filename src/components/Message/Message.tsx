@@ -29,16 +29,23 @@ function Message({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
   const [isMsgDeleted, setIsMsgDeleted] = useState(false);
+  const [isMsgUpdated, setIsMsgUpdated] = useState(false);
   const socket = useSocketContext();
 
   useEffect(() => {
     socket.on('msgDeleted', (data) => {
-      console.log('logando: ', data);
       if (data === id) {
         setMessageContent('Mensagem apagada.');
         setIsMsgDeleted(true);
       } else {
         setMessageContent(children);
+      }
+    });
+
+    socket.on('msgUpdated', (data) => {
+      if (data[0] === id) {
+        setIsMsgUpdated(true);
+        setMessageContent(data[1]);
       }
     });
   }, [socket]);
@@ -69,7 +76,7 @@ function Message({
               {messageContent ? messageContent : children}
             </MessageContent>
           </Div>
-          {isUpdated && (
+          {(isUpdated || isMsgUpdated) && (
             <UpdatedMessage>
               <p>Editado</p>
             </UpdatedMessage>
