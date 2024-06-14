@@ -4,7 +4,7 @@ export const Container = styled.div<{
   $isSender?: boolean;
   $isDeleted?: boolean;
 }>`
-  background-color: ${({ theme }) => theme.colors.lightBlue};
+  background-color: ${(props) => (props.$isSender ? '#FFF' : '#374050')};
   padding: 2rem;
   position: relative;
   border-radius: 0.9rem;
@@ -53,7 +53,7 @@ export const MessageContent = styled.p<{
   $isSender?: boolean;
   $isDeleted?: boolean;
 }>`
-  color: ${(props) => (props.$isSender ? 'white' : '#CCCCCC')};
+  color: ${(props) => (props.$isSender ? 'CCCCCC' : 'white')};
   font-family: Raleway;
   font-size: 1.8rem;
   font-style: ${(props) => (props.$isDeleted ? 'italic' : 'normal')};

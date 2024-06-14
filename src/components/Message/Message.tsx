@@ -43,6 +43,10 @@ function Message({
     });
   }, [socket]);
 
+  const handleModalOpen = () => {
+    if (isSender && !isDeleted && !isMsgDeleted) setIsModalOpen(true);
+  };
+
   return (
     <div>
       {isModalOpen && (
@@ -53,14 +57,12 @@ function Message({
       <DivMessage
         id="div-message"
         $isSender={isSender}
-        onClick={
-          isSender ? () => setIsModalOpen(true) : () => setIsModalOpen(false)
-        }
+        onClick={handleModalOpen}
       >
         <UserAvatar>
           <User />
         </UserAvatar>
-        <Container $isSender={isSender} $isDeleted={isDeleted}>
+        <Container $isSender={isSender} $isDeleted={isDeleted || isMsgDeleted}>
           <Div>
             <MessageContent
               $isSender={isSender}
