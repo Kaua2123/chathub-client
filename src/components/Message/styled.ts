@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ $isSender?: boolean }>`
-  background-color: ${(props) => (props.$isSender ? '#FFFFFF' : '#374050')};
+export const Container = styled.div<{
+  $isSender?: boolean;
+  $isDeleted?: boolean;
+}>`
+  background-color: ${({ theme }) => theme.colors.lightBlue};
   padding: 2rem;
   position: relative;
   border-radius: 0.9rem;
@@ -10,11 +13,13 @@ export const Container = styled.div<{ $isSender?: boolean }>`
   align-items: center;
   gap: 2rem;
   min-width: 28rem;
-  cursor: ${(props) => (props.$isSender ? 'pointer' : 'auto')};
+  cursor: ${(props) =>
+    props.$isSender && !props.$isDeleted ? 'pointer' : 'auto'};
   transition: transform 0.3s;
 
   &:hover {
-    transform: ${(props) => (props.$isSender ? 'scale(1.1)' : 'scale(1.0)')};
+    transform: ${(props) =>
+      props.$isSender && !props.$isDeleted ? 'scale(1.1)' : 'scale(1.0)'};
   }
 `;
 
@@ -44,8 +49,12 @@ export const UpdatedMessage = styled.div`
   font-size: 1.3rem;
 `;
 
-export const MessageContent = styled.p<{ $isSender?: boolean }>`
-  color: ${(props) => (props.$isSender ? 'black' : '#CCCCCC')};
+export const MessageContent = styled.p<{
+  $isSender?: boolean;
+  $isDeleted?: boolean;
+}>`
+  color: ${(props) => (props.$isSender ? 'white' : '#CCCCCC')};
   font-family: Raleway;
   font-size: 1.8rem;
+  font-style: ${(props) => (props.$isDeleted ? 'italic' : 'normal')};
 `;

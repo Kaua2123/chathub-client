@@ -28,7 +28,7 @@ function UserCard({ user }: UserCardProps) {
   const sendFriendRequest = async () => {
     try {
       await axios.post('/friendRequest/create', {
-        senderId: decodedToken.id,
+        senderId: decodedToken?.id,
         receiverId: user.id,
       });
 
@@ -42,7 +42,7 @@ function UserCard({ user }: UserCardProps) {
   const handleClickConversation = async () => {
     try {
       const response = await axios.post(
-        `/conversation/create/${decodedToken.id}/${user.id}`,
+        `/conversation/create/${decodedToken?.id}/${user.id}`,
       );
 
       navigate(`/chat/${response.data.conversation.id}/${user.username}`);

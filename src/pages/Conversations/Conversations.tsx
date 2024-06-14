@@ -28,6 +28,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 function Conversations() {
+  const navigate = useNavigate();
   const decodedToken = useAuthContext();
 
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
@@ -40,7 +41,6 @@ function Conversations() {
 
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!decodedToken) return navigate('/');
@@ -51,7 +51,7 @@ function Conversations() {
 
     const getUserConversations = async () => {
       try {
-        const response = await axios.get(`/conversation/${decodedToken.id}`);
+        const response = await axios.get(`/conversation/${decodedToken?.id}`);
 
         setConversations(response.data);
       } catch (error) {
@@ -61,7 +61,7 @@ function Conversations() {
 
     checkResolution();
     getUserConversations();
-  }, [decodedToken.id]);
+  }, [decodedToken?.id]);
 
   const getConversationsPosition = (id: number) =>
     conversations.findIndex((conversation) => conversation.id === id);

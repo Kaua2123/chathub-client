@@ -31,7 +31,9 @@ function FriendCard({ friend }: FriendCardProps) {
 
   const handleClickDelete = async () => {
     try {
-      await axios.delete(`/user/removeFriends/${decodedToken.id}/${friend.id}`);
+      await axios.delete(
+        `/user/removeFriends/${decodedToken?.id}/${friend.id}`,
+      );
 
       toast.success(`Você removeu ${friend.username} da lista de amigos.`);
     } catch (error) {
@@ -43,7 +45,7 @@ function FriendCard({ friend }: FriendCardProps) {
   const handleClickConversation = async () => {
     try {
       const response = await axios.post(
-        `/conversation/create/${decodedToken.id}/${friend.id}`,
+        `/conversation/create/${decodedToken?.id}/${friend.id}`,
       );
 
       navigate(`/chat/${response.data.conversation.id}/${friend.username}`);

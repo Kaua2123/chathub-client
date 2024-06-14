@@ -22,7 +22,7 @@ function ConversationCard({
   const navigate = useNavigate();
 
   const decodedToken = useAuthContext();
-  const userId = decodedToken.id;
+  const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
 

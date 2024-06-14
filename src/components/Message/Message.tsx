@@ -19,9 +19,16 @@ export type MessageProps = {
   id: number;
 };
 
-function Message({ isSender, children, id, isUpdated }: MessageProps) {
+function Message({
+  isSender,
+  children,
+  id,
+  isUpdated,
+  isDeleted,
+}: MessageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
+  const [isMsgDeleted, setIsMsgDeleted] = useState(false);
   const socket = useSocketContext();
 
   useEffect(() => {
@@ -29,6 +36,7 @@ function Message({ isSender, children, id, isUpdated }: MessageProps) {
       console.log('logando: ', data);
       if (data === id) {
         setMessageContent('Mensagem apagada.');
+        setIsMsgDeleted(true);
       } else {
         setMessageContent(children);
       }
@@ -52,9 +60,12 @@ function Message({ isSender, children, id, isUpdated }: MessageProps) {
         <UserAvatar>
           <User />
         </UserAvatar>
-        <Container $isSender={isSender}>
+        <Container $isSender={isSender} $isDeleted={isDeleted}>
           <Div>
-            <MessageContent $isSender={isSender}>
+            <MessageContent
+              $isSender={isSender}
+              $isDeleted={isDeleted || isMsgDeleted}
+            >
               {messageContent ? messageContent : children}
             </MessageContent>
           </Div>

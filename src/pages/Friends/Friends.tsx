@@ -56,7 +56,7 @@ function Friends() {
 
     const getFriendRequests = async () => {
       try {
-        const response = await axios.get(`/friendRequest/${decodedToken.id}`);
+        const response = await axios.get(`/friendRequest/${decodedToken?.id}`);
 
         setFriendRequests(response.data);
       } catch (error) {
@@ -67,7 +67,7 @@ function Friends() {
     const getFriends = async () => {
       try {
         const response = await axios.get(
-          `/user/getUserFriends/${decodedToken.id}`,
+          `/user/getUserFriends/${decodedToken?.id}`,
         );
 
         setFriends(response.data);
