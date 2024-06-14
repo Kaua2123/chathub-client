@@ -7,6 +7,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { IConversation } from '../../interfaces/IConversation';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import axios from '../../services/axios';
 
 export type ConversationCardProps = {
   id: number;
@@ -25,6 +26,7 @@ function ConversationCard({
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
+  const [lastMessage, setLastMessage] = useState('');
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -45,6 +47,21 @@ function ConversationCard({
     checkUserName();
   }, [conversation.Users, userId]);
 
+  useEffect(() => {
+    const getLastMessageOfAConversation = async () => {
+      try {
+        const response = await axios.get(
+          `/messages/getLastMessage/${conversation.id}`,
+        );
+
+        if (response) setLastMessage(response.data.content);
+      } catch (error) {
+        console.log('an error ocurred: ', error);
+      }
+    };
+    getLastMessageOfAConversation();
+  }, []);
+
   return (
     <>
       {isDragging ? (
@@ -56,7 +73,9 @@ function ConversationCard({
               </UserAvatar>
               <UserNameAndMessage>
                 <p className="username">{username} </p>
-                <p className="user-message">Mensagem do usuário...</p>
+                <p className="user-message">
+                  {lastMessage ? lastMessage : 'Comece a conversar!'}
+                </p>
               </UserNameAndMessage>
             </DivUser>
             <DivOrdering>
@@ -79,7 +98,9 @@ function ConversationCard({
               </UserAvatar>
               <UserNameAndMessage>
                 <p className="username">{username} </p>
-                <p className="user-message">Mensagem do usuário...</p>
+                <p className="user-message">
+                  {lastMessage ? lastMessage : 'Comece a conversar!'}
+                </p>
               </UserNameAndMessage>
             </DivUser>
           </Container>

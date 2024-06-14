@@ -53,7 +53,7 @@ export const DivButtons = styled.div`
     color: black;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     display: flex;
   }
 `;
