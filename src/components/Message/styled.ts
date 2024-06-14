@@ -8,11 +8,17 @@ export const Container = styled.div<{
   padding: 2rem;
   position: relative;
   border-radius: 0.9rem;
+  border-top-right-radius: ${(props) => (props.$isSender ? '0px' : 'normal')};
+  border-top-left-radius: ${(props) => (props.$isSender ? 'normal' : '0px')};
   width: 28rem;
   display: flex;
   align-items: center;
   gap: 2rem;
   min-width: 28rem;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.54);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.54);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.54);
+
   cursor: ${(props) =>
     props.$isSender && !props.$isDeleted ? 'pointer' : 'auto'};
   transition: transform 0.3s;
@@ -41,6 +47,13 @@ export const DivMessage = styled.div<{ $isSender?: boolean }>`
   margin: 5rem;
   gap: 1.5rem;
   align-items: ${(props) => (props.$isSender ? 'end' : 'start')};
+
+  .username {
+    color: ${({ theme }) => theme.colors.darkGray};
+    font-style: italic;
+    font-family: Raleway;
+    font-size: 1.4rem;
+  }
 `;
 
 export const UpdatedMessage = styled.div`

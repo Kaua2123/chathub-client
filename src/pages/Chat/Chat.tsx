@@ -103,6 +103,7 @@ function Chat() {
                 ? message.is_sender
                 : !message.is_sender
             }
+            username={username}
           >
             {message.content}
           </Message>

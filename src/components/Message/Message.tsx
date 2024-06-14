@@ -1,11 +1,9 @@
-import { User } from 'lucide-react';
 import {
   Container,
   Div,
   DivMessage,
   MessageContent,
   UpdatedMessage,
-  UserAvatar,
 } from './styled';
 import { useEffect, useState } from 'react';
 import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
@@ -17,6 +15,7 @@ export type MessageProps = {
   isDeleted: boolean;
   children: string;
   id: number;
+  username: string;
 };
 
 function Message({
@@ -25,6 +24,7 @@ function Message({
   id,
   isUpdated,
   isDeleted,
+  username,
 }: MessageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
@@ -59,9 +59,7 @@ function Message({
         $isSender={isSender}
         onClick={handleModalOpen}
       >
-        <UserAvatar>
-          <User />
-        </UserAvatar>
+        <p className="username">{isSender ? 'Você' : username}</p>
         <Container $isSender={isSender} $isDeleted={isDeleted || isMsgDeleted}>
           <Div>
             <MessageContent
