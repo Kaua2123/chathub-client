@@ -30,6 +30,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 function Conversations() {
   const navigate = useNavigate();
   const decodedToken = useAuthContext();
+  const token = localStorage.getItem('token');
 
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
@@ -43,7 +44,7 @@ function Conversations() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (!decodedToken) return navigate('/');
+    if (!token) return navigate('/');
 
     const checkResolution = () => {
       window.screen.width < 768 ? setIsMobile(true) : setIsMobile(false);
