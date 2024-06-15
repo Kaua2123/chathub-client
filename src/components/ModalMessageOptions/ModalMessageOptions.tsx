@@ -33,14 +33,14 @@ function ModalMessageOptions({
   const [content, setContent] = useState('');
   const [slicedContent, setSlicedContent] = useState('');
 
-  // 27 letras
-
   useEffect(() => {
     const addThreeDotsOnBigMessage = () => {
       if (children.length > 27) {
         const sliced = children.slice(0, 25);
         const slicedWithDots = `${sliced}...`;
         setSlicedContent(slicedWithDots);
+      } else {
+        setSlicedContent(children);
       }
     };
 

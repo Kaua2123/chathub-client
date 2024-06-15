@@ -34,11 +34,9 @@ function ConversationCard({
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
-  const [lastMessage, setLastMessage] = useState<IMessage>();
-  const lastMessageContent =
-    lastMessage?.UserId === userId
-      ? `Você: ${lastMessage?.content}`
-      : lastMessage?.content;
+  const [lastMessage, setLastMessage] = useState('');
+  const [slicedMessage, setSlicedMessage] = useState('');
+  console.log(slicedMessage);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -49,12 +47,21 @@ function ConversationCard({
   };
 
   useEffect(() => {
-    const addDotsOnBigMessage = () => {
-      if (lastMessageContent && lastMessageContent?.length >= 53) {
-        console.log('tome: ', lastMessageContent?.slice(51));
+    const addThreeDotsOnBigMessage = () => {
+      if (lastMessage.length > 50) {
+        const sliced = lastMessage.slice(0, 53);
+        const slicedWithDots = `${sliced}...`;
+        setSlicedMessage(slicedWithDots);
+        console.log(lastMessage, sliced);
+      } else {
+        setSlicedMessage(lastMessage);
       }
     };
 
+    addThreeDotsOnBigMessage();
+  }, [lastMessage]);
+
+  useEffect(() => {
     const checkUserName = () => {
       if (conversation.Users[0].users_conversations.UserId != userId) {
         setUsername(conversation.Users[0].username);
@@ -64,7 +71,6 @@ function ConversationCard({
     };
 
     checkUserName();
-    addDotsOnBigMessage();
   }, [conversation.Users, userId]);
 
   useEffect(() => {
@@ -74,7 +80,10 @@ function ConversationCard({
           `/messages/getLastMessage/${conversation.id}`,
         );
 
-        setLastMessage(response.data);
+        const lastMsg: IMessage = response.data;
+        lastMsg.UserId === userId
+          ? setLastMessage(`Você: ${lastMsg.content}`)
+          : setLastMessage(lastMsg.content);
       } catch (error) {
         console.log('an error ocurred: ', error);
       }
@@ -94,7 +103,7 @@ function ConversationCard({
               <UserNameAndMessage>
                 <p className="username">{username} </p>
                 <p className="user-message">
-                  {lastMessage ? lastMessageContent : 'Comece a conversar!'}
+                  {lastMessage ? slicedMessage : 'Comece a conversar!'}
                 </p>
               </UserNameAndMessage>
             </DivUser>
@@ -119,7 +128,7 @@ function ConversationCard({
               <UserNameAndMessage>
                 <p className="username">{username} </p>
                 <p className="user-message">
-                  {lastMessage ? lastMessageContent : 'Comece a conversar!'}
+                  {lastMessage ? slicedMessage : 'Comece a conversar!'}
                 </p>
               </UserNameAndMessage>
             </DivUser>
