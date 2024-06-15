@@ -1,5 +1,12 @@
 import { User } from 'lucide-react';
-import { DivOrdering, UserAvatar, WavingGrabHand } from './styled';
+import {
+  DivMessageHourAndCounter,
+  DivOrdering,
+  MessageCounter,
+  MessageHour,
+  UserAvatar,
+  WavingGrabHand,
+} from './styled';
 import { Container, DivUser, UserNameAndMessage } from './styled';
 import { useNavigate } from 'react-router-dom';
 import { useSortable } from '@dnd-kit/sortable';
@@ -108,6 +115,16 @@ function ConversationCard({
                 </p>
               </UserNameAndMessage>
             </DivUser>
+            <DivMessageHourAndCounter>
+              <MessageHour>
+                <b>08:40</b>
+              </MessageHour>
+              <MessageCounter>
+                <b>
+                  <p>24</p>
+                </b>
+              </MessageCounter>
+            </DivMessageHourAndCounter>
           </Container>
         </div>
       )}

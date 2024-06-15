@@ -33,6 +33,7 @@ export const DivUser = styled.div`
   flex-flow: row wrap;
   align-items: center;
   gap: 2.4rem;
+  position: relative;
 `;
 
 export const UserAvatar = styled.div`
@@ -42,6 +43,36 @@ export const UserAvatar = styled.div`
   border-radius: 100%;
   display: flex;
   align-items: center;
+`;
+
+export const DivAvatarAndMessages = styled.div`
+  display: flex;
+  flex-flow: column wrap;
+`;
+
+export const MessageCounter = styled.div`
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: ${({ theme }) => theme.colors.lighterBlue};
+  padding: 0.6rem;
+  font-family: Raleway;
+  p {
+    font-size: 1.3rem;
+  }
+`;
+
+export const MessageHour = styled.div``;
+
+export const DivMessageHourAndCounter = styled.div`
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
 `;
 
 export const UserNameAndMessage = styled.div`
