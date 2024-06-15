@@ -49,6 +49,12 @@ function ConversationCard({
   };
 
   useEffect(() => {
+    const addDotsOnBigMessage = () => {
+      if (lastMessageContent && lastMessageContent?.length >= 53) {
+        console.log('tome: ', lastMessageContent?.slice(51));
+      }
+    };
+
     const checkUserName = () => {
       if (conversation.Users[0].users_conversations.UserId != userId) {
         setUsername(conversation.Users[0].username);
@@ -56,7 +62,9 @@ function ConversationCard({
         setUsername(conversation.Users[1].username);
       }
     };
+
     checkUserName();
+    addDotsOnBigMessage();
   }, [conversation.Users, userId]);
 
   useEffect(() => {
@@ -117,7 +125,9 @@ function ConversationCard({
             </DivUser>
             <DivMessageHourAndCounter>
               <MessageHour>
-                <b>08:40</b>
+                <b>
+                  <p>08:40</p>
+                </b>
               </MessageHour>
               <MessageCounter>
                 <b>

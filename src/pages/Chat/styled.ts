@@ -105,7 +105,9 @@ export const DivMessages = styled.div`
   gap: 3rem;
   margin-top: 3.4rem;
   height: 73vh;
+  width: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     width: 1.5rem;

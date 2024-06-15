@@ -20,8 +20,11 @@ export const Container = styled.div<{
   border-top-right-radius: ${(props) => (props.$isSender ? '0px' : 'normal')};
   border-top-left-radius: ${(props) => (props.$isSender ? 'normal' : '0px')};
   width: 28rem;
+  min-height: 7rem;
+  max-height: auto;
   display: flex;
   align-items: center;
+  word-break: break-all;
   gap: 2rem;
   min-width: 28rem;
   animation: ${sendingMessage} 0.3s;
