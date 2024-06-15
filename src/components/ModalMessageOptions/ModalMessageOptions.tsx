@@ -12,7 +12,7 @@ import {
   WavingPencilIcon,
 } from './styled';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { handleKeyDown } from '../../utils/handleKeyDown';
 import { useSocketContext } from '../../hooks/useSocketContext';
 
@@ -31,6 +31,21 @@ function ModalMessageOptions({
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [content, setContent] = useState('');
+  const [slicedContent, setSlicedContent] = useState('');
+
+  // 27 letras
+
+  useEffect(() => {
+    const addThreeDotsOnBigMessage = () => {
+      if (children.length > 27) {
+        const sliced = children.slice(0, 25);
+        const slicedWithDots = `${sliced}...`;
+        setSlicedContent(slicedWithDots);
+      }
+    };
+
+    addThreeDotsOnBigMessage();
+  }, []);
 
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -93,7 +108,7 @@ function ModalMessageOptions({
             <div className="msg-section">
               {!isUpdating ? (
                 <>
-                  <div className="message">{children}</div>
+                  <div className="message">{slicedContent}</div>
                   <h6 style={{ marginBottom: '5rem' }}>O que quer fazer?</h6>
                 </>
               ) : (
