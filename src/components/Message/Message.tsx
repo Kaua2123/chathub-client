@@ -15,7 +15,7 @@ export type MessageProps = {
   isDeleted: boolean;
   children: string;
   id: number;
-  username: string;
+  username: string | undefined;
 };
 
 function Message({
@@ -37,8 +37,6 @@ function Message({
       if (data === id) {
         setMessageContent('Mensagem apagada.');
         setIsMsgDeleted(true);
-      } else {
-        setMessageContent(children);
       }
     });
 
