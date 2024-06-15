@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from '../../services/axios';
 import { IMessage } from '../../interfaces/IMessage';
+import { convertDateToHours } from '../../utils/convertDateToHours';
 
 export type ConversationCardProps = {
   id: number;
@@ -34,7 +35,9 @@ function ConversationCard({
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
-  const [lastMessage, setLastMessage] = useState('');
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [lastMessage, setLastMessage] = useState<IMessage>();
+  const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
   console.log(slicedMessage);
 
@@ -48,18 +51,20 @@ function ConversationCard({
 
   useEffect(() => {
     const addThreeDotsOnBigMessage = () => {
-      if (lastMessage.length > 50) {
-        const sliced = lastMessage.slice(0, 53);
+      if (!lastMessageContent) return;
+
+      if (lastMessageContent.length > 50) {
+        const sliced = lastMessageContent.slice(0, 53);
         const slicedWithDots = `${sliced}...`;
         setSlicedMessage(slicedWithDots);
-        console.log(lastMessage, sliced);
+        console.log(lastMessageContent, sliced);
       } else {
-        setSlicedMessage(lastMessage);
+        setSlicedMessage(lastMessageContent);
       }
     };
 
     addThreeDotsOnBigMessage();
-  }, [lastMessage]);
+  }, [lastMessageContent]);
 
   useEffect(() => {
     const checkUserName = () => {
@@ -74,6 +79,18 @@ function ConversationCard({
   }, [conversation.Users, userId]);
 
   useEffect(() => {
+    const getMessagesOfAConversation = async () => {
+      try {
+        const response = await axios.get(
+          `/messages/getMessages/${conversation.id}`,
+        );
+
+        setMessages(response.data);
+      } catch (error) {
+        console.log('an error ocurred: ', error);
+      }
+    };
+
     const getLastMessageOfAConversation = async () => {
       try {
         const response = await axios.get(
@@ -81,13 +98,17 @@ function ConversationCard({
         );
 
         const lastMsg: IMessage = response.data;
+        setLastMessage(lastMsg);
+
         lastMsg.UserId === userId
-          ? setLastMessage(`Você: ${lastMsg.content}`)
-          : setLastMessage(lastMsg.content);
+          ? setLastMessageContent(`Você: ${lastMsg.content}`)
+          : setLastMessageContent(lastMsg.content);
       } catch (error) {
         console.log('an error ocurred: ', error);
       }
     };
+
+    getMessagesOfAConversation();
     getLastMessageOfAConversation();
   }, []);
 
@@ -103,7 +124,7 @@ function ConversationCard({
               <UserNameAndMessage>
                 <p className="username">{username} </p>
                 <p className="user-message">
-                  {lastMessage ? slicedMessage : 'Comece a conversar!'}
+                  {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
                 </p>
               </UserNameAndMessage>
             </DivUser>
@@ -128,19 +149,23 @@ function ConversationCard({
               <UserNameAndMessage>
                 <p className="username">{username} </p>
                 <p className="user-message">
-                  {lastMessage ? slicedMessage : 'Comece a conversar!'}
+                  {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
                 </p>
               </UserNameAndMessage>
             </DivUser>
             <DivMessageHourAndCounter>
               <MessageHour>
                 <b>
-                  <p>08:40</p>
+                  <p>
+                    {lastMessage
+                      ? convertDateToHours(lastMessage.createdAt)
+                      : '00:00'}
+                  </p>
                 </b>
               </MessageHour>
               <MessageCounter>
                 <b>
-                  <p>24</p>
+                  <p>{messages.length}</p>
                 </b>
               </MessageCounter>
             </DivMessageHourAndCounter>
