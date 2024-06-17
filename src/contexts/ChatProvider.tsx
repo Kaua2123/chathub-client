@@ -105,6 +105,7 @@ function ChatProvider({ children }: ChatProviderProps) {
       const response = await axios.post('/messages/create', {
         content: msg,
         is_sender: true,
+        is_read_by: [decodedToken?.id],
         ConversationId: id,
         UserId: decodedToken?.id,
       });

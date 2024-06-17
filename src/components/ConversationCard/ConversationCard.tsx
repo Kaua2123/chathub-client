@@ -35,11 +35,10 @@ function ConversationCard({
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [unreadMessages, setUnreadMessages] = useState<IMessage[]>([]);
   const [lastMessage, setLastMessage] = useState<IMessage>();
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
-  console.log(slicedMessage);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -79,18 +78,6 @@ function ConversationCard({
   }, [conversation.Users, userId]);
 
   useEffect(() => {
-    const getMessagesOfAConversation = async () => {
-      try {
-        const response = await axios.get(
-          `/messages/getMessages/${conversation.id}`,
-        );
-
-        setMessages(response.data);
-      } catch (error) {
-        console.log('an error ocurred: ', error);
-      }
-    };
-
     const getLastMessageOfAConversation = async () => {
       try {
         const response = await axios.get(
@@ -108,7 +95,18 @@ function ConversationCard({
       }
     };
 
-    getMessagesOfAConversation();
+    const getUnreadMessages = async () => {
+      try {
+        const response = await axios.get(
+          `/messages/getUnreadMessages/${id}/${userId}`,
+        );
+        setUnreadMessages(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUnreadMessages();
     getLastMessageOfAConversation();
   }, []);
 
@@ -163,11 +161,13 @@ function ConversationCard({
                   </p>
                 </b>
               </MessageHour>
-              <MessageCounter>
-                <b>
-                  <p>{messages.length}</p>
-                </b>
-              </MessageCounter>
+              {unreadMessages.length > 0 && (
+                <MessageCounter>
+                  <b>
+                    <p>{unreadMessages.length}</p>
+                  </b>
+                </MessageCounter>
+              )}
             </DivMessageHourAndCounter>
           </Container>
         </div>

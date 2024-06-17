@@ -5,6 +5,7 @@ export interface IMessage {
   is_sender: boolean;
   is_updated: boolean;
   is_deleted: boolean;
+  is_read_by: number[];
   createdAt: string;
   updatedAt: string;
   ConversationId: number;
