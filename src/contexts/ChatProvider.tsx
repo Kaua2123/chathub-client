@@ -35,6 +35,16 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [recipientId, setRecipientId] = useState(0);
 
+  const readUnreadMessages = async () => {
+    try {
+      await axios.put(
+        `/messages/readAllUnreadMessages/${id}/${decodedToken?.id}`,
+      );
+    } catch (error) {
+      console.log('an error ocurred');
+    }
+  };
+
   useEffect(() => {
     const getRecipientId = async () => {
       try {
@@ -59,6 +69,8 @@ function ChatProvider({ children }: ChatProviderProps) {
       try {
         const response = await axios.get(`/messages/getMessages/${id}`);
         setMessages(response.data);
+        readUnreadMessages();
+        // talvez, aqui, atualizar o "read_by" das mensagens.
       } catch (error) {
         console.log(error);
       }
@@ -73,6 +85,7 @@ function ChatProvider({ children }: ChatProviderProps) {
 
     socket.on('receivedMsg', (objMsg: IMessage) => {
       setMessages((prevMessages) => [...prevMessages, objMsg]);
+      readUnreadMessages();
     });
 
     socket.on('userTyping', (isTyping: boolean) => {
@@ -105,7 +118,7 @@ function ChatProvider({ children }: ChatProviderProps) {
       const response = await axios.post('/messages/create', {
         content: msg,
         is_sender: true,
-        is_read_by: [decodedToken?.id],
+        is_read_by: [decodedToken?.id?.toString()],
         ConversationId: id,
         UserId: decodedToken?.id,
       });
