@@ -70,7 +70,6 @@ function ChatProvider({ children }: ChatProviderProps) {
         const response = await axios.get(`/messages/getMessages/${id}`);
         setMessages(response.data);
         readUnreadMessages();
-        // talvez, aqui, atualizar o "read_by" das mensagens.
       } catch (error) {
         console.log(error);
       }

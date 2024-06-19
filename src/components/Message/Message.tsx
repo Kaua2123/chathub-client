@@ -3,6 +3,7 @@ import {
   Div,
   DivMessage,
   MessageContent,
+  ReadMessage,
   UpdatedMessage,
 } from './styled';
 import { useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ function Message({
   const [messageContent, setMessageContent] = useState('');
   const [isMsgDeleted, setIsMsgDeleted] = useState(false);
   const [isMsgUpdated, setIsMsgUpdated] = useState(false);
+  const [isRead] = useState(true);
   const socket = useSocketContext();
 
   useEffect(() => {
@@ -86,6 +88,13 @@ function Message({
             </UpdatedMessage>
           )}
         </Container>
+        {isRead /*|| isMsgRead */ && (
+          <ReadMessage>
+            <p>
+              <b>Visualizado</b>
+            </p>
+          </ReadMessage>
+        )}
       </DivMessage>
     </div>
   );

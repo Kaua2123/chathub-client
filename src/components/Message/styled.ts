@@ -40,6 +40,11 @@ export const Container = styled.div<{
     transform: ${(props) =>
       props.$isSender && !props.$isDeleted ? 'scale(1.1)' : 'scale(1.0)'};
   }
+
+  @media (max-width: 768px) {
+    min-width: 15rem;
+    width: 8rem;
+  }
 `;
 
 export const Div = styled.div``;
@@ -55,6 +60,7 @@ export const UserAvatar = styled.div`
 `;
 
 export const DivMessage = styled.div<{ $isSender?: boolean }>`
+  position: relative;
   display: flex;
   flex-flow: column wrap;
   margin: 5rem;
@@ -75,6 +81,16 @@ export const UpdatedMessage = styled.div<{ $isSender?: boolean }>`
   font-size: 1.3rem;
 `;
 
+export const ReadMessage = styled.div`
+  color: ${({ theme }) => theme.colors.lighterBlue};
+  font-style: italic;
+  font-family: Raleway;
+  font-size: 1.4rem;
+
+  position: absolute;
+  bottom: -30px;
+`;
+
 export const MessageContent = styled.p<{
   $isSender?: boolean;
   $isDeleted?: boolean;
@@ -83,4 +99,8 @@ export const MessageContent = styled.p<{
   font-family: Raleway;
   font-size: 1.8rem;
   font-style: ${(props) => (props.$isDeleted ? 'italic' : 'normal')};
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
 `;

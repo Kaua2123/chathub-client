@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   CirclePlusIcon,
   Div,
@@ -25,12 +25,12 @@ import { Hand } from 'lucide-react';
 import axios from '../../services/axios';
 import { IConversation } from '../../interfaces/IConversation';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { tokenDecoder } from '../../utils/tokenDecoder';
 
 function Conversations() {
   const navigate = useNavigate();
-  const decodedToken = useAuthContext();
   const token = localStorage.getItem('token');
+  const decodedToken = useMemo(() => tokenDecoder(token), []);
 
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
