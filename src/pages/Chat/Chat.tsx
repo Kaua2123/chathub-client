@@ -104,6 +104,7 @@ function Chat() {
                 : !message.is_sender
             }
             username={username}
+            isReadBy={message.is_read_by}
           >
             {message.content}
           </Message>

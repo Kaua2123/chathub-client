@@ -37,9 +37,13 @@ function ChatProvider({ children }: ChatProviderProps) {
 
   const readUnreadMessages = async () => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `/messages/readAllUnreadMessages/${id}/${decodedToken?.id}`,
       );
+
+      const unreadMessages: IMessage[] = response.data;
+
+      socket.emit('readMsg', unreadMessages);
     } catch (error) {
       console.log('an error ocurred');
     }
