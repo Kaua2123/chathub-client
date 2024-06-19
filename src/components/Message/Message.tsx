@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
 import { useSocketContext } from '../../hooks/useSocketContext';
 import { useChatContext } from '../../hooks/useChatContext';
+import { IMessage } from '../../interfaces/IMessage';
 
 export type MessageProps = {
   isSender?: boolean;
@@ -37,11 +38,10 @@ function Message({
   const [isMsgDeleted, setIsMsgDeleted] = useState(false);
   const [isMsgUpdated, setIsMsgUpdated] = useState(false);
   const [isRead, setIsRead] = useState(false);
+  const [isMsgRead, setIsMsgRead] = useState(false);
   const socket = useSocketContext();
 
   useEffect(() => {
-    console.log('chamado');
-
     const checkIfMessagesIsRead = () => {
       isReadBy.includes(recipientId.toString())
         ? setIsRead(true)
@@ -49,7 +49,7 @@ function Message({
     };
 
     checkIfMessagesIsRead();
-  }, [recipientId]);
+  }, [recipientId, isReadBy]);
 
   useEffect(() => {
     socket.on('msgDeleted', (data) => {
@@ -64,6 +64,14 @@ function Message({
         setIsMsgUpdated(true);
         setMessageContent(data[1]);
       }
+    });
+
+    socket.on('msgRead', (data: IMessage[]) => {
+      data.map((message) => {
+        message.is_read_by.includes(recipientId.toString())
+          ? setIsMsgRead(true)
+          : setIsMsgRead(false);
+      });
     });
   }, [socket]);
 
@@ -105,7 +113,7 @@ function Message({
             </UpdatedMessage>
           )}
         </Container>
-        {isRead && isSender && (
+        {(isRead || isMsgRead) && isSender && (
           <ReadMessage>
             <p>
               <b>Visualizado</b>
