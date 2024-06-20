@@ -35,10 +35,10 @@ function Message({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-  const [isMsgDeleted, setIsMsgDeleted] = useState(false);
-  const [isMsgUpdated, setIsMsgUpdated] = useState(false);
+  const [wsIsMsgDeleted, setWsIsMsgDeleted] = useState(false);
+  const [wsIsMsgUpdated, setWsIsMsgUpdated] = useState(false);
   const [isRead, setIsRead] = useState(false);
-  const [isMsgRead, setIsMsgRead] = useState(false);
+  const [wsIsMsgRead, setWsIsMsgRead] = useState(false);
   const socket = useSocketContext();
 
   useEffect(() => {
@@ -55,13 +55,13 @@ function Message({
     socket.on('msgDeleted', (data) => {
       if (data === id) {
         setMessageContent('Mensagem apagada.');
-        setIsMsgDeleted(true);
+        setWsIsMsgDeleted(true);
       }
     });
 
     socket.on('msgUpdated', (data) => {
       if (data[0] === id) {
-        setIsMsgUpdated(true);
+        setWsIsMsgUpdated(true);
         setMessageContent(data[1]);
       }
     });
@@ -69,14 +69,14 @@ function Message({
     socket.on('msgRead', (data: IMessage[]) => {
       data.map((message) => {
         message.is_read_by.includes(recipientId.toString())
-          ? setIsMsgRead(true)
-          : setIsMsgRead(false);
+          ? setWsIsMsgRead(true)
+          : setWsIsMsgRead(false);
       });
     });
   }, [socket]);
 
   const handleModalOpen = () => {
-    if (isSender && !isDeleted && !isMsgDeleted) setIsModalOpen(true);
+    if (isSender && !isDeleted && !wsIsMsgDeleted) setIsModalOpen(true);
   };
 
   return (
@@ -92,13 +92,16 @@ function Message({
         onClick={handleModalOpen}
       >
         <p className="username">{isSender ? 'Você' : username}</p>
-        <Container $isSender={isSender} $isDeleted={isDeleted || isMsgDeleted}>
+        <Container
+          $isSender={isSender}
+          $isDeleted={isDeleted || wsIsMsgDeleted}
+        >
           <Div>
             <MessageContent
               $isSender={isSender}
-              $isDeleted={isDeleted || isMsgDeleted}
+              $isDeleted={isDeleted || wsIsMsgDeleted}
             >
-              {isDeleted || isMsgDeleted ? (
+              {isDeleted || wsIsMsgDeleted ? (
                 <b>{messageContent ? messageContent : children}</b>
               ) : messageContent ? (
                 messageContent
@@ -107,13 +110,13 @@ function Message({
               )}
             </MessageContent>
           </Div>
-          {(isUpdated || isMsgUpdated) && (
+          {(isUpdated || wsIsMsgUpdated) && (
             <UpdatedMessage $isSender={isSender}>
               <p>Editado</p>
             </UpdatedMessage>
           )}
         </Container>
-        {(isRead || isMsgRead) && isSender && (
+        {(isRead || wsIsMsgRead) && !isDeleted && isSender && (
           <ReadMessage>
             <p>
               <b>Visualizado</b>

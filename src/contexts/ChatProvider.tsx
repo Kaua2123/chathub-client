@@ -31,6 +31,7 @@ function ChatProvider({ children }: ChatProviderProps) {
 
   const [isUserTyping, setIsUserTyping] = useState(false);
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [unreadMessagesLength, setUnreadMessagesLength] = useState(0);
   const [msg, setMsg] = useState<string | boolean>('');
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [recipientId, setRecipientId] = useState(0);
@@ -48,6 +49,23 @@ function ChatProvider({ children }: ChatProviderProps) {
       console.log('an error ocurred');
     }
   };
+
+  useEffect(() => {
+    const getUnreadMessages = async () => {
+      try {
+        const response = await axios.get(
+          `/messages/getUnreadMessages/${id}/${recipientId}`,
+        );
+
+        setUnreadMessagesLength(response.data.length);
+        console.log('getunread messages: ', response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUnreadMessages();
+  }, [messages]);
 
   useEffect(() => {
     const getRecipientId = async () => {
@@ -130,6 +148,9 @@ function ChatProvider({ children }: ChatProviderProps) {
       setMessages([...messages, objMsg]);
 
       socket.emit('msg', objMsg);
+      socket.emit('unreadMsgs', unreadMessagesLength);
+
+      // const unreadMsgsLength = getUnreadMessages();
 
       if (input) input.value = '';
 

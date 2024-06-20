@@ -17,6 +17,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from '../../services/axios';
 import { IMessage } from '../../interfaces/IMessage';
 import { convertDateToHours } from '../../utils/convertDateToHours';
+import { useSocketContext } from '../../hooks/useSocketContext';
 
 export type ConversationCardProps = {
   id: number;
@@ -32,10 +33,12 @@ function ConversationCard({
   const navigate = useNavigate();
 
   const decodedToken = useAuthContext();
+  const socket = useSocketContext();
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
-  const [unreadMessages, setUnreadMessages] = useState<IMessage[]>([]);
+  const [httpUnreadMessages, setHttpUnreadMessages] = useState<IMessage[]>([]);
+  const [wsUnreadMessagesLength, setWsUnreadMessagesLength] = useState(0);
   const [lastMessage, setLastMessage] = useState<IMessage>();
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
@@ -47,6 +50,13 @@ function ConversationCard({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  useEffect(() => {
+    socket.on('unreadMsgsCounter', (data) => {
+      setWsUnreadMessagesLength(data + 1);
+      console.log(data);
+    });
+  }, [socket]);
 
   useEffect(() => {
     const addThreeDotsOnBigMessage = () => {
@@ -100,7 +110,7 @@ function ConversationCard({
         const response = await axios.get(
           `/messages/getUnreadMessages/${id}/${userId}`,
         );
-        setUnreadMessages(response.data);
+        setHttpUnreadMessages(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -108,7 +118,7 @@ function ConversationCard({
 
     getUnreadMessages();
     getLastMessageOfAConversation();
-  }, []);
+  }, [lastMessageContent]);
 
   return (
     <>
@@ -161,10 +171,15 @@ function ConversationCard({
                   </p>
                 </b>
               </MessageHour>
-              {unreadMessages.length > 0 && (
+              {(httpUnreadMessages.length > 0 ||
+                wsUnreadMessagesLength > 0) && (
                 <MessageCounter>
                   <b>
-                    <p>{unreadMessages.length}</p>
+                    <p>
+                      {wsUnreadMessagesLength != 0
+                        ? wsUnreadMessagesLength
+                        : httpUnreadMessages.length}
+                    </p>
                   </b>
                 </MessageCounter>
               )}
