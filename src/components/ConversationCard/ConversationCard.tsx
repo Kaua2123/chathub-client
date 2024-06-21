@@ -18,6 +18,7 @@ import axios from '../../services/axios';
 import { IMessage } from '../../interfaces/IMessage';
 import { convertDateToHours } from '../../utils/convertDateToHours';
 import { useSocketContext } from '../../hooks/useSocketContext';
+import { addThreeDotsOnBigMessage } from '../../utils/addThreeDotsOnBigMessage';
 
 export type ConversationCardProps = {
   id: number;
@@ -64,21 +65,12 @@ function ConversationCard({
     });
   }, [socket]);
 
-  const addThreeDotsOnBigMessage = (msg: string) => {
-    if (msg.length > 50) {
-      const sliced = msg.slice(0, 53);
-      const slicedWithDots = `${sliced}...`;
-      setSlicedMessage(slicedWithDots);
-      console.log(msg, sliced);
-    } else {
-      setSlicedMessage(msg);
-    }
-  };
-
   useEffect(() => {
-    addThreeDotsOnBigMessage(
+    const sliced = addThreeDotsOnBigMessage(
       !wsLastMessageContent ? lastMessageContent : wsLastMessageContent,
     );
+
+    setSlicedMessage(sliced);
   }, [lastMessageContent, wsLastMessageContent]);
 
   useEffect(() => {
