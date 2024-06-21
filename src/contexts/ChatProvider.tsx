@@ -36,6 +36,10 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [recipientId, setRecipientId] = useState(0);
 
+  const socketRecipient = onlineUsers.find(
+    (user) => user.userId === recipientId,
+  );
+
   const readUnreadMessages = async () => {
     try {
       const response = await axios.put(
@@ -104,13 +108,18 @@ function ChatProvider({ children }: ChatProviderProps) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('receivedMsg', (objMsg: IMessage) => {
-      setMessages((prevMessages) => [...prevMessages, objMsg]);
+    socket.on('receivedMsg', (data, socket) => {
+      if (socketRecipient?.socketId === socket) {
+        setMessages((prevMessages) => [...prevMessages, data[0]]);
+      }
+
       readUnreadMessages();
     });
 
-    socket.on('userTyping', (isTyping: boolean) => {
-      setIsUserTyping(isTyping);
+    socket.on('userTyping', (data, socket) => {
+      if (socketRecipient?.socketId === socket) {
+        setIsUserTyping(data[0]);
+      }
     });
 
     socket.emit('newUser', decodedToken?.id);
@@ -124,11 +133,20 @@ function ChatProvider({ children }: ChatProviderProps) {
       socket.off('userTyping');
       socket.off('onlineUsers');
     };
-  }, [socket]);
+  }, [socket, socketRecipient?.socketId]);
 
   useEffect(() => {
     if (!socket) return;
-    msg ? socket.emit('typing', true) : socket.emit('typing', false);
+
+    const socketRecipient = onlineUsers.find(
+      (user) => user.userId === recipientId,
+    );
+
+    if (!socketRecipient?.socketId) return;
+
+    msg
+      ? socket.emit('typing', true, socketRecipient.socketId)
+      : socket.emit('typing', false, socketRecipient.socketId);
   }, [msg]);
 
   const handleSubmit = async () => {
@@ -147,7 +165,11 @@ function ChatProvider({ children }: ChatProviderProps) {
       const objMsg = response.data;
       setMessages([...messages, objMsg]);
 
-      socket.emit('msg', objMsg);
+      const socketRecipient = onlineUsers.find(
+        (user) => user.userId === recipientId,
+      );
+
+      socket.emit('msg', objMsg, socketRecipient?.socketId);
       socket.emit('unreadMsgs', unreadMessagesLength);
       socket.emit('lastMsg', objMsg);
 

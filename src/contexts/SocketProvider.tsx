@@ -5,9 +5,9 @@ export type SocketProviderProps = {
   children: JSX.Element;
 };
 
-function SocketProvider({ children }: SocketProviderProps) {
-  const socket = io('http://localhost:3000'); // ta inicializando varias <vezes></vezes>
+const socket = io('http://localhost:3000'); // ta inicializando varias <vezes></vezes>
 
+function SocketProvider({ children }: SocketProviderProps) {
   return (
     <div>
       <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
