@@ -40,6 +40,8 @@ function ConversationCard({
   const [httpUnreadMessages, setHttpUnreadMessages] = useState<IMessage[]>([]);
   const [wsUnreadMessagesLength, setWsUnreadMessagesLength] = useState(0);
   const [lastMessage, setLastMessage] = useState<IMessage>();
+  const [wsLastMessageContent, setWsLastMessageContent] = useState('');
+  // const [wsLastMessageContent, setWsLastMessageContent] = useState('');
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
 
@@ -54,26 +56,30 @@ function ConversationCard({
   useEffect(() => {
     socket.on('unreadMsgsCounter', (data) => {
       setWsUnreadMessagesLength(data + 1);
+    });
+
+    socket.on('newLastMsg', (data) => {
+      setWsLastMessageContent(data.content);
       console.log(data);
     });
   }, [socket]);
 
+  const addThreeDotsOnBigMessage = (msg: string) => {
+    if (msg.length > 50) {
+      const sliced = msg.slice(0, 53);
+      const slicedWithDots = `${sliced}...`;
+      setSlicedMessage(slicedWithDots);
+      console.log(msg, sliced);
+    } else {
+      setSlicedMessage(msg);
+    }
+  };
+
   useEffect(() => {
-    const addThreeDotsOnBigMessage = () => {
-      if (!lastMessageContent) return;
-
-      if (lastMessageContent.length > 50) {
-        const sliced = lastMessageContent.slice(0, 53);
-        const slicedWithDots = `${sliced}...`;
-        setSlicedMessage(slicedWithDots);
-        console.log(lastMessageContent, sliced);
-      } else {
-        setSlicedMessage(lastMessageContent);
-      }
-    };
-
-    addThreeDotsOnBigMessage();
-  }, [lastMessageContent]);
+    addThreeDotsOnBigMessage(
+      !wsLastMessageContent ? lastMessageContent : wsLastMessageContent,
+    );
+  }, [lastMessageContent, wsLastMessageContent]);
 
   useEffect(() => {
     const checkUserName = () => {

@@ -149,6 +149,7 @@ function ChatProvider({ children }: ChatProviderProps) {
 
       socket.emit('msg', objMsg);
       socket.emit('unreadMsgs', unreadMessagesLength);
+      socket.emit('lastMsg', objMsg);
 
       // const unreadMsgsLength = getUnreadMessages();
 
