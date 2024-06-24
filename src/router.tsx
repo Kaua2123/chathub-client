@@ -9,6 +9,7 @@ import Friends from './pages/Friends/Friends';
 import BlockedUsers from './pages/BlockedUsers/BlockedUsers';
 import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound/NotFound';
+
 import ChatProvider from './contexts/ChatProvider';
 
 function AppRouter() {

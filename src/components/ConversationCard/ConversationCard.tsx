@@ -19,6 +19,7 @@ import { IMessage } from '../../interfaces/IMessage';
 import { convertDateToHours } from '../../utils/convertDateToHours';
 import { useSocketContext } from '../../hooks/useSocketContext';
 import { addThreeDotsOnBigMessage } from '../../utils/addThreeDotsOnBigMessage';
+import { IOnlineUsers } from '../../interfaces/IOnlineUsers';
 
 export type ConversationCardProps = {
   id: number;
@@ -35,14 +36,15 @@ function ConversationCard({
 
   const decodedToken = useAuthContext();
   const socket = useSocketContext();
+
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
+  const [recipientId, setRecipientId] = useState(0);
   const [httpUnreadMessages, setHttpUnreadMessages] = useState<IMessage[]>([]);
   const [wsUnreadMessagesLength, setWsUnreadMessagesLength] = useState(0);
   const [lastMessage, setLastMessage] = useState<IMessage>();
   const [wsLastMessageContent, setWsLastMessageContent] = useState('');
-  // const [wsLastMessageContent, setWsLastMessageContent] = useState('');
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
 
@@ -54,27 +56,74 @@ function ConversationCard({
     transition,
   };
 
+  const newLastMsg = (socketRecipient: IOnlineUsers) => {
+    socket.on('newLastMsg', (data, socket) => {
+      if (!socketRecipient) return;
+
+      if (socketRecipient.socketId === socket) {
+        setWsLastMessageContent(data[0].content);
+      }
+    });
+  };
+
+  useEffect(() => {
+    const getRecipientId = async () => {
+      try {
+        if (!id) return;
+
+        const response = await axios.get(
+          `/conversation/show/${decodedToken?.id}/${id}`,
+        );
+
+        response.data[0].Users[0].users_conversations.UserId !==
+        decodedToken?.id
+          ? setRecipientId(response.data[0].Users[0].users_conversations.UserId)
+          : setRecipientId(
+              response.data[0].Users[1].users_conversations.UserId,
+            );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getRecipientId();
+  }, [id]);
+
+  useEffect(() => {
+    socket.emit('newUser', decodedToken?.id);
+    socket.on('onlineUsers', (onlineUsers: IOnlineUsers[]) => {
+      console.log('onlineUsers ', onlineUsers);
+
+      const socketRecipient = onlineUsers.find(
+        (user) => user.userId === recipientId,
+      );
+
+      if (!socketRecipient) return;
+      newLastMsg(socketRecipient);
+    });
+  }, [recipientId]);
+
   useEffect(() => {
     socket.on('unreadMsgsCounter', (data) => {
       setWsUnreadMessagesLength(data + 1);
     });
 
-    socket.on('newLastMsg', (data) => {
-      setWsLastMessageContent(data.content);
-      console.log(data);
-    });
+    return () => {
+      socket.off('unreadMsgsCounter');
+      socket.off('newLastMsg');
+    };
   }, [socket]);
 
   useEffect(() => {
     const sliced = addThreeDotsOnBigMessage(
-      !wsLastMessageContent ? lastMessageContent : wsLastMessageContent,
+      wsLastMessageContent || lastMessageContent,
     );
 
     setSlicedMessage(sliced);
   }, [lastMessageContent, wsLastMessageContent]);
 
   useEffect(() => {
-    const checkUserName = () => {
+    const checkUsername = () => {
       if (conversation.Users[0].users_conversations.UserId != userId) {
         setUsername(conversation.Users[0].username);
       } else {
@@ -82,7 +131,7 @@ function ConversationCard({
       }
     };
 
-    checkUserName();
+    checkUsername();
   }, [conversation.Users, userId]);
 
   useEffect(() => {

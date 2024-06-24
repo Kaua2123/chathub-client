@@ -62,7 +62,6 @@ function ChatProvider({ children }: ChatProviderProps) {
         );
 
         setUnreadMessagesLength(response.data.length);
-        console.log('getunread messages: ', response.data);
       } catch (error) {
         console.log(error);
       }
@@ -74,7 +73,7 @@ function ChatProvider({ children }: ChatProviderProps) {
   useEffect(() => {
     const getRecipientId = async () => {
       try {
-        if (!id) console.log('undefined id - useParams');
+        if (!id) return;
 
         const response = await axios.get(
           `/conversation/show/${decodedToken?.id}/${id}`,
@@ -138,10 +137,6 @@ function ChatProvider({ children }: ChatProviderProps) {
   useEffect(() => {
     if (!socket) return;
 
-    const socketRecipient = onlineUsers.find(
-      (user) => user.userId === recipientId,
-    );
-
     if (!socketRecipient?.socketId) return;
 
     msg
@@ -165,13 +160,9 @@ function ChatProvider({ children }: ChatProviderProps) {
       const objMsg = response.data;
       setMessages([...messages, objMsg]);
 
-      const socketRecipient = onlineUsers.find(
-        (user) => user.userId === recipientId,
-      );
-
       socket.emit('msg', objMsg, socketRecipient?.socketId);
       socket.emit('unreadMsgs', unreadMessagesLength);
-      socket.emit('lastMsg', objMsg);
+      socket.emit('lastMsg', objMsg, socketRecipient?.socketId);
 
       // const unreadMsgsLength = getUnreadMessages();
 
