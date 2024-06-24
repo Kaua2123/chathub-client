@@ -21,6 +21,7 @@ import { useChatContext } from '../../hooks/useChatContext';
 import { handleKeyDown } from '../../utils/handleKeyDown';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
+import Loading from '../../components/Loading/Loading';
 
 function Chat() {
   const { username } = useParams();
@@ -37,6 +38,7 @@ function Chat() {
   } = useChatContext();
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
 
@@ -46,8 +48,15 @@ function Chat() {
     divMessages.current.scrollTo(0, divMessages.current.scrollHeight);
   }, [messages]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2400);
+  });
+
   return (
     <div>
+      {isLoading && <Loading />}
       {isDeleting && (
         <ModalDeleting
           handleClickDelete={handleClickDelete}
