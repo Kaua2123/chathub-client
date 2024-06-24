@@ -66,6 +66,16 @@ function ConversationCard({
     });
   };
 
+  const unreadMsgsCounter = (socketRecipient: IOnlineUsers) => {
+    socket.on('unreadMsgsCounter', (data, socket) => {
+      if (!socketRecipient) return;
+
+      if (socketRecipient.socketId === socket) {
+        setWsUnreadMessagesLength(data[0] + 1);
+      }
+    });
+  };
+
   useEffect(() => {
     const getRecipientId = async () => {
       try {
@@ -100,19 +110,9 @@ function ConversationCard({
 
       if (!socketRecipient) return;
       newLastMsg(socketRecipient);
+      unreadMsgsCounter(socketRecipient);
     });
   }, [recipientId]);
-
-  useEffect(() => {
-    socket.on('unreadMsgsCounter', (data) => {
-      setWsUnreadMessagesLength(data + 1);
-    });
-
-    return () => {
-      socket.off('unreadMsgsCounter');
-      socket.off('newLastMsg');
-    };
-  }, [socket]);
 
   useEffect(() => {
     const sliced = addThreeDotsOnBigMessage(
