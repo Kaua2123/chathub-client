@@ -23,6 +23,7 @@ import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
 import ChatDropdown from '../../components/ChatDropdown/ChatDropdown';
+import ModalAddUsers from '../../components/ModalAddUsers/ModalAddUsers';
 
 function Chat() {
   const { username } = useParams();
@@ -41,6 +42,7 @@ function Chat() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalAddUsersOpen, setIsModalAddUsersOpen] = useState(false);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
 
@@ -63,6 +65,12 @@ function Chat() {
         <ModalDeleting
           handleClickDelete={handleClickDelete}
           setIsDeleting={setIsDeleting}
+        />
+      )}
+      {isModalAddUsersOpen && (
+        <ModalAddUsers
+          decodedToken={decodedToken}
+          setIsCreatingGroup={setIsModalAddUsersOpen}
         />
       )}
       <TopContainer>
@@ -103,6 +111,7 @@ function Chat() {
             <ChatDropdown
               setIsMenuOpen={setIsMenuOpen}
               setIsDeleting={setIsDeleting}
+              setIsModalAddUsersOpen={setIsModalAddUsersOpen}
             />
           )}
           {/* <TrashIcon onClick={() => setIsDeleting(true)} /> */}

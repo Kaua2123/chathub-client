@@ -3,9 +3,14 @@ import { Button, Div, Menu } from './styled';
 export type ChatDropdownProps = {
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalAddUsersOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function ChatDropdown({ setIsMenuOpen, setIsDeleting }: ChatDropdownProps) {
+function ChatDropdown({
+  setIsMenuOpen,
+  setIsDeleting,
+  setIsModalAddUsersOpen,
+}: ChatDropdownProps) {
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
@@ -18,7 +23,12 @@ function ChatDropdown({ setIsMenuOpen, setIsDeleting }: ChatDropdownProps) {
     <div>
       <Menu id="menu" onClick={handleOutsideClick}>
         <Div>
-          <Button>
+          <Button
+            onClick={() => {
+              setIsMenuOpen(false);
+              setIsModalAddUsersOpen(true);
+            }}
+          >
             <p>Adicionar usuários</p>
           </Button>
           <Button

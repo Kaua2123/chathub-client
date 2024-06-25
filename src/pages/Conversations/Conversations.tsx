@@ -1,18 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from 'react';
 import {
-  CirclePlusIcon,
   Div,
   DivButtons,
   DivConversations,
-  FixedButton,
   OrderConversationsButton,
   WavingGrabHand,
 } from './styled';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
 import Navbar from '../../components/Navbar/Navbar';
-import ModalCreatingGroup from '../../components/ModalCreatingGroup/ModalCreatingGroup';
 
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import {
@@ -31,8 +28,6 @@ function Conversations() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const decodedToken = useMemo(() => tokenDecoder(token), []);
-
-  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
@@ -90,10 +85,6 @@ function Conversations() {
     <div>
       <Navbar />
 
-      {isCreatingGroup && (
-        <ModalCreatingGroup setIsCreatingGroup={setIsCreatingGroup} />
-      )}
-
       <Div>
         <p className="title">Conversas</p>
 
@@ -144,9 +135,6 @@ function Conversations() {
         )}
       </Div>
       <DivButtons>
-        <FixedButton onClick={() => setIsCreatingGroup(true)}>
-          <CirclePlusIcon />
-        </FixedButton>
         <OrderConversationsButton onClick={() => setIsDragging(!isDragging)}>
           {isDragging && <WavingGrabHand />}
           {!isDragging && <Hand />}

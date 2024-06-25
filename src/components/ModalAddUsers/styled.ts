@@ -28,7 +28,7 @@ const opening = keyframes`
 export const Container = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
-  padding: 14rem;
+  padding: 7rem;
   border-radius: 2rem;
   transition: transform 0.3s;
   animation: ${opening} 0.3s;
@@ -37,6 +37,39 @@ export const Container = styled.div`
     padding: 8rem;
     width: 35rem;
     height: 70vh;
+  }
+`;
+
+export const DivFriends = styled.div<{ $hasFriends?: boolean }>`
+  color: white;
+  background-color: ${({ theme }) => theme.colors.black};
+  height: ${(props) => (props.$hasFriends ? '55vh' : 'auto')};
+  overflow-y: auto;
+  padding: 6rem;
+  overflow-x: hidden;
+  margin-top: 3.4rem;
+  border-radius: 1.7rem;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 6px 20px rgba(0, 0, 0, 0.1);
+
+  p {
+    font-family: Raleway;
+  }
+
+  &::-webkit-scrollbar {
+    width: 1.5rem;
+    border: 1px solid ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.4rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.darkBlue};
+    border-radius: 1.7rem;
+  }
+
+  @media (max-width: 768px) {
+    margin: 2rem;
   }
 `;
 
