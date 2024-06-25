@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { User, Users } from 'lucide-react';
 import {
   DivMessageHourAndCounter,
   DivOrdering,
@@ -102,8 +102,6 @@ function ConversationCard({
   useEffect(() => {
     socket.emit('newUser', decodedToken?.id);
     socket.on('onlineUsers', (onlineUsers: IOnlineUsers[]) => {
-      console.log('onlineUsers ', onlineUsers);
-
       const socketRecipient = onlineUsers.find(
         (user) => user.userId === recipientId,
       );
@@ -174,7 +172,13 @@ function ConversationCard({
           <Container $isDragging={isDragging}>
             <DivUser>
               <UserAvatar>
-                <User color="black" />
+                <>
+                  {conversation.type === 'group' ? (
+                    <Users color="black" />
+                  ) : (
+                    <User color="black" />
+                  )}
+                </>
               </UserAvatar>
               <UserNameAndMessage>
                 <p className="username">{username} </p>

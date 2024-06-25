@@ -7,10 +7,10 @@ import {
   DivConfig,
   DivMessages,
   DivUser,
+  EllipsisVerticalIcon,
   Input,
   SendHorizontalIcon,
   TopContainer,
-  TrashIcon,
   UserAvatar,
 } from './styled';
 import { Circle, User } from 'lucide-react';
@@ -22,6 +22,7 @@ import { handleKeyDown } from '../../utils/handleKeyDown';
 import ModalDeleting from '../../components/ModalDeleting/ModalDeleting';
 import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
+import ChatDropdown from '../../components/ChatDropdown/ChatDropdown';
 
 function Chat() {
   const { username } = useParams();
@@ -39,6 +40,7 @@ function Chat() {
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
 
@@ -96,7 +98,14 @@ function Chat() {
         </DivUser>
 
         <DivConfig>
-          <TrashIcon onClick={() => setIsDeleting(true)} />
+          <EllipsisVerticalIcon onClick={() => setIsMenuOpen(true)} />
+          {isMenuOpen && (
+            <ChatDropdown
+              setIsMenuOpen={setIsMenuOpen}
+              setIsDeleting={setIsDeleting}
+            />
+          )}
+          {/* <TrashIcon onClick={() => setIsDeleting(true)} /> */}
         </DivConfig>
       </TopContainer>
 
