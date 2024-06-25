@@ -47,6 +47,7 @@ function ConversationCard({
   const [wsLastMessageContent, setWsLastMessageContent] = useState('');
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
+  const [isGroup, setIsGroup] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -55,6 +56,10 @@ function ConversationCard({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  useEffect(() => {
+    conversation.type == 'group' ? setIsGroup(true) : setIsGroup(false);
+  }, []);
 
   const newLastMsg = (socketRecipient: IOnlineUsers) => {
     socket.on('newLastMsg', (data, socket) => {
@@ -173,15 +178,17 @@ function ConversationCard({
             <DivUser>
               <UserAvatar>
                 <>
-                  {conversation.type === 'group' ? (
-                    <Users color="black" />
-                  ) : (
-                    <User color="black" />
-                  )}
+                  {isGroup ? <Users color="black" /> : <User color="black" />}
                 </>
               </UserAvatar>
               <UserNameAndMessage>
-                <p className="username">{username} </p>
+                <p className="username">
+                  {conversation.type == 'group'
+                    ? conversation.name === null
+                      ? 'Grupo sem nome'
+                      : conversation.name
+                    : username}
+                </p>
                 <p className="user-message">
                   {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
                 </p>
@@ -198,15 +205,23 @@ function ConversationCard({
           <Container
             $isDragging={isDragging}
             onClick={() => {
-              navigate(`/chat/${id}/${username}`);
+              navigate(`/chat/${id}/${username}?isGroup=${isGroup}`);
             }}
           >
             <DivUser>
               <UserAvatar>
-                <User color="black" />
+                <>
+                  {isGroup ? <Users color="black" /> : <User color="black" />}
+                </>
               </UserAvatar>
               <UserNameAndMessage>
-                <p className="username">{username} </p>
+                <p className="username">
+                  {isGroup
+                    ? conversation.name === null
+                      ? 'Grupo sem nome'
+                      : conversation.name
+                    : username}
+                </p>
                 <p className="user-message">
                   {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
                 </p>

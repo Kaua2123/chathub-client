@@ -23,7 +23,6 @@ export type AddUserCardProps = {
 function AddUserCard({ friend, conversationId }: AddUserCardProps) {
   const addMoreUsersToConversation = async () => {
     try {
-      console.log(conversationId);
       await axios.post(
         `/conversation/addMoreUsersToConversation/${conversationId}/${friend.id}`,
       );
