@@ -26,7 +26,7 @@ import ChatDropdown from '../../components/ChatDropdown/ChatDropdown';
 import ModalAddUsers from '../../components/ModalAddUsers/ModalAddUsers';
 
 function Chat() {
-  const { username } = useParams();
+  const { id, username } = useParams();
   const navigate = useNavigate();
   const decodedToken = useAuthContext();
   const {
@@ -69,6 +69,7 @@ function Chat() {
       )}
       {isModalAddUsersOpen && (
         <ModalAddUsers
+          conversationId={id}
           decodedToken={decodedToken}
           setIsCreatingGroup={setIsModalAddUsersOpen}
         />

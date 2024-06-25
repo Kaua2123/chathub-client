@@ -39,6 +39,13 @@ function ChatDropdown({
           >
             <p>Excluir conversa</p>
           </Button>
+          <Button
+            onClick={() => {
+              setIsMenuOpen(false);
+            }}
+          >
+            <p>Participantes</p>
+          </Button>
         </Div>
       </Menu>
     </div>

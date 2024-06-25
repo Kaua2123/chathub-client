@@ -1,7 +1,9 @@
 import {
+  Button,
   CircleXIcon,
   CloseButton,
   Container,
+  DivButton,
   DivFriends,
   Modal,
 } from './styled';
@@ -14,11 +16,13 @@ import { AxiosError } from 'axios';
 import AddUserCard from '../AddUserCard/AddUserCard';
 
 export type ModalAddUsersProps = {
+  conversationId: string | undefined;
   setIsCreatingGroup: React.Dispatch<React.SetStateAction<boolean>>;
   decodedToken: IToken | undefined;
 };
 
 function ModalAddUsers({
+  conversationId,
   setIsCreatingGroup,
   decodedToken,
 }: ModalAddUsersProps) {
@@ -77,7 +81,13 @@ function ModalAddUsers({
           <DivFriends $hasFriends={hasFriends}>
             {friends.length > 0 ? (
               friends.map((friend, index) => (
-                <AddUserCard friend={friend} key={index} />
+                <>
+                  <AddUserCard
+                    conversationId={conversationId}
+                    friend={friend}
+                    key={index}
+                  />
+                </>
               ))
             ) : (
               <div
@@ -94,6 +104,9 @@ function ModalAddUsers({
               </div>
             )}
           </DivFriends>
+          <DivButton>
+            <Button>Adicionar usuários</Button>
+          </DivButton>
         </Container>
       </Modal>
     </div>

@@ -73,6 +73,13 @@ export const DivFriends = styled.div<{ $hasFriends?: boolean }>`
   }
 `;
 
+export const DivButton = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-top: 2rem;
+`;
+
 export const CloseButton = styled.button`
   position: absolute;
   right: 0;

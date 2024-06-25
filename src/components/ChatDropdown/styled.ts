@@ -30,6 +30,8 @@ export const Div = styled.div`
   margin-right: 2.3rem;
   display: flex;
   flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   border-radius: 1.7rem;
