@@ -20,6 +20,7 @@ export type MessageProps = {
   children: string;
   id: number;
   username: string | undefined;
+  isGroup: string | null;
 };
 
 function Message({
@@ -30,6 +31,7 @@ function Message({
   isDeleted,
   isReadBy,
   username,
+  isGroup,
 }: MessageProps) {
   const { recipientId } = useChatContext();
 
@@ -119,7 +121,7 @@ function Message({
         {(isRead || wsIsMsgRead) && !isDeleted && isSender && (
           <ReadMessage>
             <p>
-              <b>Visualizado</b>
+              <b>{isGroup === 'true' ? 'Visto por todos' : 'Visualizado'}</b>
             </p>
           </ReadMessage>
         )}

@@ -184,6 +184,7 @@ function Chat() {
             }
             username={username}
             isReadBy={message.is_read_by}
+            isGroup={isGroup}
           >
             {message.content}
           </Message>
