@@ -29,6 +29,7 @@ export const Container = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   padding: 7rem;
+  width: 60vw;
   border-radius: 2rem;
   transition: transform 0.3s;
   animation: ${opening} 0.3s;
