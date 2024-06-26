@@ -27,6 +27,7 @@ import ModalAddUsers from '../../components/ModalAddUsers/ModalAddUsers';
 import { useQuery } from '../../hooks/useQuery';
 import { IConversation } from '../../interfaces/IConversation';
 import axios from '../../services/axios';
+import ModalUsersInGroup from '../../components/ModalUsersInGroup/ModalUsersInGroup';
 
 function Chat() {
   const { id, username } = useParams();
@@ -53,6 +54,7 @@ function Chat() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalAddUsersOpen, setIsModalAddUsersOpen] = useState(false);
+  const [isModalUsersInGroupOpen, setIsModalUsersInGroupOpen] = useState(false);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
 
@@ -105,6 +107,13 @@ function Chat() {
           conversationId={id}
           decodedToken={decodedToken}
           setIsCreatingGroup={setIsModalAddUsersOpen}
+        />
+      )}
+      {isModalUsersInGroupOpen && (
+        <ModalUsersInGroup
+          conversationId={id}
+          decodedToken={decodedToken}
+          setIsCreatingGroup={setIsModalUsersInGroupOpen}
         />
       )}
       <TopContainer>
@@ -164,6 +173,7 @@ function Chat() {
               setIsMenuOpen={setIsMenuOpen}
               setIsDeleting={setIsDeleting}
               setIsModalAddUsersOpen={setIsModalAddUsersOpen}
+              setIsModalUsersInGroupOpen={setIsModalUsersInGroupOpen}
             />
           )}
           {/* <TrashIcon onClick={() => setIsDeleting(true)} /> */}

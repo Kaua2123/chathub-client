@@ -4,12 +4,14 @@ export type ChatDropdownProps = {
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
   setIsModalAddUsersOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalUsersInGroupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ChatDropdown({
   setIsMenuOpen,
   setIsDeleting,
   setIsModalAddUsersOpen,
+  setIsModalUsersInGroupOpen,
 }: ChatDropdownProps) {
   const handleOutsideClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -42,6 +44,7 @@ function ChatDropdown({
           <Button
             onClick={() => {
               setIsMenuOpen(false);
+              setIsModalUsersInGroupOpen(true);
             }}
           >
             <p>Participantes</p>
