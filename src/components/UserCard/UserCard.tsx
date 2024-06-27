@@ -9,6 +9,7 @@ import {
   UserAvatar,
   UserData,
   UserRoundPlusIcon,
+  UserRoundXIcon,
 } from './styled';
 import { IUser } from '../../interfaces/IUser';
 import axios from '../../services/axios';
@@ -16,14 +17,19 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { useState } from 'react';
+import ModalDeleting from '../ModalDeleting/ModalDeleting';
 
 export type UserCardProps = {
   user: IUser;
+  isGroup?: boolean;
+  conversationId: string | undefined;
 };
 
-function UserCard({ user }: UserCardProps) {
+function UserCard({ user, isGroup, conversationId }: UserCardProps) {
   const navigate = useNavigate();
   const decodedToken = useAuthContext();
+  const [isRemovingUser, setIsRemovingUser] = useState(false);
 
   const sendFriendRequest = async () => {
     try {
@@ -54,6 +60,19 @@ function UserCard({ user }: UserCardProps) {
     }
   };
 
+  const removeUserFromConversation = async () => {
+    try {
+      await axios.delete(
+        `/conversation/removeUsersFromConversation/${conversationId}/${user.id}`,
+      );
+
+      toast.success('Usuário removido do grupo.');
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
   return (
     <div>
       <Div>
@@ -76,15 +95,31 @@ function UserCard({ user }: UserCardProps) {
           </UserData>
         </DivUser>
         <DivOptions>
-          <Button>
-            <MessageSquareTextIcon
-              onClick={handleClickConversation}
-              size={28}
-            />
-          </Button>
-          <Button onClick={sendFriendRequest}>
-            <UserRoundPlusIcon size={28} />
-          </Button>
+          {isGroup ? (
+            <>
+              <Button onClick={() => setIsRemovingUser(true)}>
+                <UserRoundXIcon />
+              </Button>
+              {isRemovingUser && (
+                <ModalDeleting
+                  handleClickDelete={removeUserFromConversation}
+                  setIsDeleting={setIsRemovingUser}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <Button>
+                <MessageSquareTextIcon
+                  onClick={handleClickConversation}
+                  size={28}
+                />
+              </Button>
+              <Button onClick={sendFriendRequest}>
+                <UserRoundPlusIcon size={28} />
+              </Button>
+            </>
+          )}
         </DivOptions>
       </Div>
     </div>

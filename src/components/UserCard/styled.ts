@@ -1,4 +1,4 @@
-import { MessageSquareText, UserRoundPlus } from 'lucide-react';
+import { MessageSquareText, UserRoundPlus, UserRoundX } from 'lucide-react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
@@ -45,8 +45,9 @@ export const UserData = styled.div`
   }
 `;
 
-export const DivOptions = styled.div`
+export const DivOptions = styled.div<{ isGroup?: boolean }>`
   display: flex;
+  flex-flow: column wrap;
   align-items: center;
   gap: 2rem;
 `;
@@ -69,5 +70,13 @@ export const UserRoundPlusIcon = styled(UserRoundPlus)`
 
     transform: translateY(-10%);
     stroke: ${({ theme }) => theme.colors.lighterBlue};
+  }
+`;
+export const UserRoundXIcon = styled(UserRoundX)`
+  &:hover {
+    transition: transform 0.3s;
+
+    transform: translateY(-10%);
+    stroke: ${({ theme }) => theme.colors.red};
   }
 `;

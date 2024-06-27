@@ -71,7 +71,12 @@ function ModalUsersInGroup({
             {users.length > 0 ? (
               users.map((user, index) => (
                 <>
-                  <UserCard user={user} key={index} />
+                  <UserCard
+                    isGroup={true}
+                    conversationId={conversationId}
+                    user={user}
+                    key={index}
+                  />
                 </>
               ))
             ) : (
