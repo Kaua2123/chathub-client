@@ -170,6 +170,7 @@ function Chat() {
           <EllipsisVerticalIcon onClick={() => setIsMenuOpen(true)} />
           {isMenuOpen && (
             <ChatDropdown
+              isGroup={isGroup}
               setIsMenuOpen={setIsMenuOpen}
               setIsDeleting={setIsDeleting}
               setIsModalAddUsersOpen={setIsModalAddUsersOpen}

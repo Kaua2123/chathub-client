@@ -1,6 +1,7 @@
 import { Button, Div, Menu } from './styled';
 
 export type ChatDropdownProps = {
+  isGroup: string | null;
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
   setIsModalAddUsersOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,6 +9,7 @@ export type ChatDropdownProps = {
 };
 
 function ChatDropdown({
+  isGroup,
   setIsMenuOpen,
   setIsDeleting,
   setIsModalAddUsersOpen,
@@ -41,15 +43,17 @@ function ChatDropdown({
           >
             <p>Excluir conversa</p>
           </Button>
-          <Button
-            className="participants-btn"
-            onClick={() => {
-              setIsMenuOpen(false);
-              setIsModalUsersInGroupOpen(true);
-            }}
-          >
-            <p>Participantes</p>
-          </Button>
+          {isGroup === 'true' && (
+            <Button
+              className="participants-btn"
+              onClick={() => {
+                setIsMenuOpen(false);
+                setIsModalUsersInGroupOpen(true);
+              }}
+            >
+              <p>Participantes</p>
+            </Button>
+          )}
         </Div>
       </Menu>
     </div>
