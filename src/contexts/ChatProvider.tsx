@@ -8,6 +8,7 @@ import { ChatContext } from './contexts';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useSocketContext } from '../hooks/useSocketContext';
+import { IConversation } from '../interfaces/IConversation';
 
 export type ChatProviderProps = {
   children: JSX.Element;
@@ -21,6 +22,8 @@ export type ContextData = {
   handleSubmit: () => Promise<void>;
   handleClickDelete: () => Promise<void>;
   setMsg: React.Dispatch<React.SetStateAction<string | boolean>>;
+  conversationUsersname: string[];
+  conversation: IConversation | undefined;
 };
 
 function ChatProvider({ children }: ChatProviderProps) {
@@ -30,6 +33,10 @@ function ChatProvider({ children }: ChatProviderProps) {
   const socket = useSocketContext();
 
   const [isUserTyping, setIsUserTyping] = useState(false);
+  const [conversationUsersname, setConversationUsersname] = useState<string[]>(
+    [],
+  );
+  const [conversation, setConversation] = useState<IConversation>();
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [unreadMessagesLength, setUnreadMessagesLength] = useState(0);
   const [msg, setMsg] = useState<string | boolean>('');
@@ -90,6 +97,25 @@ function ChatProvider({ children }: ChatProviderProps) {
       }
     };
 
+    const getUserConversation = async () => {
+      try {
+        const response = await axios.get(
+          `/conversation/show/${decodedToken?.id}/${id}`,
+        );
+
+        const conversation = response.data;
+        setConversation(conversation);
+
+        const conversationUsers: string[] = conversation[0].Users?.map(
+          (user: { username: string }) => user.username,
+        );
+
+        setConversationUsersname(conversationUsers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const getMessagesOfAConversation = async () => {
       try {
         const response = await axios.get(`/messages/getMessages/${id}`);
@@ -100,6 +126,7 @@ function ChatProvider({ children }: ChatProviderProps) {
       }
     };
 
+    getUserConversation();
     getMessagesOfAConversation();
     getRecipientId();
   }, [id]);
@@ -152,7 +179,7 @@ function ChatProvider({ children }: ChatProviderProps) {
       const response = await axios.post('/messages/create', {
         content: msg,
         is_sender: true,
-        is_read_by: [decodedToken?.id?.toString()],
+        is_read_by: decodedToken?.id?.toString(),
         ConversationId: id,
         UserId: decodedToken?.id,
       });
@@ -161,6 +188,7 @@ function ChatProvider({ children }: ChatProviderProps) {
       setMessages([...messages, objMsg]);
 
       socket.emit('msg', objMsg, socketRecipient?.socketId);
+      // / array de socketids dos particiipantes
       socket.emit(
         'unreadMsgs',
         unreadMessagesLength,
@@ -204,6 +232,8 @@ function ChatProvider({ children }: ChatProviderProps) {
           handleSubmit,
           handleClickDelete,
           setMsg,
+          conversation,
+          conversationUsersname,
         }}
       >
         {children}

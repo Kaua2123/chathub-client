@@ -25,8 +25,6 @@ import Loading from '../../components/Loading/Loading';
 import ChatDropdown from '../../components/ChatDropdown/ChatDropdown';
 import ModalAddUsers from '../../components/ModalAddUsers/ModalAddUsers';
 import { useQuery } from '../../hooks/useQuery';
-import { IConversation } from '../../interfaces/IConversation';
-import axios from '../../services/axios';
 import ModalUsersInGroup from '../../components/ModalUsersInGroup/ModalUsersInGroup';
 
 function Chat() {
@@ -41,15 +39,13 @@ function Chat() {
     handleSubmit,
     setMsg,
     handleClickDelete,
+    conversation,
+    conversationUsersname,
   } = useChatContext();
 
   const query = useQuery();
   const isGroup = query.get('isGroup');
 
-  const [conversationUsersname, setConversationUsersname] = useState<string[]>(
-    [],
-  );
-  const [conversation, setConversation] = useState<IConversation>();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,29 +53,6 @@ function Chat() {
   const [isModalUsersInGroupOpen, setIsModalUsersInGroupOpen] = useState(false);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const getUserConversation = async () => {
-      try {
-        const response = await axios.get(
-          `/conversation/show/${decodedToken?.id}/${id}`,
-        );
-
-        const conversation = response.data;
-        setConversation(conversation);
-
-        const conversationUsers: string[] = conversation[0].Users?.map(
-          (user: { username: string }) => user.username,
-        );
-
-        setConversationUsersname(conversationUsers);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getUserConversation();
-  }, []);
 
   useEffect(() => {
     if (!divMessages.current) return;

@@ -1,9 +1,7 @@
 import {
-  Button,
   CircleXIcon,
   CloseButton,
   Container,
-  DivButton,
   DivFriends,
   Modal,
 } from './styled';
@@ -104,9 +102,6 @@ function ModalAddUsers({
               </div>
             )}
           </DivFriends>
-          <DivButton>
-            <Button>Adicionar usuários</Button>
-          </DivButton>
         </Container>
       </Modal>
     </div>
