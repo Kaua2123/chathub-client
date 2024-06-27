@@ -19,6 +19,17 @@ export const Menu = styled.div`
   left: 0;
   right: 0;
   display: flex;
+
+  .participants-btn {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      margin: 0.2rem;
+    }
+  }
 `;
 
 export const Div = styled.div`

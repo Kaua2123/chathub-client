@@ -41,7 +41,7 @@ export const Container = styled.div`
   }
 `;
 
-export const DivFriends = styled.div<{ $hasFriends?: boolean }>`
+export const DivUsers = styled.div<{ $hasFriends?: boolean }>`
   color: white;
   background-color: ${({ theme }) => theme.colors.black};
   height: ${(props) => (props.$hasFriends ? '55vh' : 'auto')};

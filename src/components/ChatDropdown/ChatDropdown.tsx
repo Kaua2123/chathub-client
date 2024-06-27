@@ -42,6 +42,7 @@ function ChatDropdown({
             <p>Excluir conversa</p>
           </Button>
           <Button
+            className="participants-btn"
             onClick={() => {
               setIsMenuOpen(false);
               setIsModalUsersInGroupOpen(true);
