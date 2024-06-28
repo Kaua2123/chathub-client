@@ -10,4 +10,5 @@ export interface IMessage {
   updatedAt: string;
   ConversationId: number;
   UserId: number;
+  User: { username: string };
 }
