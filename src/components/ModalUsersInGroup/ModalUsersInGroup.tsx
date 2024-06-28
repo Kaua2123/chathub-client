@@ -1,4 +1,10 @@
-import { CircleXIcon, CloseButton, Container, DivUsers, Modal } from './styled';
+import {
+  CircleXIcon,
+  CloseButton,
+  Container,
+  DivUsersInGroup,
+  Modal,
+} from './styled';
 import axios from '../../services/axios';
 import UserCard from '../UserCard/UserCard';
 
@@ -67,7 +73,7 @@ function ModalUsersInGroup({
           >
             Veja os usuários participantes desta conversa.
           </p>
-          <DivUsers>
+          <DivUsersInGroup>
             {users.length > 0 ? (
               users.map((user, index) => (
                 <>
@@ -93,7 +99,7 @@ function ModalUsersInGroup({
                 </h6>
               </div>
             )}
-          </DivUsers>
+          </DivUsersInGroup>
         </Container>
       </Modal>
     </div>

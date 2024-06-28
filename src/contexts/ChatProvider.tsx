@@ -8,7 +8,8 @@ import { ChatContext } from './contexts';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useSocketContext } from '../hooks/useSocketContext';
-import { IConversation } from '../interfaces/IConversation';
+import { IConversation, User } from '../interfaces/IConversation';
+import { useQuery } from '../hooks/useQuery';
 
 export type ChatProviderProps = {
   children: JSX.Element;
@@ -24,10 +25,14 @@ export type ContextData = {
   setMsg: React.Dispatch<React.SetStateAction<string | boolean>>;
   conversationUsersname: string[];
   conversation: IConversation | undefined;
+  isGroup: string | null;
 };
 
 function ChatProvider({ children }: ChatProviderProps) {
   const { id } = useParams();
+  const query = useQuery();
+  const isGroup = query.get('isGroup');
+
   const navigate = useNavigate();
   const decodedToken = useAuthContext();
   const socket = useSocketContext();
@@ -42,9 +47,14 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [msg, setMsg] = useState<string | boolean>('');
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [recipientId, setRecipientId] = useState(0);
+  const [recipientUsers, setRecipientUsers] = useState<User[]>([]);
 
   const socketRecipient = onlineUsers.find(
     (user) => user.userId === recipientId,
+  );
+
+  const socketRecipients = recipientUsers.map((userRecipient) =>
+    onlineUsers.find((user) => user.userId === userRecipient.id),
   );
 
   const readUnreadMessages = async () => {
@@ -57,7 +67,7 @@ function ChatProvider({ children }: ChatProviderProps) {
 
       socket.emit('readMsg', unreadMessages);
     } catch (error) {
-      console.log('an error ocurred');
+      console.log('an error ocurred', error);
     }
   };
 
@@ -86,12 +96,23 @@ function ChatProvider({ children }: ChatProviderProps) {
           `/conversation/show/${decodedToken?.id}/${id}`,
         );
 
-        response.data[0].Users[0].users_conversations.UserId !==
-        decodedToken?.id
-          ? setRecipientId(response.data[0].Users[0].users_conversations.UserId)
-          : setRecipientId(
-              response.data[0].Users[1].users_conversations.UserId,
-            );
+        const conversation: IConversation = response.data[0];
+
+        if (isGroup === 'false') {
+          conversation.Users[0].users_conversations.UserId !== decodedToken?.id
+            ? setRecipientId(
+                response.data[0].Users[0].users_conversations.UserId,
+              )
+            : setRecipientId(
+                response.data[0].Users[1].users_conversations.UserId,
+              );
+        } else {
+          const recipientUsers = conversation.Users.filter(
+            (user) => user.id !== decodedToken?.id,
+          );
+
+          setRecipientUsers(recipientUsers);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -142,6 +163,12 @@ function ChatProvider({ children }: ChatProviderProps) {
       readUnreadMessages();
     });
 
+    socket.on('userTypingInGroup', (data) => {
+      data[1].map((user: IOnlineUsers) => {
+        if (user.userId === decodedToken?.id) setIsUserTyping(data[0]);
+      });
+    });
+
     socket.on('userTyping', (data, socket) => {
       if (socketRecipient?.socketId === socket) {
         setIsUserTyping(data[0]);
@@ -157,6 +184,7 @@ function ChatProvider({ children }: ChatProviderProps) {
     return () => {
       socket.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
       socket.off('userTyping');
+      socket.off('userTypingInGroup');
       socket.off('onlineUsers');
     };
   }, [socket, socketRecipient?.socketId]);
@@ -164,11 +192,13 @@ function ChatProvider({ children }: ChatProviderProps) {
   useEffect(() => {
     if (!socket) return;
 
-    if (!socketRecipient?.socketId) return;
+    msg
+      ? socket.emit('typing', true, socketRecipient?.socketId)
+      : socket.emit('typing', false, socketRecipient?.socketId);
 
     msg
-      ? socket.emit('typing', true, socketRecipient.socketId)
-      : socket.emit('typing', false, socketRecipient.socketId);
+      ? socket.emit('typingInGroup', true, socketRecipients)
+      : socket.emit('typingInGroup', false, socketRecipients);
   }, [msg]);
 
   const handleSubmit = async () => {
@@ -234,6 +264,7 @@ function ChatProvider({ children }: ChatProviderProps) {
           setMsg,
           conversation,
           conversationUsersname,
+          isGroup,
         }}
       >
         {children}

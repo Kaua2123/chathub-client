@@ -24,7 +24,6 @@ import Message from '../../components/Message/Message';
 import Loading from '../../components/Loading/Loading';
 import ChatDropdown from '../../components/ChatDropdown/ChatDropdown';
 import ModalAddUsers from '../../components/ModalAddUsers/ModalAddUsers';
-import { useQuery } from '../../hooks/useQuery';
 import ModalUsersInGroup from '../../components/ModalUsersInGroup/ModalUsersInGroup';
 
 function Chat() {
@@ -41,10 +40,8 @@ function Chat() {
     handleClickDelete,
     conversation,
     conversationUsersname,
+    isGroup,
   } = useChatContext();
-
-  const query = useQuery();
-  const isGroup = query.get('isGroup');
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

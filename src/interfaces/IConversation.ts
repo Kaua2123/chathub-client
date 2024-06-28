@@ -5,7 +5,13 @@ type UsersConversations = {
   createdAt: string;
   updatedAt: string;
 };
-type User = { username: string; users_conversations: UsersConversations };
+
+export type User = {
+  id: number;
+  username: string;
+  image: string;
+  users_conversations: UsersConversations;
+};
 
 export interface IConversation {
   id: number;
