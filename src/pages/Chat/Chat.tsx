@@ -164,7 +164,7 @@ function Chat() {
                 ? message.is_sender
                 : !message.is_sender
             }
-            username={message.User.username}
+            username={message.username}
             isReadBy={message.is_read_by}
             isGroup={isGroup}
           >

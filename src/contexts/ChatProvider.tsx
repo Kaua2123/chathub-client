@@ -43,6 +43,7 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [conversationUsersname, setConversationUsersname] = useState<string[]>(
     [],
   );
+
   const [conversation, setConversation] = useState<IConversation>();
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [unreadMessagesLength, setUnreadMessagesLength] = useState(0);
@@ -166,9 +167,29 @@ function ChatProvider({ children }: ChatProviderProps) {
     if (!socket) return;
 
     socket.on('receivedMsg', (data, socket) => {
+      console.log('receivedMsg chamad');
       if (socketRecipient?.socketId === socket) {
         setMessages((prevMessages) => [...prevMessages, data[0]]);
       }
+
+      readUnreadMessages();
+    });
+
+    socket.on('receivedMsgInGroup', (data) => {
+      console.log('receivedMsg IN GROUP chamad');
+
+      const isRecipient = data[1].some(
+        (user: IOnlineUsers) => user.userId === decodedToken?.id,
+      );
+
+      if (isRecipient) {
+        setMessages((prevMessages) => [...prevMessages, data[0]]);
+        console.log('setando mensagem...');
+      }
+
+      // ta mapeando e setando uma nova mensagem toda vez que satisfaz a condiçao (padrao do map)
+      //  talvez iterar e no final retornar UM booleano, dizendo se TODAS as condições pra TODOS os indices
+      // de um array são satisfeitas. e com base nesse booleano UNICO, emitir a mensagem
 
       readUnreadMessages();
     });
@@ -194,6 +215,7 @@ function ChatProvider({ children }: ChatProviderProps) {
 
     return () => {
       socket.off('receivedMsg'); // desligando a conexão quando o componente for desmontado
+      socket.off('receivedMsgInGroup');
       socket.off('userTyping');
       socket.off('userTypingInGroup');
       socket.off('onlineUsers');
@@ -221,6 +243,7 @@ function ChatProvider({ children }: ChatProviderProps) {
         content: msg,
         is_sender: true,
         is_read_by: decodedToken?.id?.toString(),
+        username: decodedToken?.username,
         ConversationId: id,
         UserId: decodedToken?.id,
       });
@@ -228,8 +251,17 @@ function ChatProvider({ children }: ChatProviderProps) {
       const objMsg = response.data;
       setMessages([...messages, objMsg]);
 
-      socket.emit('msg', objMsg, socketRecipient?.socketId);
-      // / array de socketids dos particiipantes
+      if (isGroup === 'true') {
+        socket.emit(
+          'msgInGroup',
+          objMsg,
+          socketRecipients,
+          decodedToken?.username,
+        );
+      } else {
+        socket.emit('msg', objMsg, socketRecipient?.socketId);
+      }
+
       socket.emit(
         'unreadMsgs',
         unreadMessagesLength,
