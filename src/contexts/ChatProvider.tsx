@@ -19,6 +19,7 @@ export type ContextData = {
   onlineUsers: IOnlineUsers[];
   isUserTyping: boolean;
   messages: IMessage[];
+  sender: User | undefined;
   recipientId: number;
   handleSubmit: () => Promise<void>;
   handleClickDelete: () => Promise<void>;
@@ -26,6 +27,7 @@ export type ContextData = {
   conversationUsersname: string[];
   conversation: IConversation | undefined;
   isGroup: string | null;
+  wsUsername: string;
 };
 
 function ChatProvider({ children }: ChatProviderProps) {
@@ -48,6 +50,8 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [recipientId, setRecipientId] = useState(0);
   const [recipientUsers, setRecipientUsers] = useState<User[]>([]);
+  const [sender, setSender] = useState<User | undefined>();
+  const [wsUsername, setWsUsername] = useState('');
 
   const socketRecipient = onlineUsers.find(
     (user) => user.userId === recipientId,
@@ -111,6 +115,12 @@ function ChatProvider({ children }: ChatProviderProps) {
             (user) => user.id !== decodedToken?.id,
           );
 
+          const sender = conversation.Users.find(
+            (user) => user.id === decodedToken?.id,
+          );
+
+          setSender(sender);
+
           setRecipientUsers(recipientUsers);
         }
       } catch (error) {
@@ -164,6 +174,7 @@ function ChatProvider({ children }: ChatProviderProps) {
     });
 
     socket.on('userTypingInGroup', (data) => {
+      setWsUsername(data[2]);
       data[1].map((user: IOnlineUsers) => {
         if (user.userId === decodedToken?.id) setIsUserTyping(data[0]);
       });
@@ -197,8 +208,8 @@ function ChatProvider({ children }: ChatProviderProps) {
       : socket.emit('typing', false, socketRecipient?.socketId);
 
     msg
-      ? socket.emit('typingInGroup', true, socketRecipients)
-      : socket.emit('typingInGroup', false, socketRecipients);
+      ? socket.emit('typingInGroup', true, socketRecipients, sender?.username)
+      : socket.emit('typingInGroup', false, socketRecipients, sender?.username);
   }, [msg]);
 
   const handleSubmit = async () => {
@@ -265,6 +276,8 @@ function ChatProvider({ children }: ChatProviderProps) {
           conversation,
           conversationUsersname,
           isGroup,
+          sender,
+          wsUsername,
         }}
       >
         {children}

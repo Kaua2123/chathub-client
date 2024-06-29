@@ -41,6 +41,7 @@ function Chat() {
     conversation,
     conversationUsersname,
     isGroup,
+    wsUsername,
   } = useChatContext();
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -175,7 +176,7 @@ function Chat() {
       <Container>
         {isUserTyping && (
           <p className="is-typing">
-            <b>{username}</b> está digitando...
+            <b>{wsUsername}</b> está digitando...
           </p>
         )}
         <Div>
