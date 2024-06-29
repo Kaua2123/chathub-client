@@ -176,7 +176,8 @@ function Chat() {
       <Container>
         {isUserTyping && (
           <p className="is-typing">
-            <b>{wsUsername}</b> está digitando...
+            <b>{isGroup === 'true' ? wsUsername : username}</b> está
+            digitando...
           </p>
         )}
         <Div>
