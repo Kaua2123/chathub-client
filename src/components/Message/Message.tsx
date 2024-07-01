@@ -70,6 +70,8 @@ function Message({
     });
 
     socket.on('msgRead', (data: IMessage[]) => {
+      if (isGroup === 'true') return;
+
       data.map((message) => {
         message.is_read_by.includes(recipientId.toString())
           ? setWsIsMsgRead(true)
@@ -78,6 +80,8 @@ function Message({
     });
 
     socket.on('msgReadInGroup', (data: IMessage[]) => {
+      if (isGroup === 'false') return;
+
       data.map((message) => {
         const wsIsMsgReadInGroup =
           isGroup === 'true' &&

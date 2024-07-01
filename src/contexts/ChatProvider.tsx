@@ -161,7 +161,7 @@ function ChatProvider({ children }: ChatProviderProps) {
     getUserConversation();
     getMessagesOfAConversation();
     getRecipientId();
-  }, [id]);
+  }, [id, messages.length]);
 
   useEffect(() => {
     if (!socket) return;
