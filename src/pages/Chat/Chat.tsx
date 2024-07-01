@@ -34,6 +34,7 @@ function Chat() {
     onlineUsers,
     messages,
     recipientId,
+    recipientUsers,
     isUserTyping,
     handleSubmit,
     setMsg,
@@ -165,8 +166,10 @@ function Chat() {
                 : !message.is_sender
             }
             username={message.username}
-            isReadBy={message.is_read_by}
+            isReadBy={message.is_read_by.replaceAll('"', '').split(',')}
             isGroup={isGroup}
+            recipientId={recipientId}
+            recipientUsers={recipientUsers}
           >
             {message.content}
           </Message>

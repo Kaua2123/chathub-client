@@ -21,6 +21,7 @@ export type ContextData = {
   messages: IMessage[];
   sender: User | undefined;
   recipientId: number;
+  recipientUsers: User[];
   handleSubmit: () => Promise<void>;
   handleClickDelete: () => Promise<void>;
   setMsg: React.Dispatch<React.SetStateAction<string | boolean>>;
@@ -68,9 +69,8 @@ function ChatProvider({ children }: ChatProviderProps) {
         `/messages/readAllUnreadMessages/${id}/${decodedToken?.id}`,
       );
 
-      const unreadMessages: IMessage[] = response.data;
-
-      socket.emit('readMsg', unreadMessages);
+      socket.emit('readMsg', response.data);
+      socket.emit('readMsgInGroup', response.data);
     } catch (error) {
       console.log('an error ocurred', error);
     }
@@ -187,10 +187,6 @@ function ChatProvider({ children }: ChatProviderProps) {
         console.log('setando mensagem...');
       }
 
-      // ta mapeando e setando uma nova mensagem toda vez que satisfaz a condiçao (padrao do map)
-      //  talvez iterar e no final retornar UM booleano, dizendo se TODAS as condições pra TODOS os indices
-      // de um array são satisfeitas. e com base nesse booleano UNICO, emitir a mensagem
-
       readUnreadMessages();
     });
 
@@ -267,6 +263,7 @@ function ChatProvider({ children }: ChatProviderProps) {
         unreadMessagesLength,
         socketRecipient?.socketId,
       );
+
       socket.emit('lastMsg', objMsg, socketRecipient?.socketId);
 
       // const unreadMsgsLength = getUnreadMessages();
@@ -302,6 +299,7 @@ function ChatProvider({ children }: ChatProviderProps) {
           isUserTyping,
           messages,
           recipientId,
+          recipientUsers,
           handleSubmit,
           handleClickDelete,
           setMsg,

@@ -9,18 +9,20 @@ import {
 import { useEffect, useState } from 'react';
 import ModalMessageOptions from '../ModalMessageOptions/ModalMessageOptions';
 import { useSocketContext } from '../../hooks/useSocketContext';
-import { useChatContext } from '../../hooks/useChatContext';
+import { User } from '../../interfaces/IConversation';
 import { IMessage } from '../../interfaces/IMessage';
 
 export type MessageProps = {
   isSender?: boolean;
   isUpdated: boolean;
   isDeleted: boolean;
-  isReadBy: string;
+  isReadBy: string[];
   children: string;
   id: number;
   username: string | undefined;
   isGroup: string | null;
+  recipientId: number;
+  recipientUsers: User[];
 };
 
 function Message({
@@ -32,26 +34,31 @@ function Message({
   isReadBy,
   username,
   isGroup,
+  recipientId,
+  recipientUsers,
 }: MessageProps) {
-  const { recipientId } = useChatContext();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
   const [wsIsMsgDeleted, setWsIsMsgDeleted] = useState(false);
   const [wsIsMsgUpdated, setWsIsMsgUpdated] = useState(false);
-  const [isRead, setIsRead] = useState(false);
   const [wsIsMsgRead, setWsIsMsgRead] = useState(false);
   const socket = useSocketContext();
 
-  useEffect(() => {
-    const checkIfMessagesIsRead = () => {
-      isReadBy.includes(recipientId.toString())
-        ? setIsRead(true)
-        : setIsRead(false);
-    };
+  const isReadInGroup =
+    isGroup === 'true' &&
+    recipientUsers.every((userRecipient) =>
+      isReadBy.includes(userRecipient.id.toString()),
+    );
 
-    checkIfMessagesIsRead();
-  }, [recipientId, isReadBy]);
+  const isRead =
+    isGroup === 'false' && isReadBy.includes(recipientId.toString());
+
+  console.log(
+    isReadBy,
+    recipientId.toString(),
+    isReadBy.includes(recipientId.toString()), // false
+    isRead,
+  );
 
   useEffect(() => {
     socket.on('msgDeleted', (data) => {
@@ -74,6 +81,16 @@ function Message({
           ? setWsIsMsgRead(true)
           : setWsIsMsgRead(false);
       });
+    });
+
+    // socket.on('msgReadI', (data: boolean) => {
+    //   setWsIsMsgRead(data);
+    //   console.log('data: ', data);
+    // });
+
+    socket.on('msgReadInGroup', (data: boolean) => {
+      if (isGroup === 'true') setWsIsMsgRead(data);
+      console.log('data: ', data);
     });
   }, [socket]);
 
@@ -118,7 +135,7 @@ function Message({
             </UpdatedMessage>
           )}
         </Container>
-        {(isRead || wsIsMsgRead) && !isDeleted && isSender && (
+        {(isRead || isReadInGroup || wsIsMsgRead) && !isDeleted && isSender && (
           <ReadMessage>
             <p>
               <b>{isGroup === 'true' ? 'Visto por todos' : 'Visualizado'}</b>
