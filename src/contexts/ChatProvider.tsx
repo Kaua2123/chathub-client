@@ -167,7 +167,8 @@ function ChatProvider({ children }: ChatProviderProps) {
     if (!socket) return;
 
     socket.on('receivedMsg', (data, socket) => {
-      console.log('receivedMsg chamad');
+      if (isGroup === 'true') return;
+
       if (socketRecipient?.socketId === socket) {
         setMessages((prevMessages) => [...prevMessages, data[0]]);
       }
@@ -176,6 +177,8 @@ function ChatProvider({ children }: ChatProviderProps) {
     });
 
     socket.on('receivedMsgInGroup', (data) => {
+      if (isGroup === 'false') return;
+
       console.log('receivedMsg IN GROUP chamad');
 
       const isRecipient = data[1].some(

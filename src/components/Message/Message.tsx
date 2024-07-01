@@ -42,6 +42,7 @@ function Message({
   const [wsIsMsgDeleted, setWsIsMsgDeleted] = useState(false);
   const [wsIsMsgUpdated, setWsIsMsgUpdated] = useState(false);
   const [wsIsMsgRead, setWsIsMsgRead] = useState(false);
+  const [wsIsMsgReadInGroup, setWsIsMsgReadInGroup] = useState(false);
   const socket = useSocketContext();
 
   const isReadInGroup =
@@ -52,13 +53,6 @@ function Message({
 
   const isRead =
     isGroup === 'false' && isReadBy.includes(recipientId.toString());
-
-  console.log(
-    isReadBy,
-    recipientId.toString(),
-    isReadBy.includes(recipientId.toString()), // false
-    isRead,
-  );
 
   useEffect(() => {
     socket.on('msgDeleted', (data) => {
@@ -83,14 +77,16 @@ function Message({
       });
     });
 
-    // socket.on('msgReadI', (data: boolean) => {
-    //   setWsIsMsgRead(data);
-    //   console.log('data: ', data);
-    // });
+    socket.on('msgReadInGroup', (data: IMessage[]) => {
+      data.map((message) => {
+        const wsIsMsgReadInGroup =
+          isGroup === 'true' &&
+          recipientUsers.every((userRecipient) =>
+            message.is_read_by.includes(userRecipient.id.toString()),
+          );
 
-    socket.on('msgReadInGroup', (data: boolean) => {
-      if (isGroup === 'true') setWsIsMsgRead(data);
-      console.log('data: ', data);
+        setWsIsMsgReadInGroup(wsIsMsgReadInGroup);
+      });
     });
   }, [socket]);
 
@@ -135,13 +131,15 @@ function Message({
             </UpdatedMessage>
           )}
         </Container>
-        {(isRead || isReadInGroup || wsIsMsgRead) && !isDeleted && isSender && (
-          <ReadMessage>
-            <p>
-              <b>{isGroup === 'true' ? 'Visto por todos' : 'Visualizado'}</b>
-            </p>
-          </ReadMessage>
-        )}
+        {(isRead || isReadInGroup || wsIsMsgRead || wsIsMsgReadInGroup) &&
+          !isDeleted &&
+          isSender && (
+            <ReadMessage>
+              <p>
+                <b>{isGroup === 'true' ? 'Visto por todos' : 'Visualizado'}</b>
+              </p>
+            </ReadMessage>
+          )}
       </DivMessage>
     </div>
   );
