@@ -43,6 +43,8 @@ function ConversationCard({
   const [recipientId, setRecipientId] = useState(0);
   const [httpUnreadMessages, setHttpUnreadMessages] = useState<IMessage[]>([]);
   const [wsUnreadMessagesLength, setWsUnreadMessagesLength] = useState(0);
+  const [wsUnreadMessagesInGroupLength, setWsUnreadMessagesInGroupLength] =
+    useState(0);
   const [lastMessage, setLastMessage] = useState<IMessage>();
   const [wsLastMessageContent, setWsLastMessageContent] = useState('');
   const [lastMessageContent, setLastMessageContent] = useState('');
@@ -56,6 +58,12 @@ function ConversationCard({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  const wsUnreadMessageInGroupOrHttp =
+    wsUnreadMessagesInGroupLength || httpUnreadMessages.length;
+
+  const wsUnreadMessageOrHttp =
+    wsUnreadMessagesLength || httpUnreadMessages.length;
 
   useEffect(() => {
     conversation.type == 'group' ? setIsGroup(true) : setIsGroup(false);
@@ -78,6 +86,27 @@ function ConversationCard({
       if (socketRecipient.socketId === socket) {
         setWsUnreadMessagesLength(data[0] + 1);
       }
+    });
+  };
+
+  const unreadMsgsCounterInGroup = () => {
+    socket.on('unreadMsgsCounterInGroup', (data) => {
+      console.log(data);
+
+      const isMyId = data[0].find(
+        (element: { id: number }) => element.id == decodedToken?.id,
+      );
+
+      console.log(isMyId);
+      console.log(isMyId.id);
+
+      if (isMyId.id == decodedToken?.id) {
+        setWsUnreadMessagesInGroupLength(isMyId.unreadMessagesLength);
+      }
+
+      // data[1].map((user: IOnlineUsers) => {
+      //   if (user.userId === decodedToken?.id)
+      // });
     });
   };
 
@@ -113,7 +142,8 @@ function ConversationCard({
 
       if (!socketRecipient) return;
       newLastMsg(socketRecipient);
-      unreadMsgsCounter(socketRecipient);
+
+      isGroup ? unreadMsgsCounterInGroup() : unreadMsgsCounter(socketRecipient);
     });
   }, [recipientId]);
 
@@ -238,13 +268,14 @@ function ConversationCard({
                 </b>
               </MessageHour>
               {(httpUnreadMessages.length > 0 ||
-                wsUnreadMessagesLength > 0) && (
+                wsUnreadMessagesLength > 0 ||
+                wsUnreadMessagesInGroupLength > 0) && (
                 <MessageCounter>
                   <b>
                     <p>
-                      {wsUnreadMessagesLength != 0
-                        ? wsUnreadMessagesLength
-                        : httpUnreadMessages.length}
+                      {isGroup
+                        ? wsUnreadMessageInGroupOrHttp
+                        : wsUnreadMessageOrHttp}
                     </p>
                   </b>
                 </MessageCounter>

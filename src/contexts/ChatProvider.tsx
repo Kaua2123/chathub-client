@@ -48,6 +48,7 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [conversation, setConversation] = useState<IConversation>();
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [unreadMessagesLength, setUnreadMessagesLength] = useState(0);
+  const [unreadMessagesInGroup, setUnreadMessagesInGroup] = useState(0);
   const [msg, setMsg] = useState<string | boolean>('');
   const [onlineUsers, setOnlineUsers] = useState<IOnlineUsers[]>([]);
   const [recipientId, setRecipientId] = useState(0);
@@ -76,21 +77,25 @@ function ChatProvider({ children }: ChatProviderProps) {
     }
   };
 
-  useEffect(() => {
-    const getUnreadMessages = async () => {
-      try {
+  const getUnreadMessages = async (recipientId?: number, ids?: number[]) => {
+    try {
+      if (isGroup === 'false') {
         const response = await axios.get(
           `/messages/getUnreadMessages/${id}/${recipientId}`,
         );
 
         setUnreadMessagesLength(response.data.length);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      } else {
+        const response = await axios.get(
+          `/messages/getUnreadMessagesInAGroup/${id}/${ids}`,
+        );
 
-    getUnreadMessages();
-  }, [messages]);
+        setUnreadMessagesInGroup(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const getRecipientId = async () => {
@@ -115,6 +120,16 @@ function ChatProvider({ children }: ChatProviderProps) {
           const recipientUsers = conversation.Users.filter(
             (user) => user.id !== decodedToken?.id,
           );
+
+          if (isGroup === 'false') {
+            recipientUsers.map((userRecipient) =>
+              getUnreadMessages(userRecipient.id),
+            );
+          } else {
+            const ids: number[] = [];
+            recipientUsers.map((userRecipient) => ids.push(userRecipient.id));
+            getUnreadMessages(undefined, ids);
+          }
 
           const sender = conversation.Users.find(
             (user) => user.id === decodedToken?.id,
@@ -261,11 +276,21 @@ function ChatProvider({ children }: ChatProviderProps) {
         socket.emit('msg', objMsg, socketRecipient?.socketId);
       }
 
-      socket.emit(
-        'unreadMsgs',
-        unreadMessagesLength,
-        socketRecipient?.socketId,
-      );
+      console.log('aqui: ', unreadMessagesLength);
+
+      if (isGroup === 'true') {
+        socket.emit(
+          'unreadMsgsInGroup',
+          unreadMessagesInGroup,
+          socketRecipients,
+        );
+      } else {
+        socket.emit(
+          'unreadMsgs',
+          unreadMessagesLength,
+          socketRecipient?.socketId,
+        );
+      }
 
       socket.emit('lastMsg', objMsg, socketRecipient?.socketId);
 
