@@ -46,7 +46,6 @@ function ConversationCard({
   const [wsUnreadMessagesInGroupLength, setWsUnreadMessagesInGroupLength] =
     useState(0);
   const [lastMessage, setLastMessage] = useState<IMessage>();
-  const [wsLastMessageContent, setWsLastMessageContent] = useState('');
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
   const [isGroup, setIsGroup] = useState(false);
@@ -69,13 +68,34 @@ function ConversationCard({
     conversation.type == 'group' ? setIsGroup(true) : setIsGroup(false);
   }, []);
 
+  useEffect(() => {
+    if (lastMessageContent) {
+      const sliced = addThreeDotsOnBigMessage(lastMessageContent);
+      setSlicedMessage(sliced);
+    }
+  }, [lastMessageContent]);
+
   const newLastMsg = (socketRecipient: IOnlineUsers) => {
     socket.on('newLastMsg', (data, socket) => {
       if (!socketRecipient) return;
 
-      if (socketRecipient.socketId === socket) {
-        setWsLastMessageContent(data[0].content);
+      if (socketRecipient.socketId === socket && id == data[1]) {
+        const sliced = addThreeDotsOnBigMessage(data[0].content);
+        setSlicedMessage(sliced);
       }
+    });
+  };
+
+  const newLastMsgInGroup = () => {
+    socket.on('newLastMsgInGroup', (data) => {
+      console.log('newLastMsgInGroup chamada');
+
+      data[2].map((user: IOnlineUsers) => {
+        if (user.userId === decodedToken?.id && id == data[1]) {
+          const sliced = addThreeDotsOnBigMessage(data[0].content);
+          setSlicedMessage(sliced);
+        }
+      });
     });
   };
 
@@ -133,19 +153,13 @@ function ConversationCard({
       );
 
       if (!socketRecipient) return;
+
       newLastMsg(socketRecipient);
+      newLastMsgInGroup();
 
       isGroup ? unreadMsgsCounterInGroup() : unreadMsgsCounter(socketRecipient);
     });
   }, [recipientId]);
-
-  useEffect(() => {
-    const sliced = addThreeDotsOnBigMessage(
-      wsLastMessageContent || lastMessageContent,
-    );
-
-    setSlicedMessage(sliced);
-  }, [lastMessageContent, wsLastMessageContent]);
 
   useEffect(() => {
     const checkUsername = () => {

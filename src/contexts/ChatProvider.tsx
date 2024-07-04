@@ -149,7 +149,6 @@ function ChatProvider({ children }: ChatProviderProps) {
           );
 
           setSender(sender);
-
           setRecipientUsers(recipientUsers);
         }
       } catch (error) {
@@ -299,7 +298,8 @@ function ChatProvider({ children }: ChatProviderProps) {
         socketRecipient?.socketId,
       );
 
-      socket.emit('lastMsg', objMsg, socketRecipient?.socketId);
+      socket.emit('lastMsg', objMsg, id, socketRecipient?.socketId);
+      socket.emit('lastMsgInGroup', objMsg, id, socketRecipients);
 
       // const unreadMsgsLength = getUnreadMessages();
 
