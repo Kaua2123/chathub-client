@@ -82,6 +82,7 @@ function ConversationCard({
   const unreadMsgsCounter = (socketRecipient: IOnlineUsers) => {
     socket.on('unreadMsgsCounter', (data, socket) => {
       if (!socketRecipient) return;
+      console.log(data[0]);
 
       if (socketRecipient.socketId === socket) {
         setWsUnreadMessagesLength(data[0] + 1);
@@ -91,22 +92,13 @@ function ConversationCard({
 
   const unreadMsgsCounterInGroup = () => {
     socket.on('unreadMsgsCounterInGroup', (data) => {
-      console.log(data);
-
       const isMyId = data[0].find(
         (element: { id: number }) => element.id == decodedToken?.id,
       );
 
-      console.log(isMyId);
-      console.log(isMyId.id);
-
       if (isMyId.id == decodedToken?.id) {
-        setWsUnreadMessagesInGroupLength(isMyId.unreadMessagesLength);
+        setWsUnreadMessagesInGroupLength(isMyId.unreadMessagesLength + 1);
       }
-
-      // data[1].map((user: IOnlineUsers) => {
-      //   if (user.userId === decodedToken?.id)
-      // });
     });
   };
 

@@ -77,21 +77,29 @@ function ChatProvider({ children }: ChatProviderProps) {
     }
   };
 
-  const getUnreadMessages = async (recipientId?: number, ids?: number[]) => {
+  const getUnreadMessagesInConversation = async (recipientId: number) => {
     try {
-      if (isGroup === 'false') {
-        const response = await axios.get(
-          `/messages/getUnreadMessages/${id}/${recipientId}`,
-        );
+      console.log('getunreadmessages in CONVERSATION chamada');
 
-        setUnreadMessagesLength(response.data.length);
-      } else {
-        const response = await axios.get(
-          `/messages/getUnreadMessagesInAGroup/${id}/${ids}`,
-        );
+      const response = await axios.get(
+        `/messages/getUnreadMessages/${id}/${recipientId}`,
+      );
 
-        setUnreadMessagesInGroup(response.data);
-      }
+      setUnreadMessagesLength(response.data.length);
+      console.log('chamada! length: ', response.data.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUnreadMessagesInGroup = async (ids: number[]) => {
+    try {
+      console.log('getunreadmessages in GROUP chamada');
+      const response = await axios.get(
+        `/messages/getUnreadMessagesInAGroup/${id}/${ids}`,
+      );
+
+      setUnreadMessagesInGroup(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -109,27 +117,32 @@ function ChatProvider({ children }: ChatProviderProps) {
         const conversation: IConversation = response.data[0];
 
         if (isGroup === 'false') {
-          conversation.Users[0].users_conversations.UserId !== decodedToken?.id
-            ? setRecipientId(
-                response.data[0].Users[0].users_conversations.UserId,
-              )
-            : setRecipientId(
-                response.data[0].Users[1].users_conversations.UserId,
-              );
+          if (
+            conversation.Users[0].users_conversations.UserId !==
+            decodedToken?.id
+          ) {
+            setRecipientId(
+              response.data[0].Users[0].users_conversations.UserId,
+            );
+            getUnreadMessagesInConversation(
+              response.data[0].Users[0].users_conversations.UserId,
+            );
+          } else {
+            setRecipientId(
+              response.data[0].Users[1].users_conversations.UserId,
+            );
+            getUnreadMessagesInConversation(
+              response.data[0].Users[1].users_conversations.UserId,
+            );
+          }
         } else {
           const recipientUsers = conversation.Users.filter(
             (user) => user.id !== decodedToken?.id,
           );
 
-          if (isGroup === 'false') {
-            recipientUsers.map((userRecipient) =>
-              getUnreadMessages(userRecipient.id),
-            );
-          } else {
-            const ids: number[] = [];
-            recipientUsers.map((userRecipient) => ids.push(userRecipient.id));
-            getUnreadMessages(undefined, ids);
-          }
+          const ids: number[] = [];
+          recipientUsers.map((userRecipient) => ids.push(userRecipient.id));
+          getUnreadMessagesInGroup(ids);
 
           const sender = conversation.Users.find(
             (user) => user.id === decodedToken?.id,
@@ -278,19 +291,13 @@ function ChatProvider({ children }: ChatProviderProps) {
 
       console.log('aqui: ', unreadMessagesLength);
 
-      if (isGroup === 'true') {
-        socket.emit(
-          'unreadMsgsInGroup',
-          unreadMessagesInGroup,
-          socketRecipients,
-        );
-      } else {
-        socket.emit(
-          'unreadMsgs',
-          unreadMessagesLength,
-          socketRecipient?.socketId,
-        );
-      }
+      socket.emit('unreadMsgsInGroup', unreadMessagesInGroup, socketRecipients);
+
+      socket.emit(
+        'unreadMsgs',
+        unreadMessagesLength,
+        socketRecipient?.socketId,
+      );
 
       socket.emit('lastMsg', objMsg, socketRecipient?.socketId);
 
