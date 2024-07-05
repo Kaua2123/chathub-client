@@ -47,7 +47,6 @@ export const UserData = styled.div`
 
 export const DivOptions = styled.div<{ isGroup?: boolean }>`
   display: flex;
-  flex-flow: column wrap;
   align-items: center;
   gap: 2rem;
 `;
