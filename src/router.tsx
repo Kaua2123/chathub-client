@@ -10,6 +10,7 @@ import BlockedUsers from './pages/BlockedUsers/BlockedUsers';
 import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound/NotFound';
 
+import AuthProvider from './contexts/AuthProvider.tsx';
 import ChatProvider from './contexts/ChatProvider';
 
 function AppRouter() {
@@ -19,7 +20,14 @@ function AppRouter() {
         <Route element={<Home />} path="/" />
         <Route element={<Register />} path="/register" />
         <Route element={<Login />} path="/login" />
-        <Route element={<Conversations />} path="/conversations" />
+        <Route
+          element={
+            <AuthProvider>
+              <Conversations />
+            </AuthProvider>
+          }
+          path="/conversations"
+        />
         <Route
           element={
             <ChatProvider>
@@ -28,9 +36,30 @@ function AppRouter() {
           }
           path="/chat/:id/:username"
         />
-        <Route element={<Friends />} path="/friends" />
-        <Route element={<BlockedUsers />} path="/blockedUsers" />
-        <Route element={<Profile />} path="/profile" />
+        <Route
+          element={
+            <AuthProvider>
+              <Friends />
+            </AuthProvider>
+          }
+          path="/friends"
+        />
+        <Route
+          element={
+            <AuthProvider>
+              <BlockedUsers />
+            </AuthProvider>
+          }
+          path="/blockedUsers"
+        />
+        <Route
+          element={
+            <AuthProvider>
+              <Profile />
+            </AuthProvider>
+          }
+          path="/profile"
+        />
         <Route element={<NotFound />} path="*" />
       </Routes>
     </BrowserRouter>

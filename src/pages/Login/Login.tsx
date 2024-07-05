@@ -37,7 +37,10 @@ function Login() {
       localStorage.setItem('token', response.data.token);
 
       toast.success('Você entrou na conta.');
-      navigate('/conversations');
+
+      if (localStorage.token) {
+        navigate('/conversations');
+      }
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
