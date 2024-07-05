@@ -1,3 +1,4 @@
+import { INotification } from '../../interfaces/INotification';
 import NotificationCard from '../NotificationCard/NotificationCard';
 import {
   CircleXIcon,
@@ -11,7 +12,7 @@ import {
 
 export type ModalNotificationsProps = {
   setIsSeeingNotification: React.Dispatch<React.SetStateAction<boolean>>;
-  notifications: number[];
+  notifications: INotification[];
 };
 
 function ModalNotifications({
@@ -42,9 +43,9 @@ function ModalNotifications({
             </CloseButton>
           </Div>
           <DivNotifications>
-            {notifications.map((_, i) => {
-              return <NotificationCard key={i} />;
-            })}
+            {notifications.map((notification, index) => (
+              <NotificationCard notification={notification} key={index} />
+            ))}
           </DivNotifications>
         </Container>
       </Modal>

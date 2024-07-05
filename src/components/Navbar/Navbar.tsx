@@ -9,19 +9,23 @@ import {
 } from './styled';
 
 import { User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import ModalNotifications from '../ModalNotifications/ModalNotifications';
 import chathub from '../../assets/chathub.png';
 import MenuDropdown from '../MenuDropdown/MenuDropdown';
+import { INotification } from '../../interfaces/INotification';
+import axios from '../../services/axios';
+import { tokenDecoder } from '../../utils/tokenDecoder';
 
 function Navbar() {
   const token = localStorage.getItem('token');
+  const decodedToken = useMemo(() => tokenDecoder(token), []);
 
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [notifications] = useState([1, 2, 3, 4]);
+  const [notifications, setNotifications] = useState<INotification[]>([]);
   const [hasNotifications, setHasNotifications] = useState(false);
 
   useEffect(() => {
@@ -31,6 +35,22 @@ function Navbar() {
 
     checkNotifications();
   });
+
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const response = await axios.get(
+          `/notifications/findUserNotifications/${decodedToken?.id}`,
+        );
+
+        setNotifications(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getNotifications();
+  }, [notifications]);
 
   return (
     <div>

@@ -1,10 +1,15 @@
+import { INotification } from '../../interfaces/INotification';
 import { DeleteButton, Div } from './styled';
 import { Trash } from 'lucide-react';
 
-function NotificationCard() {
+type NotificationCardProps = {
+  notification: INotification;
+};
+
+function NotificationCard({ notification }: NotificationCardProps) {
   return (
     <Div>
-      <p>Você recebeu um pedido de amizade de username201</p>
+      <p>{notification.content}</p>
       <DeleteButton>
         <Trash />
       </DeleteButton>
