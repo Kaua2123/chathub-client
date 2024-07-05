@@ -42,10 +42,13 @@ function ModalNotifications({
               />
             </CloseButton>
           </Div>
+
           <DivNotifications>
-            {notifications.map((notification, index) => (
-              <NotificationCard notification={notification} key={index} />
-            ))}
+            {notifications &&
+              notifications.map((notification, index) => (
+                <NotificationCard notification={notification} key={index} />
+              ))}
+            {notifications.length <= 0 && <h6>Sem notificações por aqui...</h6>}
           </DivNotifications>
         </Container>
       </Modal>

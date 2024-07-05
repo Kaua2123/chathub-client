@@ -50,7 +50,7 @@ function Navbar() {
     };
 
     getNotifications();
-  }, [notifications]);
+  }, [notifications.length]);
 
   return (
     <div>
