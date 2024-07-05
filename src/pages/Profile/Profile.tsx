@@ -13,10 +13,20 @@ import {
   Input,
   UserAvatar,
 } from './styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from '../../services/axios';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { IUser } from '../../interfaces/IUser';
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
 
 function Profile() {
+  const decodedToken = useAuthContext();
+
   const [isUpdating, setIsUpdating] = useState(false);
+  const [user, setUser] = useState<IUser>();
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [imgURL, setImgURL] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +34,41 @@ function Profile() {
 
     const imageURL = img ? URL.createObjectURL(img[0]) : '';
     setImgURL(imageURL);
+  };
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await axios.get(`user/${decodedToken?.id}`);
+
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserData();
+  }, []);
+
+  const updateUserData = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    try {
+      e.preventDefault();
+      await axios.put(`user/update/${decodedToken.id}`, {
+        username,
+        email,
+      });
+
+      toast.success('Dados atualizados');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
   };
 
   return (
@@ -56,15 +101,15 @@ function Profile() {
             {isUpdating ? (
               <Form>
                 <label>Apelido</label>
-                <Input type="text" />
+                <Input
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
                 <label>Email</label>
-                <Input type="text" />
-                <label>Senha</label>
-
-                <Input type="text" />
+                <Input type="text" onChange={(e) => setEmail(e.target.value)} />
 
                 <DivButtons>
-                  <Button>Alterar</Button>
+                  <Button onClick={(e) => updateUserData(e)}>Alterar</Button>
                   <Button
                     className="cancel-btn"
                     onClick={() => setIsUpdating(false)}
@@ -77,11 +122,11 @@ function Profile() {
               <>
                 <DivUserData>
                   <p>Apelido</p>
-                  <p className="info">Username</p>
+                  <p className="info">{user ? user.username : 'Username'}</p>
                   <p>Email</p>
-                  <p className="info">123@gmail.com</p>
-                  <p>Senha</p>
-                  <p className="info">*********</p>
+                  <p className="info" style={{ marginBottom: '2rem' }}>
+                    {user ? user.email : 'email@...'}
+                  </p>
                 </DivUserData>
                 <Button onClick={() => setIsUpdating(true)}>
                   Editar dados
