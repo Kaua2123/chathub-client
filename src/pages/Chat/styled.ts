@@ -143,6 +143,38 @@ export const UserAvatar = styled.div`
   align-items: center;
 `;
 
+export const DivData = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  input {
+    border-radius: 0.8rem;
+    padding: 1rem;
+    transition: transform 0.3s;
+    outline: none;
+    border: 1px solid gray;
+    font-size: 1.5rem;
+    font-family: Raleway;
+
+    &:focus {
+      border: 1px solid ${({ theme }) => theme.colors.lighterBlue};
+    }
+  }
+
+  button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      & svg {
+        stroke: ${({ theme }) => theme.colors.lighterBlue};
+      }
+    }
+  }
+`;
+
 export const EllipsisVerticalIcon = styled(EllipsisVertical)`
   transition: transform 0.3s;
   cursor: pointer;

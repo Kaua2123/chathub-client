@@ -26,6 +26,7 @@ export type ContextData = {
   handleClickDelete: () => Promise<void>;
   setMsg: React.Dispatch<React.SetStateAction<string | boolean>>;
   conversationUsersname: string[];
+  conversationName: string;
   conversation: IConversation | undefined;
   isGroup: string | null;
   wsUsername: string;
@@ -46,6 +47,7 @@ function ChatProvider({ children }: ChatProviderProps) {
   );
 
   const [conversation, setConversation] = useState<IConversation>();
+  const [conversationName, setConversationName] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [unreadMessagesLength, setUnreadMessagesLength] = useState(0);
   const [unreadMessagesInGroup, setUnreadMessagesInGroup] = useState(0);
@@ -115,6 +117,7 @@ function ChatProvider({ children }: ChatProviderProps) {
         );
 
         const conversation: IConversation = response.data[0];
+        setConversationName(conversation.name);
 
         if (isGroup === 'false') {
           if (
@@ -343,6 +346,7 @@ function ChatProvider({ children }: ChatProviderProps) {
           isGroup,
           sender,
           wsUsername,
+          conversationName,
         }}
       >
         {children}

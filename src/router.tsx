@@ -30,9 +30,11 @@ function AppRouter() {
         />
         <Route
           element={
-            <ChatProvider>
-              <Chat />
-            </ChatProvider>
+            <AuthProvider>
+              <ChatProvider>
+                <Chat />
+              </ChatProvider>
+            </AuthProvider>
           }
           path="/chat/:id/:username"
         />

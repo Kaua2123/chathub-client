@@ -5,6 +5,7 @@ import {
   Container,
   Div,
   DivConfig,
+  DivData,
   DivMessages,
   DivUser,
   EllipsisVerticalIcon,
@@ -13,7 +14,7 @@ import {
   TopContainer,
   UserAvatar,
 } from './styled';
-import { Circle, User, Users } from 'lucide-react';
+import { Check, Circle, Pen, User, Users } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -25,6 +26,8 @@ import Loading from '../../components/Loading/Loading';
 import ChatDropdown from '../../components/ChatDropdown/ChatDropdown';
 import ModalAddUsers from '../../components/ModalAddUsers/ModalAddUsers';
 import ModalUsersInGroup from '../../components/ModalUsersInGroup/ModalUsersInGroup';
+import axios from '../../services/axios';
+import { toast } from 'sonner';
 
 function Chat() {
   const { id, username } = useParams();
@@ -39,13 +42,15 @@ function Chat() {
     handleSubmit,
     setMsg,
     handleClickDelete,
-    conversation,
     conversationUsersname,
+    conversationName,
     isGroup,
     wsUsername,
   } = useChatContext();
 
+  const [name, setName] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [ísUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalAddUsersOpen, setIsModalAddUsersOpen] = useState(false);
@@ -64,6 +69,22 @@ function Chat() {
       setIsLoading(false);
     }, 2400);
   });
+
+  const updateGroupName = async () => {
+    try {
+      if (!name) return;
+
+      await axios.put(`/conversation/updateName/${id}`, {
+        name,
+      });
+
+      toast.success('Nome do grupo atualizado.');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const hasGroupName = conversationName ? conversationName : 'Grupo sem nome';
 
   return (
     <div>
@@ -105,13 +126,25 @@ function Chat() {
             </>
           </UserAvatar>
           <div style={{ display: 'flex', flexFlow: 'column wrap' }}>
-            <p>
-              {isGroup === 'true'
-                ? conversation?.name
-                  ? conversation.name
-                  : 'Grupo sem nome'
-                : username}
-            </p>
+            <DivData>
+              {ísUpdating ? (
+                <input
+                  type="text"
+                  placeholder="Nome do grupo..."
+                  onChange={(e) => setName(e.target.value)}
+                />
+              ) : (
+                <p>{isGroup === 'true' ? hasGroupName : username}</p>
+              )}
+
+              <button onClick={() => setIsUpdating(!ísUpdating)}>
+                {!ísUpdating ? (
+                  <Pen size={16} color="white" />
+                ) : (
+                  <Check size={16} color="#51CC17" onClick={updateGroupName} />
+                )}
+              </button>
+            </DivData>
             <div
               style={{
                 display: 'flex',
