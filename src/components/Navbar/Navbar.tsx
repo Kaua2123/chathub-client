@@ -15,18 +15,34 @@ import { Link } from 'react-router-dom';
 import ModalNotifications from '../ModalNotifications/ModalNotifications';
 import chathub from '../../assets/chathub.png';
 import MenuDropdown from '../MenuDropdown/MenuDropdown';
-import { INotification } from '../../interfaces/INotification';
 import axios from '../../services/axios';
+import { INotification } from '../../interfaces/INotification';
 import { tokenDecoder } from '../../utils/tokenDecoder';
+import { IUser } from '../../interfaces/IUser';
 
 function Navbar() {
   const token = localStorage.getItem('token');
   const decodedToken = useMemo(() => tokenDecoder(token), []);
 
+  const [user, setUser] = useState<IUser>();
   const [isSeeingNotification, setIsSeeingNotification] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const [hasNotifications, setHasNotifications] = useState(false);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await axios.get(`user/${decodedToken?.id}`);
+
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserData();
+  }, []);
 
   useEffect(() => {
     function checkNotifications() {
@@ -85,12 +101,24 @@ function Navbar() {
                 )}
               </DivNotification>
 
-              <UserAvatar onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                <div className="profile-link">
-                  <User color="black" />
-                </div>
-                {isMenuOpen && <MenuDropdown setIsMenuOpen={setIsMenuOpen} />}
-              </UserAvatar>
+              {user?.image ? (
+                <UserAvatar onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <div
+                    className="img-profile-link"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  >
+                    <img src={user?.image_url} alt="" />
+                  </div>
+                  {isMenuOpen && <MenuDropdown setIsMenuOpen={setIsMenuOpen} />}
+                </UserAvatar>
+              ) : (
+                <UserAvatar onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <div className="profile-link">
+                    <User color="black" />
+                  </div>
+                  {isMenuOpen && <MenuDropdown setIsMenuOpen={setIsMenuOpen} />}
+                </UserAvatar>
+              )}
 
               {/* <BellRing /> -> quando tiver notificações */}
             </>

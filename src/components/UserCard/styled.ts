@@ -55,6 +55,18 @@ export const Button = styled.div`
   cursor: pointer;
 `;
 
+export const UserImage = styled.div`
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+
+  img {
+    border-radius: 100%;
+    width: 4.6rem;
+    height: 4.6rem;
+  }
+`;
+
 export const MessageSquareTextIcon = styled(MessageSquareText)`
   &:hover {
     transition: transform 0.3s;

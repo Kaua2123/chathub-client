@@ -43,6 +43,24 @@ export const UserAvatar = styled.div`
   border-radius: 100%;
   display: flex;
   align-items: center;
+
+  img {
+    border-radius: 100%;
+    width: 3rem;
+    height: 3rem;
+  }
+`;
+
+export const UserImage = styled.div`
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+
+  img {
+    border-radius: 100%;
+    width: 4.6rem;
+    height: 4.6rem;
+  }
 `;
 
 export const DivAvatarAndMessages = styled.div`

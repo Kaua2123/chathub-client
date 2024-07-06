@@ -47,6 +47,7 @@ export const A = styled.a`
 
 export const UserAvatar = styled.div`
   position: relative;
+
   .profile-link {
     border: 1px solid white;
     background-color: ${({ theme }) => theme.colors.white};
@@ -56,6 +57,27 @@ export const UserAvatar = styled.div`
     align-items: center;
     transition: transform 0.3s;
     cursor: pointer;
+
+    &:hover {
+      transform: translateY(-10%);
+
+      & svg {
+        // stroke para alterar a cor das linhas do ícone
+        stroke: ${({ theme }) => theme.colors.lighterBlue};
+      }
+    }
+  }
+
+  .img-profile-link {
+    transition: transform 0.3s;
+    cursor: pointer;
+
+    img {
+      height: 5rem;
+      width: 5rem;
+      border-radius: 100%;
+    }
+
     &:hover {
       transform: translateY(-10%);
 

@@ -5,6 +5,7 @@ import {
   MessageCounter,
   MessageHour,
   UserAvatar,
+  UserImage,
   WavingGrabHand,
 } from './styled';
 import { Container, DivUser, UserNameAndMessage } from './styled';
@@ -20,6 +21,7 @@ import { convertDateToHours } from '../../utils/convertDateToHours';
 import { useSocketContext } from '../../hooks/useSocketContext';
 import { addThreeDotsOnBigMessage } from '../../utils/addThreeDotsOnBigMessage';
 import { IOnlineUsers } from '../../interfaces/IOnlineUsers';
+import { IUser } from '../../interfaces/IUser';
 
 export type ConversationCardProps = {
   id: number;
@@ -40,6 +42,7 @@ function ConversationCard({
   const userId = decodedToken?.id;
 
   const [username, setUsername] = useState('');
+  const [userRecipient, setUserRecipient] = useState<IUser>();
   const [recipientId, setRecipientId] = useState(0);
   const [httpUnreadMessages, setHttpUnreadMessages] = useState<IMessage[]>([]);
   const [wsUnreadMessagesLength, setWsUnreadMessagesLength] = useState(0);
@@ -122,6 +125,16 @@ function ConversationCard({
     });
   };
 
+  const getUserData = async (recipientId: number) => {
+    try {
+      const response = await axios.get(`user/${recipientId}`);
+
+      setUserRecipient(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const getRecipientId = async () => {
       try {
@@ -131,12 +144,16 @@ function ConversationCard({
           `/conversation/show/${decodedToken?.id}/${id}`,
         );
 
-        response.data[0].Users[0].users_conversations.UserId !==
-        decodedToken?.id
-          ? setRecipientId(response.data[0].Users[0].users_conversations.UserId)
-          : setRecipientId(
-              response.data[0].Users[1].users_conversations.UserId,
-            );
+        if (
+          response.data[0].Users[0].users_conversations.UserId !==
+          decodedToken?.id
+        ) {
+          setRecipientId(response.data[0].Users[0].users_conversations.UserId);
+          getUserData(response.data[0].Users[0].users_conversations.UserId);
+        } else {
+          setRecipientId(response.data[0].Users[1].users_conversations.UserId);
+          getUserData(response.data[0].Users[1].users_conversations.UserId);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -206,17 +223,32 @@ function ConversationCard({
     getLastMessageOfAConversation();
   }, [lastMessageContent]);
 
+  console.log(userRecipient);
+
   return (
     <>
       {isDragging ? (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
           <Container $isDragging={isDragging}>
             <DivUser>
-              <UserAvatar>
-                <>
-                  {isGroup ? <Users color="black" /> : <User color="black" />}
-                </>
-              </UserAvatar>
+              {userRecipient?.image ? (
+                <UserAvatar>
+                  <>
+                    {isGroup ? (
+                      <Users color="black" />
+                    ) : (
+                      <img src={userRecipient.image_url}></img>
+                    )}
+                  </>
+                </UserAvatar>
+              ) : (
+                <UserAvatar>
+                  <>
+                    {isGroup ? <Users color="black" /> : <User color="black" />}
+                  </>
+                </UserAvatar>
+              )}
+
               <UserNameAndMessage>
                 <p className="username">
                   {conversation.type == 'group'
@@ -245,11 +277,25 @@ function ConversationCard({
             }}
           >
             <DivUser>
-              <UserAvatar>
+              {userRecipient?.image ? (
                 <>
-                  {isGroup ? <Users color="black" /> : <User color="black" />}
+                  {isGroup ? (
+                    <UserAvatar>
+                      <Users color="black" />
+                    </UserAvatar>
+                  ) : (
+                    <UserImage>
+                      <img src={userRecipient.image_url}></img>
+                    </UserImage>
+                  )}
                 </>
-              </UserAvatar>
+              ) : (
+                <UserAvatar>
+                  <>
+                    {isGroup ? <Users color="black" /> : <User color="black" />}
+                  </>
+                </UserAvatar>
+              )}
               <UserNameAndMessage>
                 <p className="username">
                   {isGroup

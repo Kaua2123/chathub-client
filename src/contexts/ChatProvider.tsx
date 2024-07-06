@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 import { useSocketContext } from '../hooks/useSocketContext';
 import { IConversation, User } from '../interfaces/IConversation';
 import { useQuery } from '../hooks/useQuery';
+import { IUser } from '../interfaces/IUser';
 
 export type ChatProviderProps = {
   children: JSX.Element;
@@ -22,6 +23,7 @@ export type ContextData = {
   sender: User | undefined;
   recipientId: number;
   recipientUsers: User[];
+  userRecipient: IUser | undefined;
   handleSubmit: () => Promise<void>;
   handleClickDelete: () => Promise<void>;
   setMsg: React.Dispatch<React.SetStateAction<string | boolean>>;
@@ -46,6 +48,7 @@ function ChatProvider({ children }: ChatProviderProps) {
     [],
   );
 
+  const [userRecipient, setUserRecipient] = useState<IUser>();
   const [conversation, setConversation] = useState<IConversation>();
   const [conversationName, setConversationName] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -107,6 +110,15 @@ function ChatProvider({ children }: ChatProviderProps) {
     }
   };
 
+  const getUserData = async (recipientId: number) => {
+    try {
+      const response = await axios.get(`user/${recipientId}`);
+      setUserRecipient(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const getRecipientId = async () => {
       try {
@@ -130,6 +142,7 @@ function ChatProvider({ children }: ChatProviderProps) {
             getUnreadMessagesInConversation(
               response.data[0].Users[0].users_conversations.UserId,
             );
+            getUserData(response.data[0].Users[0].users_conversations.UserId);
           } else {
             setRecipientId(
               response.data[0].Users[1].users_conversations.UserId,
@@ -137,6 +150,7 @@ function ChatProvider({ children }: ChatProviderProps) {
             getUnreadMessagesInConversation(
               response.data[0].Users[1].users_conversations.UserId,
             );
+            getUserData(response.data[0].Users[1].users_conversations.UserId);
           }
         } else {
           const recipientUsers = conversation.Users.filter(
@@ -347,6 +361,7 @@ function ChatProvider({ children }: ChatProviderProps) {
           sender,
           wsUsername,
           conversationName,
+          userRecipient,
         }}
       >
         {children}

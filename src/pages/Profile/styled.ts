@@ -30,8 +30,8 @@ export const DivProfile = styled.div`
 
   .image-avatar {
     width: 30rem;
-    height: 32rem;
-    border-radius: 1.7rem;
+    height: 30rem;
+    border-radius: 100%;
   }
 
   @media (max-width: 768px) {

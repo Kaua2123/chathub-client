@@ -8,6 +8,7 @@ import {
   MessageSquareTextIcon,
   UserAvatar,
   UserData,
+  UserImage,
   UserRoundPlusIcon,
   UserRoundXIcon,
 } from './styled';
@@ -77,9 +78,16 @@ function UserCard({ user, isGroup, conversationId }: UserCardProps) {
     <div>
       <Div>
         <DivUser>
-          <UserAvatar>
-            <User color="black" />
-          </UserAvatar>
+          {user.image ? (
+            <UserImage>
+              <img src={user.image_url} />
+            </UserImage>
+          ) : (
+            <UserAvatar>
+              <User color="black" />
+            </UserAvatar>
+          )}
+
           <UserData>
             <p className="username">{user.username}</p>
             <DivIsOnline>

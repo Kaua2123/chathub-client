@@ -13,6 +13,7 @@ import {
   SendHorizontalIcon,
   TopContainer,
   UserAvatar,
+  UserImage,
 } from './styled';
 import { Check, Circle, Pen, User, Users } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -46,6 +47,7 @@ function Chat() {
     conversationName,
     isGroup,
     wsUsername,
+    userRecipient,
   } = useChatContext();
 
   const [name, setName] = useState('');
@@ -116,15 +118,28 @@ function Chat() {
               navigate('/conversations');
             }}
           />
-          <UserAvatar>
+          {userRecipient?.image ? (
             <>
               {isGroup === 'true' ? (
                 <Users color="black" />
               ) : (
-                <User color="black" />
+                <UserImage>
+                  <img src={userRecipient.image_url} />
+                </UserImage>
               )}
             </>
-          </UserAvatar>
+          ) : (
+            <UserAvatar>
+              <>
+                {isGroup === 'true' ? (
+                  <Users color="black" />
+                ) : (
+                  <User color="black" />
+                )}
+              </>
+            </UserAvatar>
+          )}
+
           <div style={{ display: 'flex', flexFlow: 'column wrap' }}>
             <DivData>
               {ísUpdating ? (
@@ -138,11 +153,16 @@ function Chat() {
               )}
 
               <button onClick={() => setIsUpdating(!ísUpdating)}>
-                {!ísUpdating ? (
-                  <Pen size={16} color="white" />
-                ) : (
-                  <Check size={16} color="#51CC17" onClick={updateGroupName} />
-                )}
+                {isGroup === 'true' &&
+                  (!ísUpdating ? (
+                    <Pen size={16} color="white" />
+                  ) : (
+                    <Check
+                      size={16}
+                      color="#51CC17"
+                      onClick={updateGroupName}
+                    />
+                  ))}
               </button>
             </DivData>
             <div

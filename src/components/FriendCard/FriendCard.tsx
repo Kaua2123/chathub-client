@@ -8,6 +8,7 @@ import {
   MessageSquareTextIcon,
   UserAvatar,
   UserData,
+  UserImage,
   XIcon,
 } from './styled';
 import { useState } from 'react';
@@ -66,9 +67,16 @@ function FriendCard({ friend }: FriendCardProps) {
       )}
       <Div>
         <DivUser>
-          <UserAvatar>
-            <User color="black" />
-          </UserAvatar>
+          {friend.image ? (
+            <UserImage>
+              <img src={friend.image_url} alt="" />
+            </UserImage>
+          ) : (
+            <UserAvatar>
+              <User color="black" />
+            </UserAvatar>
+          )}
+
           <UserData>
             <p className="username">{friend.username}</p>
             <DivIsOnline>

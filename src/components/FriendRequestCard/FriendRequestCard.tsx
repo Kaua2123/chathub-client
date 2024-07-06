@@ -9,6 +9,7 @@ import {
   DivUser,
   UserAvatar,
   UserData,
+  UserImage,
 } from './styled';
 import { useEffect, useState } from 'react';
 import { IFriendRequest } from '../../interfaces/IFriendRequest';
@@ -24,6 +25,8 @@ export type FriendRequestCardProps = {
 function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
   const [isOnline, setIsOnline] = useState(false);
   const [username, setUsername] = useState('');
+  const [image, setImage] = useState<string | undefined>('');
+  const [imageURL, setImageURL] = useState('');
 
   useEffect(() => {
     const getUserData = async () => {
@@ -33,6 +36,8 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
         const user: IUser = response.data;
         setUsername(user.username);
         setIsOnline(user.is_online);
+        setImage(user?.image);
+        setImageURL(user.image_url);
       } catch (error) {
         console.log(error);
       }
@@ -73,9 +78,16 @@ function FriendRequestCard({ friendRequest }: FriendRequestCardProps) {
     <div>
       <Div>
         <DivUser>
-          <UserAvatar>
-            <User color="black" />
-          </UserAvatar>
+          {image ? (
+            <UserImage>
+              <img src={imageURL}></img>
+            </UserImage>
+          ) : (
+            <UserAvatar>
+              <User color="black" />
+            </UserAvatar>
+          )}
+
           <UserData>
             <p className="username">{username}</p>
             <DivIsOnline>

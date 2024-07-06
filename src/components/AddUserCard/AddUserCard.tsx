@@ -8,6 +8,7 @@ import {
   DivUser,
   UserAvatar,
   UserData,
+  UserImage,
 } from './styled';
 
 import { IFriend } from '../../interfaces/IFriend';
@@ -38,9 +39,15 @@ function AddUserCard({ friend, conversationId }: AddUserCardProps) {
     <div>
       <Div>
         <DivUser>
-          <UserAvatar>
-            <User color="black" />
-          </UserAvatar>
+          {friend.image ? (
+            <UserImage>
+              <img src={friend.image_url} alt="" />
+            </UserImage>
+          ) : (
+            <UserAvatar>
+              <User color="black" />
+            </UserAvatar>
+          )}
           <UserData>
             <p className="username">{friend.username}</p>
             <DivIsOnline>

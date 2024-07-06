@@ -100,7 +100,7 @@ function Profile() {
         <p>Perfil</p>
         <DivProfile>
           <DivUserAvatar>
-            {imgURL || user?.image_url ? (
+            {imgURL || user?.image ? (
               <img
                 className="image-avatar"
                 src={imgURL || user?.image_url}
