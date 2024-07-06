@@ -1,4 +1,9 @@
-import { MessageSquareText, UserRoundPlus, UserRoundX } from 'lucide-react';
+import {
+  Ban,
+  MessageSquareText,
+  UserRoundPlus,
+  UserRoundX,
+} from 'lucide-react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
@@ -84,6 +89,15 @@ export const UserRoundPlusIcon = styled(UserRoundPlus)`
   }
 `;
 export const UserRoundXIcon = styled(UserRoundX)`
+  &:hover {
+    transition: transform 0.3s;
+
+    transform: translateY(-10%);
+    stroke: ${({ theme }) => theme.colors.red};
+  }
+`;
+
+export const BanIcon = styled(Ban)`
   &:hover {
     transition: transform 0.3s;
 

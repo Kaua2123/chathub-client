@@ -1,5 +1,6 @@
 import { Circle, User } from 'lucide-react';
 import {
+  BanIcon,
   Button,
   Div,
   DivIsOnline,
@@ -31,6 +32,7 @@ function UserCard({ user, isGroup, conversationId }: UserCardProps) {
   const navigate = useNavigate();
   const decodedToken = useAuthContext();
   const [isRemovingUser, setIsRemovingUser] = useState(false);
+  const [isBlockingUser, setIsBlockingUser] = useState(false);
 
   const sendFriendRequest = async () => {
     try {
@@ -74,8 +76,27 @@ function UserCard({ user, isGroup, conversationId }: UserCardProps) {
     }
   };
 
+  const blockUser = async () => {
+    try {
+      await axios.post(`/blockedUsers/blockUser/${user.id}`, {
+        user_who_blocked_id: decodedToken?.id,
+      });
+
+      toast.success(`Você bloqueou ${user.username}`);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
+
   return (
     <div>
+      {isBlockingUser && (
+        <ModalDeleting
+          handleClickDelete={blockUser}
+          setIsDeleting={setIsBlockingUser}
+        />
+      )}
       <Div>
         <DivUser>
           {user.image ? (
@@ -125,6 +146,9 @@ function UserCard({ user, isGroup, conversationId }: UserCardProps) {
               </Button>
               <Button onClick={sendFriendRequest}>
                 <UserRoundPlusIcon size={28} />
+              </Button>
+              <Button onClick={() => setIsBlockingUser(true)}>
+                <BanIcon size={28} />
               </Button>
             </>
           )}
