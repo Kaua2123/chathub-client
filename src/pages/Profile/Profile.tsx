@@ -29,13 +29,6 @@ function Profile() {
   const [email, setEmail] = useState('');
   const [imgURL, setImgURL] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const img = e.target.files;
-
-    const imageURL = img ? URL.createObjectURL(img[0]) : '';
-    setImgURL(imageURL);
-  };
-
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -49,6 +42,33 @@ function Profile() {
 
     getUserData();
   }, []);
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const img = e.target.files;
+
+    if (!img) return;
+
+    const imageURL = URL.createObjectURL(img[0]);
+
+    console.log(img);
+    setImgURL(imageURL);
+
+    const formData = new FormData();
+    formData.append('image', img[0]);
+
+    try {
+      await axios.put(`/addImages/addUserImage/${decodedToken?.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      toast.success('Imagem adicionada.');
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message);
+    }
+  };
 
   const updateUserData = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -71,6 +91,8 @@ function Profile() {
     }
   };
 
+  console.log(user?.image_url);
+
   return (
     <div>
       <Navbar />
@@ -78,8 +100,11 @@ function Profile() {
         <p>Perfil</p>
         <DivProfile>
           <DivUserAvatar>
-            {imgURL ? (
-              <img className="image-avatar" src={imgURL}></img>
+            {imgURL || user?.image_url ? (
+              <img
+                className="image-avatar"
+                src={imgURL || user?.image_url}
+              ></img>
             ) : (
               <UserAvatar>
                 <User color="black" size={90} />
