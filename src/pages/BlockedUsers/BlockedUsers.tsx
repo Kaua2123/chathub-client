@@ -1,9 +1,29 @@
+import { useEffect, useState } from 'react';
 import BlockedUserCard from '../../components/BlockedUserCard/BlockedUserCard';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import Navbar from '../../components/Navbar/Navbar';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import axios from '../../services/axios';
 import { Div, DivBlockedUsers } from './styled';
 
 function BlockedUsers() {
+  const decodedToken = useAuthContext();
+
+  const [blockedUsers, setBlockedUsers] = useState([]);
+
+  useEffect(() => {
+    const getBlockedUsers = async () => {
+      try {
+        const response = await axios.get(`/blockedUsers/${decodedToken?.id}`);
+        setBlockedUsers(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getBlockedUsers();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -15,8 +35,8 @@ function BlockedUsers() {
         </p>
 
         <DivBlockedUsers>
-          {Array.from({ length: 10 }).map((_, i) => (
-            <BlockedUserCard key={i} />
+          {blockedUsers.map((blockedUser, index) => (
+            <BlockedUserCard blockedUser={blockedUser} key={index} />
           ))}
         </DivBlockedUsers>
       </Div>
