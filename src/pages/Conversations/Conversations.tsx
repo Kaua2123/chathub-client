@@ -1,23 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from 'react';
-import {
-  Div,
-  DivButtons,
-  DivConversations,
-  OrderConversationsButton,
-  WavingGrabHand,
-} from './styled';
+import { Div, DivConversations } from './styled';
 import BottomMenu from '../../components/BottomMenu/BottomMenu';
 import ConversationCard from '../../components/ConversationCard/ConversationCard';
 import Navbar from '../../components/Navbar/Navbar';
-
-import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
-import {
-  SortableContext,
-  arrayMove,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { Hand } from 'lucide-react';
 
 import axios from '../../services/axios';
 import { IConversation } from '../../interfaces/IConversation';
@@ -35,7 +21,6 @@ function Conversations() {
   const orderedConversationsArray: IConversation[] | null =
     orderedConversationsString ? JSON.parse(orderedConversationsString) : null;
 
-  const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -59,28 +44,6 @@ function Conversations() {
     getUserConversations();
   }, [decodedToken?.id]);
 
-  const getConversationsPosition = (id: number) =>
-    conversations.findIndex((conversation) => conversation.id === id);
-
-  function handleDragEnd(e: DragEndEvent) {
-    const { active, over } = e;
-
-    if (!over) return;
-
-    if (active.id !== over.id) {
-      setConversations((conversations) => {
-        const oldIndex = getConversationsPosition(active.id as number);
-        const newIndex = getConversationsPosition(over.id as number);
-
-        localStorage.setItem(
-          'conversations',
-          JSON.stringify(arrayMove(conversations, oldIndex, newIndex)),
-        );
-        return arrayMove(conversations, oldIndex, newIndex);
-      });
-    }
-  }
-
   return (
     <div>
       <Navbar />
@@ -90,35 +53,23 @@ function Conversations() {
 
         {conversations && conversations.length > 0 ? (
           <DivConversations $isMobile={isMobile}>
-            <DndContext
-              onDragEnd={(e) => handleDragEnd(e)}
-              collisionDetection={closestCenter}
-            >
-              <SortableContext
-                items={conversations}
-                strategy={verticalListSortingStrategy}
-              >
-                {!orderedConversationsArray &&
-                  conversations.map((conversation, index) => (
-                    <ConversationCard
-                      isDragging={isDragging}
-                      key={index}
-                      id={conversation.id}
-                      conversation={conversation}
-                    />
-                  ))}
+            {!orderedConversationsArray &&
+              conversations.map((conversation, index) => (
+                <ConversationCard
+                  key={index}
+                  id={conversation.id}
+                  conversation={conversation}
+                />
+              ))}
 
-                {orderedConversationsArray &&
-                  orderedConversationsArray.map((conversation, index) => (
-                    <ConversationCard
-                      isDragging={isDragging}
-                      key={index}
-                      id={conversation.id}
-                      conversation={conversation}
-                    />
-                  ))}
-              </SortableContext>
-            </DndContext>
+            {orderedConversationsArray &&
+              orderedConversationsArray.map((conversation, index) => (
+                <ConversationCard
+                  key={index}
+                  id={conversation.id}
+                  conversation={conversation}
+                />
+              ))}
           </DivConversations>
         ) : (
           <div
@@ -134,12 +85,6 @@ function Conversations() {
           </div>
         )}
       </Div>
-      <DivButtons>
-        <OrderConversationsButton onClick={() => setIsDragging(!isDragging)}>
-          {isDragging && <WavingGrabHand />}
-          {!isDragging && <Hand />}
-        </OrderConversationsButton>
-      </DivButtons>
 
       <BottomMenu />
     </div>

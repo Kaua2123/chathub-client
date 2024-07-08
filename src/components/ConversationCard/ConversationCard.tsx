@@ -1,17 +1,13 @@
 import { User, Users } from 'lucide-react';
 import {
   DivMessageHourAndCounter,
-  DivOrdering,
   MessageCounter,
   MessageHour,
   UserAvatar,
   UserImage,
-  WavingGrabHand,
 } from './styled';
 import { Container, DivUser, UserNameAndMessage } from './styled';
 import { useNavigate } from 'react-router-dom';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { IConversation } from '../../interfaces/IConversation';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -25,15 +21,10 @@ import { IUser } from '../../interfaces/IUser';
 
 export type ConversationCardProps = {
   id: number;
-  isDragging: boolean;
   conversation: IConversation;
 };
 
-function ConversationCard({
-  id,
-  isDragging,
-  conversation,
-}: ConversationCardProps) {
+function ConversationCard({ id, conversation }: ConversationCardProps) {
   const navigate = useNavigate();
 
   const decodedToken = useAuthContext();
@@ -52,14 +43,6 @@ function ConversationCard({
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
   const [isGroup, setIsGroup] = useState(false);
-
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
 
   const wsUnreadMessageInGroupOrHttp =
     wsUnreadMessagesInGroupLength || httpUnreadMessages.length;
@@ -227,115 +210,71 @@ function ConversationCard({
 
   return (
     <>
-      {isDragging ? (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-          <Container $isDragging={isDragging}>
-            <DivUser>
-              {userRecipient?.image ? (
-                <UserAvatar>
-                  <>
-                    {isGroup ? (
-                      <Users color="black" />
-                    ) : (
-                      <img src={userRecipient.image_url}></img>
-                    )}
-                  </>
-                </UserAvatar>
-              ) : (
-                <UserAvatar>
-                  <>
-                    {isGroup ? <Users color="black" /> : <User color="black" />}
-                  </>
-                </UserAvatar>
-              )}
-
-              <UserNameAndMessage>
-                <p className="username">
-                  {conversation.type == 'group'
-                    ? conversation.name === null
-                      ? 'Grupo sem nome'
-                      : conversation.name
-                    : username}
-                </p>
-                <p className="user-message">
-                  {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
-                </p>
-              </UserNameAndMessage>
-            </DivUser>
-            <DivOrdering>
-              <p>Arraste-me...</p>
-              <WavingGrabHand color="white" />
-            </DivOrdering>
-          </Container>
-        </div>
-      ) : (
-        <div>
-          <Container
-            $isDragging={isDragging}
-            onClick={() => {
-              navigate(`/chat/${id}/${username}?isGroup=${isGroup}`);
-            }}
-          >
-            <DivUser>
-              {userRecipient?.image ? (
+      <div>
+        <Container
+          onClick={() => {
+            navigate(`/chat/${id}/${username}?isGroup=${isGroup}`);
+          }}
+        >
+          <DivUser>
+            {userRecipient?.image ? (
+              <>
+                {isGroup ? (
+                  <UserAvatar>
+                    <Users color="black" />
+                  </UserAvatar>
+                ) : (
+                  <UserImage>
+                    <img src={userRecipient.image_url}></img>
+                  </UserImage>
+                )}
+              </>
+            ) : (
+              <UserAvatar>
                 <>
-                  {isGroup ? (
-                    <UserAvatar>
-                      <Users color="black" />
-                    </UserAvatar>
-                  ) : (
-                    <UserImage>
-                      <img src={userRecipient.image_url}></img>
-                    </UserImage>
-                  )}
+                  {isGroup ? <Users color="black" /> : <User color="black" />}
                 </>
-              ) : (
-                <UserAvatar>
-                  <>
-                    {isGroup ? <Users color="black" /> : <User color="black" />}
-                  </>
-                </UserAvatar>
-              )}
-              <UserNameAndMessage>
-                <p className="username">
-                  {isGroup
-                    ? conversation.name === null
-                      ? 'Grupo sem nome'
-                      : conversation.name
-                    : username}
+              </UserAvatar>
+            )}
+            <UserNameAndMessage>
+              <p className="username">
+                {isGroup
+                  ? conversation.name === null
+                    ? 'Grupo sem nome'
+                    : conversation.name
+                  : username}
+              </p>
+              <p className="user-message">
+                {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
+              </p>
+            </UserNameAndMessage>
+          </DivUser>
+          <DivMessageHourAndCounter>
+            <MessageHour>
+              <b>
+                <p>
+                  {lastMessage
+                    ? convertDateToHours(lastMessage.createdAt)
+                    : '00:00'}
                 </p>
-                <p className="user-message">
-                  {lastMessageContent ? slicedMessage : 'Comece a conversar!'}
-                </p>
-              </UserNameAndMessage>
-            </DivUser>
-            <DivMessageHourAndCounter>
-              <MessageHour>
+              </b>
+            </MessageHour>
+            {(httpUnreadMessages.length > 0 ||
+              wsUnreadMessagesLength > 0 ||
+              wsUnreadMessagesInGroupLength > 0) && (
+              <MessageCounter>
                 <b>
                   <p>
-                    {lastMessage
-                      ? convertDateToHours(lastMessage.createdAt)
-                      : '00:00'}
+                    {isGroup
+                      ? wsUnreadMessageInGroupOrHttp
+                      : wsUnreadMessageOrHttp}
                   </p>
                 </b>
-              </MessageHour>
-              {(httpUnreadMessages.length > 0 ||
-                wsUnreadMessagesLength > 0 ||
-                wsUnreadMessagesInGroupLength > 0) && (
-                <MessageCounter>
-                  <b>
-                    <p>
-                      {isGroup
-                        ? wsUnreadMessageInGroupOrHttp
-                        : wsUnreadMessageOrHttp}
-                    </p>
-                  </b>
-                </MessageCounter>
-              )}
-            </DivMessageHourAndCounter>
-          </Container>
-        </div>
-      )}
+              </MessageCounter>
+            )}
+          </DivMessageHourAndCounter>
+        </Container>
+      </div>
     </>
   );
 }
