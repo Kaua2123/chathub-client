@@ -7,6 +7,7 @@ import {
   DivUser,
   UserAvatar,
   UserData,
+  UserImage,
 } from './styled';
 import { IBlockedUser } from '../../interfaces/IBlockedUser';
 import { toast } from 'sonner';
@@ -36,9 +37,16 @@ function BlockedUserCard({ blockedUser }: BlockedUserCardProps) {
     <div>
       <Div>
         <DivUser>
-          <UserAvatar>
-            <User color="black" />
-          </UserAvatar>
+          {blockedUser.User.image ? (
+            <UserImage>
+              <img src={blockedUser.User.image_url}></img>
+            </UserImage>
+          ) : (
+            <UserAvatar>
+              <User color="black" />
+            </UserAvatar>
+          )}
+
           <UserData>
             <p className="username">
               {blockedUser ? blockedUser.User.username : 'username'}

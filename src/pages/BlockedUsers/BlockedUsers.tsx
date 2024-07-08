@@ -35,9 +35,22 @@ function BlockedUsers() {
         </p>
 
         <DivBlockedUsers>
-          {blockedUsers.map((blockedUser, index) => (
-            <BlockedUserCard blockedUser={blockedUser} key={index} />
-          ))}
+          {blockedUsers.length > 0 ? (
+            blockedUsers.map((blockedUser, index) => (
+              <BlockedUserCard blockedUser={blockedUser} key={index} />
+            ))
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '80%',
+              }}
+            >
+              <h5>Você ainda não bloqueou nenhum usuário.</h5>
+            </div>
+          )}
         </DivBlockedUsers>
       </Div>
       <BottomMenu />
