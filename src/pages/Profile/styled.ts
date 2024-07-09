@@ -32,6 +32,9 @@ export const DivProfile = styled.div`
     width: 30rem;
     height: 30rem;
     border-radius: 100%;
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.1),
+      0 6px 20px rgba(0, 0, 0, 0.1);
   }
 
   @media (max-width: 768px) {
@@ -40,6 +43,11 @@ export const DivProfile = styled.div`
     justify-content: center;
     padding: 0;
     min-height: 112vh;
+
+    .image-avatar {
+      width: 15rem;
+      height: 15rem;
+    }
   }
 `;
 
