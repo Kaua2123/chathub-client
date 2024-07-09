@@ -42,13 +42,37 @@ function ConversationCard({ id, conversation }: ConversationCardProps) {
   const [lastMessage, setLastMessage] = useState<IMessage>();
   const [lastMessageContent, setLastMessageContent] = useState('');
   const [slicedMessage, setSlicedMessage] = useState('');
+  const [slicedConversationName, setSlicedConversationName] = useState('');
   const [isGroup, setIsGroup] = useState(false);
+  const [isMobile, setisMobile] = useState(window.innerWidth < 768);
 
   const wsUnreadMessageInGroupOrHttp =
     wsUnreadMessagesInGroupLength || httpUnreadMessages.length;
 
   const wsUnreadMessageOrHttp =
     wsUnreadMessagesLength || httpUnreadMessages.length;
+
+  const conversationName =
+    conversation.name === null ? 'Grupo sem nome' : conversation.name;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setisMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (conversationName.length >= 14 && isMobile) {
+      const slicedConversationName = conversationName.slice(0, 11);
+      const conversationNameWithDots = `${slicedConversationName}...`;
+      setSlicedConversationName(conversationNameWithDots);
+    }
+  }, [conversationName, isMobile]);
 
   useEffect(() => {
     conversation.type == 'group' ? setIsGroup(true) : setIsGroup(false);
@@ -206,8 +230,6 @@ function ConversationCard({ id, conversation }: ConversationCardProps) {
     getLastMessageOfAConversation();
   }, [lastMessageContent]);
 
-  console.log(userRecipient);
-
   return (
     <>
       <div>
@@ -239,9 +261,9 @@ function ConversationCard({ id, conversation }: ConversationCardProps) {
             <UserNameAndMessage>
               <p className="username">
                 {isGroup
-                  ? conversation.name === null
-                    ? 'Grupo sem nome'
-                    : conversation.name
+                  ? isMobile
+                    ? slicedConversationName
+                    : conversationName
                   : username}
               </p>
               <p className="user-message">

@@ -22,7 +22,7 @@ export const Container = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: auto;
+    width: 32rem;
     min-width: 20rem;
   }
 `;
