@@ -37,7 +37,14 @@ export const Container = styled.div`
   @media (max-width: 768px) {
     padding: 8rem;
     width: 35rem;
-    height: 70vh;
+
+    h6 {
+      text-align: center;
+    }
+    .text {
+      font-size: 1.5rem;
+      text-align: center;
+    }
   }
 `;
 
@@ -70,7 +77,8 @@ export const DivUsersInGroup = styled.div<{ $hasFriends?: boolean }>`
   }
 
   @media (max-width: 768px) {
-    margin: 2rem;
+    padding: 0;
+    height: 40vh;
   }
 `;
 

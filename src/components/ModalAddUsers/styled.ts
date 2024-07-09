@@ -34,12 +34,14 @@ export const Container = styled.div`
   animation: ${opening} 0.3s;
 
   @media (max-width: 768px) {
-    padding: 8rem;
     width: 35rem;
-    height: 80vh;
 
+    h6 {
+      text-align: center;
+    }
     .text {
-      display: none;
+      font-size: 1.5rem;
+      text-align: center;
     }
   }
 `;
@@ -78,6 +80,7 @@ export const DivFriends = styled.div<{ $hasFriends?: boolean }>`
 
   @media (max-width: 768px) {
     padding: 0rem;
+    height: 40vh;
   }
 `;
 

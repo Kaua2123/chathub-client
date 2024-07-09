@@ -65,6 +65,7 @@ function ModalUsersInGroup({
           </CloseButton>
           <h6>Usuários</h6>
           <p
+            className="text"
             style={{
               color: 'white',
               fontFamily: 'Raleway',
