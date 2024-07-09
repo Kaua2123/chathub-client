@@ -15,6 +15,7 @@ import { IFriend } from '../../interfaces/IFriend';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import axios from '../../services/axios';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 export type AddUserCardProps = {
   friend: IFriend;
@@ -22,10 +23,12 @@ export type AddUserCardProps = {
 };
 
 function AddUserCard({ friend, conversationId }: AddUserCardProps) {
+  const decodedToken = useAuthContext();
+
   const addMoreUsersToConversation = async () => {
     try {
       await axios.post(
-        `/conversation/addMoreUsersToConversation/${conversationId}/${friend.id}`,
+        `/conversation/addMoreUsersToConversation/${conversationId}/${decodedToken?.id}/${friend.id}`,
       );
 
       toast.success(`Você adicionou ${friend.username} ao grupo.`);

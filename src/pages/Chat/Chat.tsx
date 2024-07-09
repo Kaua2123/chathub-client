@@ -51,14 +51,45 @@ function Chat() {
   } = useChatContext();
 
   const [name, setName] = useState('');
+  const [usernames, setUsernames] = useState<string>('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [ísUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalAddUsersOpen, setIsModalAddUsersOpen] = useState(false);
   const [isModalUsersInGroupOpen, setIsModalUsersInGroupOpen] = useState(false);
   const isOnline = onlineUsers.some((user) => user.userId === recipientId);
   const divMessages = useRef<HTMLDivElement | null>(null);
+
+  const usernamesString = conversationUsersname.map(
+    (username) => `${username}, `,
+  );
+
+  const usernamesLength = usernamesString.reduce(
+    (accumulator, username) => accumulator + username.length,
+    0,
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (usernamesLength >= 22 && isMobile) {
+      const usernamesStringWithDots = `${usernamesString}`;
+      const slicedWithDots = usernamesStringWithDots.slice(0, 20);
+      setUsernames(`${slicedWithDots}...`);
+    }
+  }, [usernamesLength, isMobile]);
 
   useEffect(() => {
     if (!divMessages.current) return;
@@ -174,7 +205,11 @@ function Chat() {
               }}
             >
               {isGroup === 'true' ? (
-                conversationUsersname.map((username) => `${username},  `)
+                isMobile ? (
+                  usernames
+                ) : (
+                  usernamesString
+                )
               ) : (
                 <>
                   <Circle

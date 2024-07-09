@@ -15,20 +15,27 @@ function Conversations() {
   const token = localStorage.getItem('token');
   const decodedToken = useMemo(() => tokenDecoder(token), []);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
   const orderedConversationsString = localStorage.getItem('conversations');
   const orderedConversationsArray: IConversation[] | null =
     orderedConversationsString ? JSON.parse(orderedConversationsString) : null;
 
-  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!token) return navigate('/');
-
-    const checkResolution = () => {
-      window.screen.width < 768 ? setIsMobile(true) : setIsMobile(false);
-    };
 
     const getUserConversations = async () => {
       try {
@@ -40,7 +47,6 @@ function Conversations() {
       }
     };
 
-    checkResolution();
     getUserConversations();
   }, [decodedToken?.id]);
 

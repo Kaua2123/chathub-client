@@ -67,6 +67,7 @@ function ModalAddUsers({
           </CloseButton>
           <h6>Adicionar amigos</h6>
           <p
+            className="text"
             style={{
               color: 'white',
               fontFamily: 'Raleway',

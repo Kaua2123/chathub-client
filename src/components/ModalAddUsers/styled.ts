@@ -36,7 +36,11 @@ export const Container = styled.div`
   @media (max-width: 768px) {
     padding: 8rem;
     width: 35rem;
-    height: 70vh;
+    height: 80vh;
+
+    .text {
+      display: none;
+    }
   }
 `;
 
@@ -61,6 +65,10 @@ export const DivFriends = styled.div<{ $hasFriends?: boolean }>`
     width: 1.5rem;
     border: 1px solid ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1.4rem;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   &::-webkit-scrollbar-thumb {
@@ -69,7 +77,7 @@ export const DivFriends = styled.div<{ $hasFriends?: boolean }>`
   }
 
   @media (max-width: 768px) {
-    margin: 2rem;
+    padding: 0rem;
   }
 `;
 
