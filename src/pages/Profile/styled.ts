@@ -75,6 +75,31 @@ export const DivUserAvatar = styled.div`
   justify-content: center;
 `;
 
+export const UserImage = styled.div`
+  border-radius: 100%;
+
+  position: relative;
+
+  .img-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 2rem;
+    padding: 0.8rem;
+    width: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    .img-button {
+      margin: 0;
+      width: 0.5rem;
+      height: 0.5rem;
+      padding: 2rem;
+    }
+  }
+`;
+
 export const DivUserData = styled.div`
   display: flex;
   flex-flow: column wrap;

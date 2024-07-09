@@ -12,6 +12,7 @@ import {
   Form,
   Input,
   UserAvatar,
+  UserImage,
 } from './styled';
 import { useEffect, useState } from 'react';
 import axios from '../../services/axios';
@@ -19,9 +20,11 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import { IUser } from '../../interfaces/IUser';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const decodedToken = useAuthContext();
+  const navigate = useNavigate();
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [user, setUser] = useState<IUser>();
@@ -76,14 +79,17 @@ function Profile() {
     try {
       e.preventDefault();
       await axios.put(`user/update/${decodedToken.id}`, {
-        username,
-        email,
+        username: username ? username : user?.username,
+        email: email ? email : user?.email,
       });
 
-      toast.success('Dados atualizados');
+      toast.success(
+        'Dados atualizados. Por favor, entre novamente com suas novas informações',
+      );
 
       setTimeout(() => {
-        window.location.reload();
+        localStorage.removeItem('token');
+        navigate('/login');
       }, 1000);
     } catch (error) {
       if (error instanceof AxiosError)
@@ -101,10 +107,25 @@ function Profile() {
         <DivProfile>
           <DivUserAvatar>
             {imgURL || user?.image ? (
-              <img
-                className="image-avatar"
-                src={imgURL || user?.image_url}
-              ></img>
+              <>
+                <UserImage>
+                  <img
+                    className="image-avatar"
+                    src={imgURL || user?.image_url}
+                  ></img>
+                  <Button className="img-button" style={{ marginTop: '2rem' }}>
+                    <label style={{ cursor: 'pointer' }} htmlFor="img-input">
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        style={{ display: 'none' }}
+                        id="img-input"
+                        type="file"
+                      />
+                      <Camera />
+                    </label>
+                  </Button>
+                </UserImage>
+              </>
             ) : (
               <UserAvatar>
                 <User color="black" size={90} />
