@@ -90,7 +90,7 @@ function Profile() {
       setTimeout(() => {
         localStorage.removeItem('token');
         navigate('/login');
-      }, 1000);
+      }, 500);
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(error.response?.data.message);
