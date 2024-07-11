@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<h1>
+<h1 align="center">
 <img src="./src/assets/chathub_preview.png">
 </h1>
 
