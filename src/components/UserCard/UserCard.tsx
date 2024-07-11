@@ -25,7 +25,7 @@ import ModalDeleting from '../ModalDeleting/ModalDeleting';
 export type UserCardProps = {
   user: IUser;
   isGroup?: boolean;
-  conversationId: string | undefined;
+  conversationId?: string | undefined;
 };
 
 function UserCard({ user, isGroup, conversationId }: UserCardProps) {
